@@ -32,4 +32,33 @@ struct stack
 	int value;
 };
 
+/**
+ * A stack vazia.
+ */
+struct stack empty();
 
+/**
+ * Verifica se o pointer aponta para uma stack vazia.
+ * 
+ * @param s  O pointer para o qual se quer averiguar se a stack é vazia
+ * @return   1 (true) se a stack for vazia, 0 (false) se for
+ */
+bool isEmpty(struct stack* s);
+
+/**
+ * Insere o valor especificado na stack fornecida.
+ * 
+ *  @param s     O pointer para a stack
+ *  @param value O valor a inserir na stack
+ */
+void push(struct stack* s, int value);
+
+
+/**
+ * Remove o elemento do topo da stack, retornando o valor 
+ * desse mesmo elemento.
+ * 
+ * @param s     O pointer para a stack
+ */
+int pop(struct stack* s);
+#endif

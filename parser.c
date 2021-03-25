@@ -58,3 +58,62 @@ void oneOperand(struct stack* st, int x, char ch) {
     else if (ch == ')') push(st,(++x));
     else if (ch == '~') push(st,(~x));
 }
+
+void operation (struct stack* st, char ch) {
+    int op,i;
+
+    op = numberOperands(ch);
+    int operands[op];
+    for(i = 0; i < op; i++){
+        operands[i]= pop(st);
+    }
+    if(op == 1){
+        oneOperand(st,operands[0], ch);
+    }else if(op == 2){
+        twoOperand(st, operands[1], operands[0], ch);
+    }
+}
+
+void processInput(char* str, struct stack* st) {
+    //O numero que esta atualmente a ser lido, e o número de caracteres desde a última inserção
+    // na stack
+    int currentNumber = 0, read = 0;
+    while(*str != '\0') {
+        if(isNumeric(*str)) {
+            //Atualiza o valor atual do número
+            currentNumber *= 10;
+            currentNumber += *str - '0';
+            ++read;
+        }
+        else if(*str == ' ' && read > 0) {
+            //Insere o valor atual na stack
+            push(st, currentNumber);           
+            currentNumber = 0;
+            read = 0;
+        }
+        else {
+            //Faz a operação pedida
+            operation(st, *str);
+            read = 0;
+        }
+        ++str;
+    }
+
+    //Insere o último elemento lido na stack
+    if(read > 0) {
+        push(st, currentNumber);
+    }
+}
+
+void printStack(struct stack* st) {
+    if(!isEmpty(st)) {
+        int top = pop(st);
+        printStack(st);
+        printf("%d", top);
+    }
+}
+
+void printStackLine(struct stack* st) {
+    printStack(st);
+    printf("\n");
+}

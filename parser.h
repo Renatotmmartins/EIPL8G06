@@ -49,4 +49,42 @@ void twoOperand(struct stack* st, int x, int y, char ch);
  */
 void oneOperand(struct stack* st, int x, char ch);
 
+/**
+ * Executa a operação definida pelo caracter dado na stack fornecida.
+ * 
+ * @param st A stack onde executar a operação
+ * @param ch O caracter que define a operação a executar
+ */
+void operation (struct stack* st, char ch);
+
+/**
+ * Processa a string fornecida, e preenche a stack dada, efetuando todas as operações descritas na string.
+ * 
+ * @param str   A string correspondente ao input
+ * @param st    A stack a preencher
+ */
+void processInput(char* str, struct stack* st);
+
+
+/**
+ * Imprime a stack fornecida para o ecrã. 
+ * 
+ * De notar que esta função retira todos os elementos da mesma, resultando
+ * uma stack vazia.
+ * 
+ * @param st   A stack a imprimir
+ */
+void printStack(struct stack* st);
+
+
+/**
+ * Imprime a stack fornecida para o ecrã e muda de linha. 
+ * 
+ * De notar que esta função retira todos os elementos da mesma, resultando
+ * uma stack vazia.
+ * 
+ * @param st   A stack a imprimir
+ */
+void printStackLine(struct stack* st);
+
 #endif

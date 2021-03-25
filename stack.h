@@ -1,8 +1,9 @@
 #ifndef STACK_H
+/*! Include guard */
 #define STACK_H
 
 /**
- *@file contém a definição de uma stack (pilha).
+ * @file contém a definição de uma stack (pilha).
  */
 
 

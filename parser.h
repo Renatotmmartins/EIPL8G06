@@ -1,4 +1,5 @@
 #ifndef PARSER_H
+/*! Include guard */
 #define PARSER_H
 
 /**

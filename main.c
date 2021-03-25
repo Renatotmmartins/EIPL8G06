@@ -14,7 +14,7 @@
 
 /**
  *
- * O ponto de entrada da aplicação.
+ * \brief O ponto de entrada da aplicação.
  * 
  */
 int main() {

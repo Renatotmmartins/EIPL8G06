@@ -19,7 +19,7 @@
 #define bool int
 
 /**
- * Representa uma stack (pilha), estrutura de dados LIFO, que pode ser 
+ * \struct \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser 
  * acedida pelas funções definidas abaixo.
  */
 struct stack
@@ -33,12 +33,12 @@ struct stack
 };
 
 /**
- * A stack vazia.
+ * \brief A stack vazia.
  */
 struct stack empty();
 
 /**
- * Verifica se o pointer aponta para uma stack vazia.
+ * \brief Verifica se o pointer aponta para uma stack vazia.
  * 
  * @param s  O pointer para o qual se quer averiguar se a stack é vazia
  * @return   1 (true) se a stack for vazia, 0 (false) se for
@@ -46,7 +46,7 @@ struct stack empty();
 bool isEmpty(struct stack* s);
 
 /**
- * Insere o valor especificado na stack fornecida.
+ * \brief Insere o valor especificado na stack fornecida.
  * 
  *  @param s     O pointer para a stack
  *  @param value O valor a inserir na stack
@@ -55,7 +55,7 @@ void push(struct stack* s, int value);
 
 
 /**
- * Remove o elemento do topo da stack, retornando o valor 
+ * \brief Remove o elemento do topo da stack, retornando o valor 
  * desse mesmo elemento.
  * 
  * @param s     O pointer para a stack

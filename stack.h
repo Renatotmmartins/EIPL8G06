@@ -1,10 +1,10 @@
-#ifndef STACK_H
-/*! Include guard */
-#define STACK_H
-
 /**
  * @file contém a definição de uma stack (pilha).
  */
+
+#ifndef STACK_H
+/*! Include guard */
+#define STACK_H
 
 
 //! Usada para distinguir semanticamente entre valor lógico 
@@ -33,33 +33,15 @@ struct stack
 	int value;
 };
 
-/**
- * \brief A stack vazia.
- */
+
 struct stack empty();
 
-/**
- * \brief Verifica se o pointer aponta para uma stack vazia.
- * 
- * @param s  O pointer para o qual se quer averiguar se a stack é vazia
- * @return   1 (true) se a stack for vazia, 0 (false) se for
- */
+
 bool isEmpty(struct stack* s);
 
-/**
- * \brief Insere o valor especificado na stack fornecida.
- * 
- *  @param s     O pointer para a stack
- *  @param value O valor a inserir na stack
- */
+
 void push(struct stack* s, int value);
 
 
-/**
- * \brief Remove o elemento do topo da stack, retornando o valor 
- * desse mesmo elemento.
- * 
- * @param s     O pointer para a stack
- */
 int pop(struct stack* s);
 #endif

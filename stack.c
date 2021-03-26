@@ -8,7 +8,7 @@
 /**
  * \brief A stack vazia.
  
- * @return Um objeto do tipo struct stack sem nenhum elemento
+ * @return   Um objeto do tipo struct stack sem nenhum elemento
  */
 struct stack empty() {
 	struct stack s;
@@ -46,6 +46,7 @@ void push(struct stack* s, int value) {
  * desse mesmo elemento.
  * 
  * @param s     O pointer para a stack
+ * @return 	O elemento removido do topo da stack
  */
 int pop(struct stack* s) {
 	struct stack* previous = s->previous;

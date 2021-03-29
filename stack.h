@@ -20,18 +20,45 @@
 #define bool int
 
 /**
+ * \enum \brief Representa os diferentes tipos de dados que é possível armazenar
+ * na stack
+ */
+typedef enum dataType {
+	Int, //! Valor Inteiro
+	Double, //! Valor Fracionário
+	Char, //! Caracter
+	String //! Texto
+} DataType;
+
+
+/**
+ * \struct \brief Representa os diferentes valores que é possível armazenar
+ * na stack
+ */
+typedef struct value {
+	DataType type; //! O tipo de dados armazenado
+
+	union {
+		int integer; //! Valor Inteiro
+		double decimal; //! Valor Fracionário
+		char character; //! Caracter
+		char* string; //! Texto
+	};
+
+} Value;
+
+
+/**
  * \struct \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser 
  * acedida pelas funções definidas abaixo.
  */
-typedef struct stack
-
-{
+typedef struct stack {
 	/*! Apontador para o valor seguinte na pilha (esta é
 	    representada como uma lista ligada).*/
 	struct stack* previous;
 
 	/*! O valor armazenado na lista ligada.*/
-	int value;
+	Value value;
 } Stack;
 
 
@@ -41,8 +68,21 @@ Stack empty();
 bool isEmpty(Stack* s);
 
 
-void push(Stack* s, int value);
+void push(Stack* s, Value value);
 
 
-int pop(Stack* s);
+Value pop(Stack* s);
+
+
+Value fromInteger(int i);
+
+
+Value fromDecimal(double d);
+
+
+Value fromCharacter(char ch);
+
+
+Value fromString(char* str);
+
 #endif

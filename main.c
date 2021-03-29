@@ -29,7 +29,7 @@ int main() {
     //para não interferir no processamento
     line[read - 1] = '\0';
 
-    struct stack st = empty();
+    Stack st = empty();
 
     processInput(line, &st);
     printStackLine(&st);

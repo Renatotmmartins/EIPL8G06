@@ -8,10 +8,10 @@
 /**
  * \brief A stack vazia.
  
- * @return   Um objeto do tipo struct stack sem nenhum elemento
+ * @return   Um objeto do tipo Stack sem nenhum elemento
  */
-struct stack empty() {
-	struct stack s;
+Stack empty() {
+	Stack s;
 	s.previous = 0;
 	s.value = 0;
 	return s;
@@ -23,7 +23,7 @@ struct stack empty() {
  * @param s  O pointer para o qual se quer averiguar se a stack é vazia
  * @return   1 (true) se a stack for vazia, 0 (false) se for
  */
-bool isEmpty(struct stack* s) {
+bool isEmpty(Stack* s) {
 	return s->previous == 0;
 }
 
@@ -33,8 +33,8 @@ bool isEmpty(struct stack* s) {
  *  @param s     O pointer para a stack
  *  @param value O valor a inserir na stack
  */
-void push(struct stack* s, int value) {
-	struct stack* a = malloc(sizeof(struct stack));
+void push(Stack* s, int value) {
+	Stack* a = malloc(sizeof(Stack));
 
 	*a = *s;
 	s->value = value;
@@ -48,8 +48,8 @@ void push(struct stack* s, int value) {
  * @param s     O pointer para a stack
  * @return 	O elemento removido do topo da stack
  */
-int pop(struct stack* s) {
-	struct stack* previous = s->previous;
+int pop(Stack* s) {
+	Stack* previous = s->previous;
 	int top = s->value;
 
 	*s = *previous;

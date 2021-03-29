@@ -23,7 +23,8 @@
  * \struct \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser 
  * acedida pelas funções definidas abaixo.
  */
-struct stack
+typedef struct stack
+
 {
 	/*! Apontador para o valor seguinte na pilha (esta é
 	    representada como uma lista ligada).*/
@@ -31,17 +32,17 @@ struct stack
 
 	/*! O valor armazenado na lista ligada.*/
 	int value;
-};
+} Stack;
 
 
-struct stack empty();
+Stack empty();
 
 
-bool isEmpty(struct stack* s);
+bool isEmpty(Stack* s);
 
 
-void push(struct stack* s, int value);
+void push(Stack* s, int value);
 
 
-int pop(struct stack* s);
+int pop(Stack* s);
 #endif

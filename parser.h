@@ -16,16 +16,16 @@ bool isNumeric(char ch);
 
 int numberOperands (char ch);
 
-void twoOperand(struct stack* st, int x, int y, char ch);
+void twoOperand(Stack* st, int x, int y, char ch);
 
-void oneOperand(struct stack* st, int x, char ch);
+void oneOperand(Stack* st, int x, char ch);
 
-void operation (struct stack* st, char ch);
+void operation (Stack* st, char ch);
 
-void processInput(char* str, struct stack* st);
+void processInput(char* str, Stack* st);
 
-void printStack(struct stack* st);
+void printStack(Stack* st);
 
-void printStackLine(struct stack* st);
+void printStackLine(Stack* st);
 
 #endif

@@ -63,7 +63,7 @@ int numberOperands (char ch) {
  * @param y  O segundo operando
  * @param ch O caracter que define a operação a executar
  */
-void twoOperand(struct stack* st, int x, int y, char ch) {
+void twoOperand(Stack* st, int x, int y, char ch) {
     if (ch == '+') push(st,(x + y)); // Soma de 2 valores
     else if (ch == '-') push(st,(x-y)); // Subtração de 2 valores
     else if (ch == '*') push(st, (x * y)); // Multiplicação de 2 valores
@@ -84,7 +84,7 @@ void twoOperand(struct stack* st, int x, int y, char ch) {
  * @param x  O operando
  * @param ch O caracter que define a operação a executar
  */
-void oneOperand(struct stack* st, int x, char ch) {
+void oneOperand(Stack* st, int x, char ch) {
     if (ch == '(') push(st,(--x)); 
     else if (ch == ')') push(st,(++x));
     else if (ch == '~') push(st,(~x));
@@ -96,7 +96,7 @@ void oneOperand(struct stack* st, int x, char ch) {
  * @param st A stack onde executar a operação
  * @param ch O caracter que define a operação a executar
  */
-void operation (struct stack* st, char ch) {
+void operation (Stack* st, char ch) {
     int op,i;
 
     op = numberOperands(ch);
@@ -117,7 +117,7 @@ void operation (struct stack* st, char ch) {
  * @param str   A string correspondente ao input
  * @param st    A stack a preencher
  */
-void processInput(char* str, struct stack* st) {
+void processInput(char* str, Stack* st) {
     //O numero que esta atualmente a ser lido, e o número de caracteres desde a última inserção
     // na stack
     int currentNumber = 0, read = 0;
@@ -156,7 +156,7 @@ void processInput(char* str, struct stack* st) {
  * 
  * @param st   A stack a imprimir
  */
-void printStack(struct stack* st) {
+void printStack(Stack* st) {
     if(!isEmpty(st)) {
         int top = pop(st);
         printStack(st);
@@ -172,7 +172,7 @@ void printStack(struct stack* st) {
  * 
  * @param st   A stack a imprimir
  */
-void printStackLine(struct stack* st) {
+void printStackLine(Stack* st) {
     printStack(st);
     printf("\n");
 }

@@ -33,12 +33,12 @@ bool isEmpty(Stack* s) {
  *  @param s     O pointer para a stack
  *  @param value O valor a inserir na stack
  */
-void push(Stack* s, int value) {
+void push(Stack* s, Value value) {
 	Stack* a = malloc(sizeof(Stack));
 
+    s->value = value;
+    s->previous = a;
 	*a = *s;
-	s->value = value;
-	s->previous = a;
 }
 
 /**
@@ -48,11 +48,94 @@ void push(Stack* s, int value) {
  * @param s     O pointer para a stack
  * @return 	O elemento removido do topo da stack
  */
-int pop(Stack* s) {
+Value pop(Stack* s) {
 	Stack* previous = s->previous;
-	int top = s->value;
+	Value top = s->value;
 
 	*s = *previous;
 	free(previous);
 	return top;
 }
+
+/**
+ * \brief Converte um inteiro para tipo #Value.
+ *
+ * @param i  o inteiro
+ * @return   o inteiro convertido para #Value.
+ */
+Value fromInteger(int i){
+    Value val;
+
+    val.type=Int;
+    val.integer=i;
+
+    return val;
+}
+
+
+/**
+ * \brief Converte um double para tipo #Value.
+ *
+ * @param d  o double
+ * @return   o double convertido para #Value.
+ */
+Value fromDecimal(double d){
+    Value val;
+
+    val.type=Double;
+    val.decimal=d;
+
+    return val;
+}
+
+/**
+ * \brief Converte um caracter para tipo #Value.
+ *
+ * @param ch  o caracter
+ * @return    o caracter convertido para #Value.
+ */
+Value fromCharacter(char ch){
+    Value val;
+
+    val.type=Char;
+    val.Character=ch;
+
+    return val;
+}
+
+/**
+ * \brief Converte uma string para tipo #Value.
+ *
+ * @param str  a string
+ * @return     a string convertida para #Value.
+ */
+Value fromString(char* str){
+    Value val;
+
+    val.type=String;
+    val.String=str;
+
+    return val;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

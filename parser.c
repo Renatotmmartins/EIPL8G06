@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "parser.h"
+#include "operations.h"
 
 
 /**
@@ -40,7 +41,7 @@ int numberOperands (char ch) {
         Assim, para calcular o número de operandos de um dado caracter basta
         encontrar o índice da string onde este pertence. 
     */
-    char operandList[3][10] = {"","()~","+-/*&|^%#"};
+    char operandList[3][10] = {"","()~ifcs","+-/*&|^%#"};
     int i,j;
 
     for(i=0;i<3;i++) {
@@ -54,6 +55,7 @@ int numberOperands (char ch) {
     return 0;
 }
 
+
 /**
  * \brief Executa a operação definida pelo caracter dado, a qual exige dois operandos,
  * x e y, na stack fornecida.
@@ -63,7 +65,7 @@ int numberOperands (char ch) {
  * @param y  O segundo operando
  * @param ch O caracter que define a operação a executar
  */
-void twoOperand(Stack* st, int x, int y, char ch) {
+void twoOperands(Stack* st, int x, int y, char ch) {
     if (ch == '+') push(st,(x + y)); // Soma de 2 valores
     else if (ch == '-') push(st,(x-y)); // Subtração de 2 valores
     else if (ch == '*') push(st, (x * y)); // Multiplicação de 2 valores
@@ -84,10 +86,34 @@ void twoOperand(Stack* st, int x, int y, char ch) {
  * @param x  O operando
  * @param ch O caracter que define a operação a executar
  */
-void oneOperand(Stack* st, int x, char ch) {
-    if (ch == '(') push(st,(--x)); 
+void oneOperand(Stack* st, Value x, char ch) {
+    Value result;
+
+    switch(ch) {
+        case '(':
+            break;
+        case ')':
+            break;
+        case '~':
+            break;
+        case 'i':
+            result = convertToInt(x);
+            break;
+        case 'f':
+            result = convertToDouble(x);
+            break;
+        case 'c':
+            result = convertToChar(x);
+            break;
+        case 's':
+            result = convertToString(x);
+            break;
+    }
+
+    push(st, result);
+    /*if (ch == '(') push(st,(--x)); 
     else if (ch == ')') push(st,(++x));
-    else if (ch == '~') push(st,(~x));
+    else if (ch == '~') push(st,(~x));*/
 }
 
 /**
@@ -100,14 +126,23 @@ void operation (Stack* st, char ch) {
     int op,i;
 
     op = numberOperands(ch);
-    int operands[op];
+    Value operands[op];
+    
+    /* Retira da stack todos os operandos necessários */
     for(i = 0; i < op; i++){
         operands[i]= pop(st);
     }
-    if(op == 1){
-        oneOperand(st,operands[0], ch);
-    }else if(op == 2){
-        twoOperand(st, operands[1], operands[0], ch);
+    
+    switch(op) {
+        case 0:
+            zeroOperands(st, ch);
+            break;
+        case 1:
+            oneOperand(st, operands[0], ch);
+            break;
+        case 2:
+            twoOperands(st, operands[1], operands[0], ch);
+            break;
     }
 }
 

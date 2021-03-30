@@ -11,9 +11,10 @@
  * @return   Um objeto do tipo Stack sem nenhum elemento
  */
 Stack empty() {
+    Value v;
 	Stack s;
 	s.previous = 0;
-	s.value = 0;
+	s.value = v;
 	return s;
 }
 
@@ -98,7 +99,7 @@ Value fromCharacter(char ch){
     Value val;
 
     val.type=Char;
-    val.Character=ch;
+    val.character=ch;
 
     return val;
 }
@@ -113,7 +114,7 @@ Value fromString(char* str){
     Value val;
 
     val.type=String;
-    val.String=str;
+    val.string=str;
 
     return val;
 }

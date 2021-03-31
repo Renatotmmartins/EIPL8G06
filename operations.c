@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include "operations.h"
 
+/**
+ * \brief Decrementa o valor do tipo #Value.
+ *
+ * @param v  o elemento do tipo #Value.
+ * @return   o elemento do tipo #Value decrementado.
+ */
 Value decrement(Value v)
 {
     switch (v.type)
@@ -33,6 +39,12 @@ Value decrement(Value v)
     return v;
 }
 
+/**
+ * \brief Incrementa o valor do tipo #Value.
+ *
+ * @param v  o elemento do tipo #Value.
+ * @return   o elemento do tipo #Value incrementado.
+ */
 Value increment(Value v)
 {
     switch (v.type)
@@ -58,6 +70,12 @@ Value increment(Value v)
     return v;
 }
 
+/**
+ * \brief Aplica a negação binária a um elemento do tipo #Value.
+ *
+ * @param v  o elemento do tipo #Value.
+ * @return   o elemento do tipo #Value resultante de aplicar a negação.
+ */
 Value negate(Value v)
 {
     switch (v.type)
@@ -79,7 +97,6 @@ Value negate(Value v)
 
     return v;
 }
-
 
 /**
  * \brief Converte o #Value dado para outro que armazena um inteiro
@@ -206,8 +223,12 @@ Value convertToString(Value v) {
     return result;
 }
 
-
-
+/**
+ * \brief Converte elementos do tipo #Value para os tipos adequados para executar uma operação numérica.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ */
 void NumericOperationAux(Value *a, Value *b)
 {
     if (a->type == Double && b->type != Double)
@@ -228,7 +249,13 @@ void NumericOperationAux(Value *a, Value *b)
         *a = convertToString(*a);
 }
 
-
+/**
+ * \brief Soma dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return     resultado da soma de a com b.
+ */
 Value sum(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -260,9 +287,13 @@ Value sum(Value a, Value b)
     return result;
 }
 
-
-
-
+/**
+ * \brief Subtrai dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return     resultado da subtração de a com b.
+ */
 Value subtract(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -293,6 +324,13 @@ Value subtract(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Divide dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return     resultado da divisão de a com b.
+ */
 Value divide(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -323,6 +361,13 @@ Value divide(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Multiplica dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return     resultado da multiplicação de a com b.
+ */
 Value multiply(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -353,6 +398,13 @@ Value multiply(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Aplica a conjunção a dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return     o elemento do tipo #Value resultante de aplicar a conjunção.
+ */
 Value AND(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -380,6 +432,13 @@ Value AND(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Aplica a disjunção a dois elementos de tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return   o elemento do tipo #Value resultante de aplicar a disjunção.
+ */
 Value OR(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -407,6 +466,13 @@ Value OR(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Aplica o ou explosivo a dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value.
+ * @param b  o elemento do tipo #Value.
+ * @return   o elemento do tipo #Value resultante de aplicar o ou explosivo.
+ */
 Value XOR(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -434,6 +500,13 @@ Value XOR(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value que atua como dividendo.
+ * @param b  o elemento do tipo #Value que atua como divisor.
+ * @return   o resto da divisao inteira.
+ */
 Value module(Value a, Value b)
 {
     NumericOperationAux(&a, &b);
@@ -464,6 +537,13 @@ Value module(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Calcula a potencia entre dois elementos do tipo #Value.
+ *
+ * @param a  o elemento do tipo #Value que atua como base.
+ * @param b  o elemento do tipo #Value que atua como expoente.
+ * @return   a potencia de a com b.
+ */
 Value exponentiate(Value a, Value b)
 {
     NumericOperationAux(&a, &b);

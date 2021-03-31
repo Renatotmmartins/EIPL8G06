@@ -3,6 +3,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "stack.h"
 
 /**
@@ -12,6 +13,8 @@
  */
 Stack empty() {
     Value v;
+    v.type = Int;
+    v.integer = 0;
 	Stack s;
 	s.previous = 0;
 	s.value = v;
@@ -37,9 +40,9 @@ bool isEmpty(Stack* s) {
 void push(Stack* s, Value value) {
 	Stack* a = malloc(sizeof(Stack));
 
+    *a = *s;
     s->value = value;
     s->previous = a;
-	*a = *s;
 }
 
 /**
@@ -52,9 +55,13 @@ void push(Stack* s, Value value) {
 Value pop(Stack* s) {
 	Stack* previous = s->previous;
 	Value top = s->value;
-
 	*s = *previous;
-	free(previous);
+
+    if(previous != NULL)
+	    free(previous);
+
+    previous = NULL;
+
 	return top;
 }
 

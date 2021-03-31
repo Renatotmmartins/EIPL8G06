@@ -65,16 +65,16 @@ int numberOperands (char ch) {
  * @param y  O segundo operando
  * @param ch O caracter que define a operação a executar
  */
-void twoOperands(Stack* st, int x, int y, char ch) {
-    if (ch == '+') push(st,(x + y)); // Soma de 2 valores
-    else if (ch == '-') push(st,(x-y)); // Subtração de 2 valores
-    else if (ch == '*') push(st, (x * y)); // Multiplicação de 2 valores
-    else if (ch == '/') push(st,(x / y)); // Divisão de 2 valores
-    else if (ch == '%') push(st, (x % y)); // Resto da divisão inteira
-    else if (ch == '#') push(st, (int)pow(x,y)); // Exponenciação (x elevado a y)
-    else if (ch == '&') push(st, (x & y)); // X e Y
-    else if (ch == '|') push(st, (x | y)); // X ou Y
-    else if (ch == '^') push(st, (x ^ y)); // X xor Y
+void twoOperands(Stack* st, Value x, Value y, char ch) {
+    if (ch == '+') push(st, sum(x, y)); // Soma de 2 valores
+    else if (ch == '-') push(st, subtract(x, y)); // Subtração de 2 valores
+    else if (ch == '*') push(st, multiply(x, y)); // Multiplicação de 2 valores
+    else if (ch == '/') push(st, divide(x, y)); // Divisão de 2 valores
+    else if (ch == '%') push(st, module(x, y)); // Resto da divisão inteira
+    else if (ch == '#') push(st, exponentiate(x, y)); // Exponenciação (x elevado a y)
+    else if (ch == '&') push(st, AND(x, y)); // X e Y
+    else if (ch == '|') push(st, OR(x, y)); // X ou Y
+    else if (ch == '^') push(st, XOR(x, y)); // X xor Y
 
 }
 
@@ -91,10 +91,13 @@ void oneOperand(Stack* st, Value x, char ch) {
 
     switch(ch) {
         case '(':
+            result = decrement(x);
             break;
         case ')':
+            result = increment(x);
             break;
         case '~':
+            result = negate(x);
             break;
         case 'i':
             result = convertToInt(x);
@@ -111,9 +114,6 @@ void oneOperand(Stack* st, Value x, char ch) {
     }
 
     push(st, result);
-    /*if (ch == '(') push(st,(--x)); 
-    else if (ch == ')') push(st,(++x));
-    else if (ch == '~') push(st,(~x));*/
 }
 
 /**
@@ -165,7 +165,10 @@ void processInput(char* str, Stack* st) {
         }
         else if(*str == ' ' && read > 0) {
             //Insere o valor atual na stack
-            push(st, currentNumber);           
+            Value v;
+            v.type = Int;
+            v.integer = currentNumber;
+            push(st, v);
             currentNumber = 0;
             read = 0;
         }
@@ -179,7 +182,10 @@ void processInput(char* str, Stack* st) {
 
     //Insere o último elemento lido na stack
     if(read > 0) {
-        push(st, currentNumber);
+        Value v;
+        v.type = Int;
+        v.integer = currentNumber;
+        push(st, v);
     }
 }
 
@@ -193,9 +199,26 @@ void processInput(char* str, Stack* st) {
  */
 void printStack(Stack* st) {
     if(!isEmpty(st)) {
-        int top = pop(st);
+        Value top = pop(st);
         printStack(st);
-        printf("%d", top);
+
+        switch (top.type)
+        {
+            case Double:
+            printf("%f", top.decimal);
+            break;
+
+            case Int:
+            printf("%d", top.integer);
+            break;
+
+            case Char:
+            putchar(top.character);
+            break;
+
+            case String:
+            printf("%s", top.string);
+        }
     }
 }
 

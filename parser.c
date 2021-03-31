@@ -88,7 +88,6 @@ void twoOperands(Stack* st, Value x, Value y, char ch) {
  */
 void oneOperand(Stack* st, Value x, char ch) {
     Value result;
-
     switch(ch) {
         case '(':
             result = decrement(x);
@@ -132,10 +131,10 @@ void operation (Stack* st, char ch) {
     for(i = 0; i < op; i++){
         operands[i]= pop(st);
     }
-    
+
     switch(op) {
         case 0:
-            zeroOperands(st, ch);
+            //zeroOperands(st, ch);
             break;
         case 1:
             oneOperand(st, operands[0], ch);
@@ -217,7 +216,7 @@ void printStack(Stack* st) {
             break;
 
             case String:
-            printf("%s", top.string);
+            printf("\"%s\"", top.string);
         }
     }
 }

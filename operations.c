@@ -5,6 +5,8 @@
 
 #include <string.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "operations.h"
 
 Value decrement(Value v)
@@ -23,6 +25,8 @@ Value decrement(Value v)
         v.decimal--;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -45,6 +49,9 @@ Value increment(Value v)
         v.decimal++;
         break;
 
+        default:
+        break;
+
         //case String:
     }
 
@@ -63,6 +70,8 @@ Value negate(Value v)
         v.integer = ~v.integer;
         break;
 
+        default:
+        break;
         //case Double:
 
         //case String:
@@ -93,6 +102,8 @@ Value convertToInt(Value v) {
         case String:
             result.integer = atoi(v.string);
             break;
+        default:
+            break;
     }
 
     return result;
@@ -118,7 +129,9 @@ Value convertToDouble(Value v) {
             result.decimal = (double)v.integer;
             break;
         case String:
-            result.decimal = strtod(v.string);
+            result.decimal = strtod(v.string, &v.string + (int)strlen(v.string));
+            break;
+        default:
             break;
     }
 
@@ -134,7 +147,7 @@ Value convertToDouble(Value v) {
  */
 Value convertToChar(Value v) {
     Value result;
-    result.type = Double;
+    result.type = Char;
 
     // Escolha do método de conversão em função do tipo guardado em v
     switch(v.type) {
@@ -142,7 +155,9 @@ Value convertToChar(Value v) {
             result.character = (char)(int)v.decimal;
             break;
         case Int:
-            result.decimal = (char)v.integer;
+            result.character = (char)v.integer;
+            break;
+        default:
             break;
     }
 
@@ -159,7 +174,6 @@ Value convertToChar(Value v) {
 Value convertToString(Value v) {
     Value result;
     result.type = String;
-  
 
     // Escolha do método de conversão em função do tipo guardado em v
     switch(v.type) {
@@ -171,21 +185,21 @@ Value convertToString(Value v) {
             result.string = malloc(size);
 
             //Converter para string
-            snprintf(result.string, size, "%f", result.decimal);
+            snprintf(result.string, size, "%f", v.decimal);
             break;
         case Int:
             size = (int)((ceil(log10(v.integer))+1)*sizeof(char));
             result.string = malloc(size);
-
-            //Converter para string
-            snprintf(result.string, size, "%d", result.integer);
+            snprintf(result.string, size, "%d", v.integer);
             break;
 
         case Char:
-            size = (int)sizeof(char);
+            size = (int)sizeof(char) + 1;
             result.string = malloc(size);
-            //Converter para string
-            snprintf(result.string, size, "%c", result.character);
+            result.string[0] = v.character;
+            result.string[1] = '\0';
+            break;
+        default:
             break;
     }
 
@@ -237,6 +251,9 @@ Value sum(Value a, Value b)
         result.character = a.character + b.character;
         break;
 
+        default:
+        break;
+
         //case String:
     }
 
@@ -269,6 +286,8 @@ Value subtract(Value a, Value b)
         break;
 
         //case String:
+        default:
+        break;
     }
 
     return result;
@@ -296,6 +315,8 @@ Value divide(Value a, Value b)
         result.character = a.character / b.character;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -324,6 +345,8 @@ Value multiply(Value a, Value b)
         result.character = a.character * b.character;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -349,6 +372,8 @@ Value AND(Value a, Value b)
         result.character = a.character & b.character;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -374,6 +399,8 @@ Value OR(Value a, Value b)
         result.character = a.character | b.character;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -399,6 +426,8 @@ Value XOR(Value a, Value b)
         result.character = a.character ^ b.character;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -427,6 +456,8 @@ Value module(Value a, Value b)
         result.character = a.character % b.character;
         break;
 
+        default:
+        break;
         //case String:
     }
 
@@ -455,6 +486,8 @@ Value exponentiate(Value a, Value b)
         result.character = (char)pow(a.character, b.character);
         break;
 
+        default:
+        break;
         //case String:
     }
 

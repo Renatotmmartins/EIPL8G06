@@ -41,7 +41,7 @@ int numberOperands (char ch) {
         Assim, para calcular o número de operandos de um dado caracter basta
         encontrar o índice da string onde este pertence. 
     */
-    char operandList[3][10] = {"","()~ifcs","+-/*&|^%#"};
+    char operandList[3][10] = {"l","()~ifcs","+-/*&|^%#"};
     int i,j;
 
     for(i=0;i<3;i++) {
@@ -113,6 +113,22 @@ void oneOperand(Stack* st, Value x, char ch) {
     }
 
     push(st, result);
+}
+
+/**
+* \brief Executa a operação definida pelo caracter dado, a qual não exige nenhum operando,
+* na stack fornecida.
+*
+* @param st A stack onde executar a operação
+* @param ch O caracter que define a operação a executar
+*/
+
+void zeroOperands(Stack* st, char ch) {
+    switch (ch) {
+        case 'l':
+            readLine (st);
+            break;
+    }
 }
 
 /**

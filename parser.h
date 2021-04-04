@@ -20,6 +20,8 @@ void twoOperand(Stack* st, Value x, Value y, char ch);
 
 void oneOperand(Stack* st, Value x, char ch);
 
+void zeroOperands(Stack* st, char ch);
+
 void operation (Stack* st, char ch);
 
 void processInput(char* str, Stack* st);

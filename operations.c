@@ -9,6 +9,22 @@
 #include <stdlib.h>
 #include "operations.h"
 
+
+char* getInput ()
+{
+        char *line = NULL;
+        size_t size = 0;
+
+        //Usa-se getline porque o scanf para de ler ao encontrar um
+        //espaço.
+        size_t read = getline(&line, &size,stdin);
+
+        //getline lê o caracter '\n', logo coloca-se um '\0' no seu lugar
+        //para não interferir no processamento
+        line[read - 1] = '\0';
+        return line;
+}
+
 /**
  * \brief Decrementa o valor do tipo #Value.
  *
@@ -221,6 +237,13 @@ Value convertToString(Value v) {
     }
 
     return result;
+}
+
+void readLine(Stack* st)
+{
+
+    char* line = getInput();
+    push (st, fromString (line));
 }
 
 /**

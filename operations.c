@@ -35,6 +35,32 @@ char* getInput ()
 }
 
 /**
+ * \brief Retorna o n-ésimo elemento da stack dada (o topo da stack é 0)
+ *
+ * Um erro ocorre quando n é negativo ou a stack tem n ou menos elementos (segmentation fault)
+ *
+ * @param st A stack dada
+ * @param n  A posição do elemento a retornar
+ *
+ * @return O n-ésimo elemento da stack
+ */
+Value getElement(Stack* st, int n)
+{
+    //if (n < 0)
+        //ERRO: input inválido
+
+    while (n--)
+    {
+        st = st->previous;
+
+        //if (st->previous == 0)
+            //ERRO: a stack tem n ou menos elementos
+    }
+
+    return st->value;
+}
+
+/**
  * \brief Roda os primeiros n elementos da stack
  *
  * @param st A stack dada

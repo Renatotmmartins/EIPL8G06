@@ -12,6 +12,7 @@
 
 char* getInput ();
 
+Value getElement(Stack* st, int n);
 void rotateTop(Stack* st, int n);
 
 Value decrement(Value v);

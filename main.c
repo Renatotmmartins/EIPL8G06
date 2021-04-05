@@ -11,6 +11,7 @@
 #include <assert.h>
 #include <string.h>
 #include "parser.h"
+#include "operations.h"
 
 /**
  *

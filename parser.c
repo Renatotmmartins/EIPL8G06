@@ -41,7 +41,7 @@ int numberOperands (char ch) {
         Assim, para calcular o número de operandos de um dado caracter basta
         encontrar o índice da string onde este pertence. 
     */
-    char operandList[3][10] = {"l","()~ifcs","+-/*&|^%#"};
+    char operandList[3][10] = {"l\\@","()~ifcs","+-/*&|^%#"};
     int i,j;
 
     for(i=0;i<3;i++) {
@@ -128,6 +128,12 @@ void zeroOperands(Stack* st, char ch) {
         case 'l':
             readLine (st);
             break;
+        case '\\':
+            rotateTop(st, 2);
+            break;
+        case '@':
+            rotateTop(st, 3);
+            break;
     }
 }
 
@@ -150,7 +156,7 @@ void operation (Stack* st, char ch) {
 
     switch(op) {
         case 0:
-            //zeroOperands(st, ch);
+            zeroOperands(st, ch);
             break;
         case 1:
             oneOperand(st, operands[0], ch);

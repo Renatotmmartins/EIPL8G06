@@ -10,6 +10,10 @@
 
 #include "stack.h"
 
+char* getInput ();
+
+void rotateTop(Stack* st, int n);
+
 Value decrement(Value v);
 Value increment(Value v);
 Value negate(Value v);
@@ -18,6 +22,7 @@ Value convertToDouble(Value v);
 Value convertToChar(Value v);
 Value convertToString(Value v);
 
+void readLine(Stack* st);
 
 void NumericOperationAux(Value *a, Value *b);
 

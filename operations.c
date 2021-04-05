@@ -9,7 +9,14 @@
 #include <stdlib.h>
 #include "operations.h"
 
-
+/**
+ * \brief Lê uma linha de input
+ *
+ * De notar que a função retorna um apontador alocado dinamicamente que, por isso,
+ * deve ser desalocado quando deixar de ser usado.
+ *
+ * @return A string que contém a linha que foi lida
+ */
 char* getInput ()
 {
         char *line = NULL;
@@ -21,8 +28,33 @@ char* getInput ()
 
         //getline lê o caracter '\n', logo coloca-se um '\0' no seu lugar
         //para não interferir no processamento
-        line[read - 1] = '\0';
+        if(line[read - 1] == '\n')
+            line[read - 1] = '\0';
+            
         return line;
+}
+
+/**
+ * \brief Roda os primeiros n elementos da stack
+ *
+ * @param st A stack dada
+ * @param n  O número de elementos a rodar
+ */
+void rotateTop(Stack* st, int n) {
+    /* Para rodar os primeiros n elementos da stack basta removê-los
+       e inseri-los novamente pela ordem que foram removidos. */
+
+    Value elements[n];
+
+    int i;
+
+    for(i = 0; i < n; i++) {
+        elements[i] = pop(st);
+    }
+
+    for(int i = 0; i < n; i++) {
+        push(st, elements[i]);
+    }
 }
 
 /**
@@ -239,9 +271,13 @@ Value convertToString(Value v) {
     return result;
 }
 
+/**
+ * \brief Lê uma linha do input e insere-a como uma string na stack.
+ *
+ * @param st A stack dada
+ */
 void readLine(Stack* st)
 {
-
     char* line = getInput();
     push (st, fromString (line));
 }

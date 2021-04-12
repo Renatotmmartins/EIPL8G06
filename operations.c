@@ -317,30 +317,25 @@ void readLine(Stack* st)
     push (st, fromString (line));
 }
 
+DataType numericTypes[4] = { Double, Int, Char, String };
+Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToChar, &convertToString };
+
 /**
  * \brief Converte elementos do tipo #Value para os tipos adequados para executar uma operação numérica.
  *
  * @param a  o elemento do tipo #Value.
  * @param b  o elemento do tipo #Value.
  */
-void NumericOperationAux(Value *a, Value *b)
-{
-    if (a->type == Double && b->type != Double)
-        *b = convertToDouble(*b);
-    else if (b->type == Double && a->type != Double)
-        *a = convertToDouble(*a);
-    else if (a->type == Int && b->type != Int)
-        *b = convertToInt(*b);
-    else if (b->type == Int && a->type != Int)
-        *a = convertToInt(*a);
-    else if (a->type == Char && b->type != Char)
-        *b = convertToChar(*b);
-    else if (b->type == Char && a->type != Char)
-        *a = convertToChar(*a);
-    else if (a->type == String && b->type != String)
-        *b = convertToString(*b);
-    else if (b->type == String && a->type != String)
-        *a = convertToString(*a);
+void NumericOperationAux(Value *a, Value *b) {
+    for (int i = 0; i < 4; i++) {
+        if (a->type == numericTypes[i]) {
+            *b = (*converters[i])(*b);
+            return;
+        } else if (b->type == numericTypes[i]) {
+            *a = (*converters[i])(*a);
+            return;
+        }
+    }
 }
 
 /**

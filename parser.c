@@ -205,7 +205,7 @@ void resolveWord(char* str, int length, Stack* st)
     if (length <= 0)
         return;
 
-    if (length == 1 && numberOperands(*str)) {  //operador
+    if (length == 1 && numberOperands(*str) != -1) {  //operador
         operation(st, *str);
         return;
     }

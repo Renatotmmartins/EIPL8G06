@@ -212,7 +212,11 @@ void resolveWord(char* str, int length, Stack* st)
 
     Value v;
 
-    if (contains(str, length, '.')) {           //double
+    if(length == 1 && !isNumeric(*str)) {
+        v.type = Char;
+        v.character = *str;                     //char
+    }
+    else if (contains(str, length, '.')) {           //double
         v.type = Double;
         v.decimal = atof(str);
     }
@@ -232,7 +236,15 @@ void resolveWord(char* str, int length, Stack* st)
  * @param st    A stack a preencher
  */
 void processInput(char* str, Stack* st) {
-    
+    char* accum = str;
+    while(*str && *str != '\n') {
+        if(*str == ' ') {
+            resolveWord(accum, str - accum, st);
+            accum = str + 1;
+        }
+        ++str;
+    }
+    resolveWord(accum, str - accum, st); // Resolve o que faltar
 }
 
 /**
@@ -246,7 +258,13 @@ void processInput(char* str, Stack* st) {
 void printStack(Stack* st) {
     if(!isEmpty(st)) {
         Value top = pop(st);
+
+        //bool empty = isEmpty(st);
+
         printStack(st);
+
+        //if(!empty)
+            //printf(" ");
 
         switch (top.type)
         {
@@ -259,7 +277,7 @@ void printStack(Stack* st) {
             break;
 
             case Char:
-            putchar(top.character);
+            printf("%c", top.character);
             break;
 
             case String:

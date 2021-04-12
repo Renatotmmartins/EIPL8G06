@@ -66,16 +66,36 @@ int numberOperands (char ch) {
  * @param ch O caracter que define a operação a executar
  */
 void twoOperands(Stack* st, Value x, Value y, char ch) {
-    if (ch == '+') push(st, sum(x, y)); // Soma de 2 valores
-    else if (ch == '-') push(st, subtract(x, y)); // Subtração de 2 valores
-    else if (ch == '*') push(st, multiply(x, y)); // Multiplicação de 2 valores
-    else if (ch == '/') push(st, divide(x, y)); // Divisão de 2 valores
-    else if (ch == '%') push(st, module(x, y)); // Resto da divisão inteira
-    else if (ch == '#') push(st, exponentiate(x, y)); // Exponenciação (x elevado a y)
-    else if (ch == '&') push(st, AND(x, y)); // X e Y
-    else if (ch == '|') push(st, OR(x, y)); // X ou Y
-    else if (ch == '^') push(st, XOR(x, y)); // X xor Y
 
+    switch (ch){
+        case '+':
+            push(st, sum(x, y));// Subtração de 2 valores
+            break;
+        case '-':
+            push(st, subtract(x, y));// Multiplicação de 2 valores
+            break;
+        case '*':
+            push(st, multiply(x, y));// Divisão de 2 valores
+            break;
+        case '/':
+            push(st, divide(x, y));// Resto da divisão inteira
+            break;
+        case '%':
+            push(st, module(x, y));// Exponenciação (x elevado a y)
+            break;
+        case '#':
+            push(st, exponentiate(x, y));// X e Y
+            break;
+        case '&':
+            push(st, AND(x, y));// X ou Y
+            break;
+        case '|':
+            push(st, OR(x, y));// X xor Y
+            break;
+        case '^'
+            push(st, XOR(x, y)); // X xor Y
+            break;
+    }
 }
 
 /**

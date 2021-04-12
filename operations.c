@@ -666,3 +666,17 @@ Value exponentiate(Value a, Value b)
 
     return result;
 }
+
+void duplicate(Stack* st) {
+
+    Value top = pop (st);
+    if (top.type == String) {
+        char* str = NULL;
+        strcpy(top.string,str);
+        push(st,fromString(str));
+    }
+    else {
+        push(st,top);
+    }
+    push(st,top);
+}

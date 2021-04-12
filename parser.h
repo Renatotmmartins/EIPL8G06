@@ -16,7 +16,7 @@ bool isNumeric(char ch);
 
 int numberOperands (char ch);
 
-void twoOperand(Stack* st, Value x, Value y, char ch);
+void twoOperands(Stack* st, Value x, Value y, char ch);
 
 void oneOperand(Stack* st, Value x, char ch);
 

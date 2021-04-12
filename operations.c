@@ -35,14 +35,14 @@ char* getInput ()
 }
 
 /**
- * \brief Retorna o n-ésimo elemento da stack dada (o topo da stack é 0)
+ * \brief Retorna uma cópia do n-ésimo elemento da stack dada (o topo da stack é 0)
  *
  * Um erro ocorre quando n é negativo ou a stack tem n ou menos elementos (segmentation fault)
  *
  * @param st A stack dada
  * @param n  A posição do elemento a retornar
  *
- * @return O n-ésimo elemento da stack
+ * @return Uma cópia do n-ésimo elemento da stack
  */
 Value getElement(Stack* st, int n)
 {
@@ -57,7 +57,15 @@ Value getElement(Stack* st, int n)
             //ERRO: a stack tem n ou menos elementos
     }
 
-    return st->value;
+    Value copy = st->value;
+
+    if (copy.type == String)
+    {
+        copy.string = malloc(strlen(copy.string));
+        strcpy(copy.string, st->value.string);
+    }
+
+    return copy;
 }
 
 /**

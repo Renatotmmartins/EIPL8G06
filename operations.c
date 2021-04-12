@@ -667,12 +667,17 @@ Value exponentiate(Value a, Value b)
     return result;
 }
 
+/**
+ * \brief Duplica o elemento do topo da stack (i.e. coloca uma cópia do topo da stack no topo da stack)
+ *
+ * @param st  A stack
+ */
 void duplicate(Stack* st) {
 
     Value top = pop (st);
     if (top.type == String) {
-        char* str = NULL;
-        strcpy(top.string,str);
+        char* str = malloc(strlen(top.string));
+        strcpy(str,top.string);
         push(st,fromString(str));
     }
     else {

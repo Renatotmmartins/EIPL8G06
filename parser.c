@@ -52,7 +52,7 @@ int numberOperands (char ch) {
         }
     }
 
-    return 0;
+    return -1;
 }
 
 
@@ -177,46 +177,62 @@ void operation (Stack* st, char ch) {
 }
 
 /**
+ * \brief Procura o caracter especificado na string.
+ * 
+ * @param str       A string
+ * @param length    O tamanho da string
+ * @param c         O caracter a procurar
+ * @return          1 se o caracter pertencer à string, 0 se não
+ */
+bool contains(char* str, int length, char c)
+{
+    for (int i = 0; i < length; i++)
+        if (str[i] == c)
+            return true;
+
+    return false;
+}
+
+/**
+ * \brief Processa a palavra fornecida, preenchendo a stack dada ou efetuando a operação descrita.
+ * 
+ * @param str       A string correspondente à palavra
+ * @param length    O tamanho da palavra
+ * @param st        A stack a preencher
+ */
+void resolveWord(char* str, int length, Stack* st)
+{
+    if (length <= 0)
+        return;
+
+    if (length == 1 && numberOperands(*str)) {  //operador
+        operation(st, *str);
+        return;
+    }
+
+    Value v;
+
+    if (contains(str, length, '.')) {           //double
+        v.type = Double;
+        v.decimal = atof(str);
+    }
+    else {                                      //int
+        v.type = Int;
+        v.integer = atoi(str);
+    }
+
+    push(st, v);
+}
+
+
+/**
  * \brief Processa a string fornecida, e preenche a stack dada, efetuando todas as operações descritas na string.
  * 
  * @param str   A string correspondente ao input
  * @param st    A stack a preencher
  */
 void processInput(char* str, Stack* st) {
-    //O numero que esta atualmente a ser lido, e o número de caracteres desde a última inserção
-    // na stack
-    int currentNumber = 0, read = 0;
-    while(*str != '\0') {
-        if(isNumeric(*str)) {
-            //Atualiza o valor atual do número
-            currentNumber *= 10;
-            currentNumber += *str - '0';
-            ++read;
-        }
-        else if(*str == ' ' && read > 0) {
-            //Insere o valor atual na stack
-            Value v;
-            v.type = Int;
-            v.integer = currentNumber;
-            push(st, v);
-            currentNumber = 0;
-            read = 0;
-        }
-        else {
-            //Faz a operação pedida
-            operation(st, *str);
-            read = 0;
-        }
-        ++str;
-    }
-
-    //Insere o último elemento lido na stack
-    if(read > 0) {
-        Value v;
-        v.type = Int;
-        v.integer = currentNumber;
-        push(st, v);
-    }
+    
 }
 
 /**
@@ -235,7 +251,7 @@ void printStack(Stack* st) {
         switch (top.type)
         {
             case Double:
-            printf("%f", top.decimal);
+            printf("%g", top.decimal);
             break;
 
             case Int:

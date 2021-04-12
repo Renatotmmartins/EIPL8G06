@@ -23,6 +23,7 @@ Value convertToDouble(Value v);
 Value convertToChar(Value v);
 Value convertToString(Value v);
 
+void duplicate(Stack* st);
 void readLine(Stack* st);
 
 void NumericOperationAux(Value *a, Value *b);

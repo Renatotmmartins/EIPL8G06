@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "operations.h"
 
 /**
@@ -19,18 +20,10 @@
  */
 char* getInput ()
 {
-        char *line = NULL;
-        size_t size = 0;
+        char *line = malloc(10000);
 
-        //Usa-se getline porque o scanf para de ler ao encontrar um
-        //espaço.
-        size_t read = getline(&line, &size,stdin);
+        assert(fgets(line, 10000,stdin) != NULL);
 
-        //getline lê o caracter '\n', logo coloca-se um '\0' no seu lugar
-        //para não interferir no processamento
-        if(line[read - 1] == '\n')
-            line[read - 1] = '\0';
-            
         return line;
 }
 
@@ -82,13 +75,15 @@ void rotateTop(Stack* st, int n) {
 
     int i;
 
-    for(i = 0; i < n; i++) {
+    for(i = n - 1; i >= 0; i--) {
         elements[i] = pop(st);
     }
 
-    for(int i = 0; i < n; i++) {
+    for(int i = 1; i < n; i++) {
         push(st, elements[i]);
     }
+
+    push(st, elements[0]);
 }
 
 /**
@@ -202,6 +197,7 @@ Value convertToInt(Value v) {
             result.integer = atoi(v.string);
             break;
         default:
+            result.integer = v.integer;
             break;
     }
 
@@ -217,6 +213,7 @@ Value convertToInt(Value v) {
  */
 Value convertToDouble(Value v) {
     Value result;
+    
     result.type = Double;
 
     // Escolha do método de conversão em função do tipo guardado em v
@@ -228,9 +225,10 @@ Value convertToDouble(Value v) {
             result.decimal = (double)v.integer;
             break;
         case String:
-            result.decimal = strtod(v.string, &v.string + (int)strlen(v.string));
+            result.decimal = atof(v.string);//strtod(v.string, &v.string + (int)strlen(v.string));
             break;
         default:
+            result.decimal = v.decimal;
             break;
     }
 
@@ -257,6 +255,7 @@ Value convertToChar(Value v) {
             result.character = (char)v.integer;
             break;
         default:
+            result.character = v.character;
             break;
     }
 
@@ -299,6 +298,8 @@ Value convertToString(Value v) {
             result.string[1] = '\0';
             break;
         default:
+            result.string = malloc(strlen(v.string) + 1);
+            strcpy(result.string, v.string);
             break;
     }
 

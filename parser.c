@@ -92,7 +92,7 @@ void twoOperands(Stack* st, Value x, Value y, char ch) {
         case '|':
             push(st, OR(x, y));// X xor Y
             break;
-        case '^'
+        case '^':
             push(st, XOR(x, y)); // X xor Y
             break;
     }
@@ -107,35 +107,32 @@ void twoOperands(Stack* st, Value x, Value y, char ch) {
  * @param ch O caracter que define a operação a executar
  */
 void oneOperand(Stack* st, Value x, char ch) {
-    Value result;
     switch(ch) {
         case '(':
-            result = decrement(x);
+            push(st, decrement(x)); //subtrair 1
             break;
         case ')':
-            result = increment(x);
+            push(st, increment(x)); //adicionar 1
             break;
         case '~':
-            result = negate(x);
+            push(st, negate(x)); //negacao lógica (bitwise)
             break;
         case 'i':
-            result = convertToInt(x);
+            push(st, convertToInt(x)); //converte para inteiro
             break;
         case 'f':
-            result = convertToDouble(x);
+            push(st, convertToDouble(x)); //converte para floating point precisao dupla
             break;
         case 'c':
-            result = convertToChar(x);
+            push(st, convertToChar(x)); //converte para caracter (ascii)
             break;
         case 's':
-            result = convertToString(x);
+            push(st, convertToString(x)); //converte para string (array de caracteres)
             break;
         case '$':
-            result = getElement(st, x.integer);
+            push(st, getElement(st, x.integer)); //copia o n-ésimo elemento da stack para o topo
             break;
     }
-
-    push(st, result);
 }
 
 /**

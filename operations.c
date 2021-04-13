@@ -317,8 +317,7 @@ void readLine(Stack* st)
     push (st, fromString (line));
 }
 
-DataType numericTypes[4] = { Double, Int, Char, String };
-Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToChar, &convertToString };
+
 
 /**
  * \brief Converte elementos do tipo #Value para os tipos adequados para executar uma operação numérica.
@@ -327,6 +326,9 @@ Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToCha
  * @param b  o elemento do tipo #Value.
  */
 void NumericOperationAux(Value *a, Value *b) {
+    DataType numericTypes[4] = { Double, Int, Char, String };
+    Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToChar, &convertToString };
+
     for (int i = 0; i < 4; i++) {
         if (a->type == numericTypes[i]) {
             *b = (*converters[i])(*b);

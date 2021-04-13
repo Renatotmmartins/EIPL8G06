@@ -20,11 +20,11 @@
  */
 char* getInput ()
 {
-        char *line = malloc(10000);
+    char *line = malloc(10000);
 
-        assert(fgets(line, 10000,stdin) != NULL);
+    assert(fgets(line, 10000,stdin) != NULL);
 
-        return line;
+    return line;
 }
 
 /**
@@ -271,40 +271,95 @@ Value convertToChar(Value v) {
  */
 Value convertToString(Value v) {
     Value result;
-    result.type = String;
 
     // Escolha do método de conversão em função do tipo guardado em v
     switch(v.type) {
-
-        int size;
-
         case Double:
-            size = (int)((ceil(log10(v.decimal))+1)*sizeof(char));
-            result.string = malloc(size);
-
-            //Converter para string
-            snprintf(result.string, size, "%f", v.decimal);
+            result = convertFloatToString(v);
             break;
         case Int:
-            size = (int)((ceil(log10(v.integer))+1)*sizeof(char));
-            result.string = malloc(size);
-            snprintf(result.string, size, "%d", v.integer);
+            result = convertIntToString(v);
             break;
 
         case Char:
-            size = (int)sizeof(char) + 1;
-            result.string = malloc(size);
-            result.string[0] = v.character;
-            result.string[1] = '\0';
+            result = convertCharToString(v);
             break;
         default:
-            result.string = malloc(strlen(v.string) + 1);
-            strcpy(result.string, v.string);
+            result = copyString(v);
             break;
     }
 
     return result;
 }
+
+/**
+ * \brief Converte o #Value dado, que armazena um número fracionário para outro que armazena texto
+ * 
+ * @param v  O #Value fornecido
+ * @return   O #Value com a informação armazenada sob a forma de texto
+ */
+Value convertFloatToString(Value v) {
+    Value result;
+    int size = (int)((ceil(log10(v.decimal))+1)*sizeof(char));
+    result.string = malloc(size);
+
+    //Converter para string
+    snprintf(result.string, size, "%f", v.decimal);
+
+    return result;
+}
+
+
+/**
+ * \brief Converte o #Value dado, que armazena um número inteiro para outro que armazena texto
+ * 
+ * @param v  O #Value fornecido
+ * @return   O #Value com a informação armazenada sob a forma de texto
+ */
+Value convertIntToString(Value v) {
+    Value result;
+    int size = (int)((ceil(log10(v.integer))+1)*sizeof(char));
+    result.string = malloc(size); //Aloca memória suficiente
+
+    //Converte para inteiro
+    snprintf(result.string, size, "%d", v.integer);
+
+    return result;
+}
+
+
+/**
+ * \brief Converte o #Value dado, que armazena um caracter para outro que armazena texto
+ * 
+ * @param v  O #Value fornecido
+ * @return   O #Value com a informação armazenada sob a forma de texto
+ */
+Value convertCharToString(Value v) {
+    Value result;
+
+    result.string = malloc(2); //Aloca memória suficiente
+    result.string[0] = v.character;
+    result.string[1] = '\0';
+
+    return result;
+}
+
+
+/**
+ * \brief Copia a string do #Value dado para outro #Value
+ * 
+ * @param v  O #Value fornecido
+ * @return   O #Value com a string copiada
+ */
+Value copyString(Value v) {
+    Value result;
+
+    result.string = malloc(strlen(v.string) + 1);//Aloca memória suficiente
+    strcpy(result.string, v.string);
+
+    return result;
+}
+
 
 /**
  * \brief Lê uma linha do input e insere-a como uma string na stack.
@@ -326,9 +381,18 @@ void readLine(Stack* st)
  * @param b  o elemento do tipo #Value.
  */
 void NumericOperationAux(Value *a, Value *b) {
+    /*
+        Arrays com os diferentes tipos de operandos e as funções a usar para converter um Value
+        para esse tipo.
+    */
     DataType numericTypes[4] = { Double, Int, Char, String };
     Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToChar, &convertToString };
 
+    /*
+        De notar que a ordem dos elementos na array numericTypes é importante. Double tem de ser o 1º
+        elemento, pois este tipo tem precedência sobre os outros (isto é, basta um operando ser double
+        para o resultado também o ser)
+    */
     for (int i = 0; i < 4; i++) {
         if (a->type == numericTypes[i]) {
             *b = (*converters[i])(*b);

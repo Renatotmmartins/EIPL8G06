@@ -23,6 +23,11 @@ Value convertToDouble(Value v);
 Value convertToChar(Value v);
 Value convertToString(Value v);
 
+Value convertFloatToString(Value v);
+Value convertIntToString(Value v);
+Value convertCharToString(Value v);
+Value copyString(Value v);
+
 void duplicate(Stack* st);
 void readLine(Stack* st);
 

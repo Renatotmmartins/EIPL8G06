@@ -20,7 +20,7 @@
 #define bool int
 
 /**
- * \enum \brief Representa os diferentes tipos de dados que é possível armazenar
+ * \brief Representa os diferentes tipos de dados que é possível armazenar
  * na stack
  */
 typedef enum dataType {
@@ -28,16 +28,21 @@ typedef enum dataType {
 	Double, //! Valor Fracionário
 	Char, //! Caracter
 	String //! Texto
-} DataType;
+} DataType; //! Representa a enum DataType
 
 
 /**
- * \struct \brief Representa os diferentes valores que é possível armazenar
+ * \brief Representa os diferentes valores que é possível armazenar
  * na stack
  */
 typedef struct value {
-	DataType type; //! O tipo de dados armazenado
-
+/**
+ * \brief Representa o tipo de dados armazenado
+ */
+	DataType type;
+/**
+ * \brief Guarda os diferentes tipos possíveis de armazenar
+ */
 	union {
 		int integer; //! Valor Inteiro
 		double decimal; //! Valor Fracionário
@@ -45,11 +50,11 @@ typedef struct value {
 		char* string; //! Texto
 	};
 
-} Value;
+} Value; //! Representa a enum DataType
 
 
 /**
- * \struct \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser 
+ * \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser
  * acedida pelas funções definidas abaixo.
  */
 typedef struct stack {
@@ -59,7 +64,7 @@ typedef struct stack {
 
 	/*! O valor armazenado na lista ligada.*/
 	Value value;
-} Stack;
+} Stack; //! Representa a Stack
 
 
 Stack empty();

@@ -11,6 +11,7 @@
 #include <math.h>
 #include "parser.h"
 #include "operations.h"
+#include "typeOperations.h"
 
 
 /**

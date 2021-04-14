@@ -1,7 +1,6 @@
 /**
  * @file contém a definição de uma stack (pilha).
  */
-
 #ifndef STACK_H
 /*! Include guard */
 #define STACK_H
@@ -24,10 +23,10 @@
  * na stack
  */
 typedef enum dataType {
-	Int, //! Valor Inteiro
-	Double, //! Valor Fracionário
-	Char, //! Caracter
-	String //! Texto
+	Int, //!< Valor Inteiro
+	Double, //!< Valor Fracionário
+	Char, //!< Caracter
+	String //!< Texto
 } DataType; //! Representa a enum DataType
 
 
@@ -40,14 +39,14 @@ typedef struct value {
  * \brief Representa o tipo de dados armazenado
  */
 	DataType type;
-/**
- * \brief Guarda os diferentes tipos possíveis de armazenar
- */
+	/**
+ 	 * \brief Guarda os diferentes tipos possíveis de armazenar
+ 	 */
 	union {
-		int integer; //! Valor Inteiro
-		double decimal; //! Valor Fracionário
-		char character; //! Caracter
-		char* string; //! Texto
+		int integer; //!< Valor Inteiro
+		double decimal; //!< Valor Fracionário
+		char character; //!< Caracter
+		char* string; //!< Texto
 	};
 
 } Value; //! Representa a enum DataType
@@ -69,25 +68,17 @@ typedef struct stack {
 
 Stack empty();
 
-
 bool isEmpty(Stack* s);
-
 
 void push(Stack* s, Value value);
 
-
 Value pop(Stack* s);
-
 
 Value fromInteger(int i);
 
-
 Value fromDecimal(double d);
-
 
 Value fromCharacter(char ch);
 
-
 Value fromString(char* str);
-
 #endif

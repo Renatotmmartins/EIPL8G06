@@ -43,15 +43,11 @@ int numberOperands (char ch) {
         encontrar o índice da string onde este pertence. 
     */
     char operandList[3][10] = {"_;l\\@","()~ifcs$","+-/*&|^%#"};
-    int i,j;
 
-    for(i=0;i<3;i++) {
-        for(j=0;operandList[i][j];j++) {
-            if(operandList[i][j]==ch) {
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; operandList[i][j]; j++)
+            if (operandList[i][j] == ch)
                 return i;
-            }
-        }
-    }
 
     return -1;
 }
@@ -68,34 +64,16 @@ int numberOperands (char ch) {
  */
 void twoOperands(Stack* st, Value x, Value y, char ch) {
 
-    switch (ch){
-        case '+':
-            push(st, sum(x, y));// Soma de 2 valores
-            break;
-        case '-':
-            push(st, subtract(x, y));// Subtração de 2 valores
-            break;
-        case '*':
-            push(st, multiply(x, y));// Multiplicação de 2 valores
-            break;
-        case '/':
-            push(st, divide(x, y));// Divisão de 2 valores
-            break;
-        case '%':
-            push(st, module(x, y));// Resto da divisão inteira
-            break;
-        case '#':
-            push(st, exponentiate(x, y));// Exponenciação (x elevado a y)
-            break;
-        case '&':
-            push(st, AND(x, y));// X e Y
-            break;
-        case '|':
-            push(st, OR(x, y));// X ou Y
-            break;
-        case '^':
-            push(st, XOR(x, y)); // X xor Y
-            break;
+    switch (ch) {
+        case '+': push(st, sum(x, y));          break;  // Soma de 2 valores
+        case '-': push(st, subtract(x, y));     break;  // Subtração de 2 valores
+        case '*': push(st, multiply(x, y));     break;  // Multiplicação de 2 valores
+        case '/': push(st, divide(x, y));       break;  // Divisão de 2 valores
+        case '%': push(st, module(x, y));       break;  // Resto da divisão inteira
+        case '#': push(st, exponentiate(x, y)); break;  // Exponenciação (x elevado a y)
+        case '&': push(st, AND(x, y));          break;  // X e Y
+        case '|': push(st, OR(x, y));           break;  // X ou Y
+        case '^': push(st, XOR(x, y));          break;  // X xor Y
     }
 }
 
@@ -109,30 +87,14 @@ void twoOperands(Stack* st, Value x, Value y, char ch) {
  */
 void oneOperand(Stack* st, Value x, char ch) {
     switch(ch) {
-        case '(':
-            push(st, decrement(x)); //subtrair 1
-            break;
-        case ')':
-            push(st, increment(x)); //adicionar 1
-            break;
-        case '~':
-            push(st, negate(x)); //negacao lógica (bitwise)
-            break;
-        case 'i':
-            push(st, convertToInt(x)); //converte para inteiro
-            break;
-        case 'f':
-            push(st, convertToDouble(x)); //converte para floating point precisao dupla
-            break;
-        case 'c':
-            push(st, convertToChar(x)); //converte para caracter (ascii)
-            break;
-        case 's':
-            push(st, convertToString(x)); //converte para string (array de caracteres)
-            break;
-        case '$':
-            push(st, getElement(st, x.integer)); //copia o n-ésimo elemento da stack para o topo
-            break;
+        case '(': push(st, decrement(x));               break;  //subtrair 1
+        case ')': push(st, increment(x));               break;  //adicionar 1
+        case '~': push(st, negate(x));                  break;  //negacao lógica (bitwise)
+        case 'i': push(st, convertToInt(x));            break;  //converte para inteiro
+        case 'f': push(st, convertToDouble(x));         break;  //converte para floating point precisao dupla
+        case 'c': push(st, convertToChar(x));           break;  //converte para caracter (ascii)
+        case 's': push(st, convertToString(x));         break;  //converte para string (array de caracteres)
+        case '$': push(st, getElement(st, x.integer));  break;  //copia o n-ésimo elemento da stack para o topo
     }
 }
 
@@ -146,21 +108,11 @@ void oneOperand(Stack* st, Value x, char ch) {
 
 void zeroOperands(Stack* st, char ch) {
     switch (ch) {
-        case ';':
-            pop (st);
-            break;
-        case 'l':
-            readLine (st);
-            break;
-        case '\\':
-            rotateTop(st, 2);
-            break;
-        case '@':
-            rotateTop(st, 3);
-            break;
-        case '_':
-            duplicate(st);
-            break;
+        case ';':   pop (st);           break;
+        case 'l':   readLine (st);      break;
+        case '\\':  rotateTop(st, 2);   break;
+        case '@':   rotateTop(st, 3);   break;
+        case '_':   duplicate(st);      break;
     }
 }
 
@@ -171,26 +123,17 @@ void zeroOperands(Stack* st, char ch) {
  * @param ch O caracter que define a operação a executar
  */
 void operation (Stack* st, char ch) {
-    int op,i;
-
-    op = numberOperands(ch);
+    int op = numberOperands(ch);
     Value operands[op];
     
     /* Retira da stack todos os operandos necessários */
-    for(i = 0; i < op; i++){
-        operands[i]= pop(st);
-    }
+    for(int i = 0; i < op; i++)
+        operands[i] = pop(st);
 
     switch(op) {
-        case 0:
-            zeroOperands(st, ch);
-            break;
-        case 1:
-            oneOperand(st, operands[0], ch);
-            break;
-        case 2:
-            twoOperands(st, operands[1], operands[0], ch);
-            break;
+        case 0: zeroOperands(st, ch);                           break;
+        case 1: oneOperand(st, operands[0], ch);                break;
+        case 2: twoOperands(st, operands[1], operands[0], ch);  break;
     }
 }
 
@@ -284,22 +227,11 @@ void printStack(Stack* st) {
         //if(!empty)
             //printf(" ");
 
-        switch (top.type)
-        {
-            case Double:
-            printf("%g", top.decimal);
-            break;
-
-            case Int:
-            printf("%d", top.integer);
-            break;
-
-            case Char:
-            printf("%c", top.character);
-            break;
-
-            case String:
-            printf("\"%s\"", top.string);
+        switch (top.type) {
+            case Double:    printf("%g", top.decimal);      break;
+            case Int:       printf("%d", top.integer);      break;
+            case Char:      printf("%c", top.character);    break;
+            case String:    printf("\"%s\"", top.string);   break;
         }
     }
 }

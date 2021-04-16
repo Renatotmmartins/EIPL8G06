@@ -36,17 +36,10 @@ char* getInput ()
 
 #define UnaryOperation(name, caseDouble, caseInt, caseChar) Value name(Value a) {\
     switch (a.type) {\
-        case Double:\
-        a.decimal = caseDouble;\
-        break;\
-        case Int:\
-        a.integer = caseInt;\
-        break;\
-        case Char:\
-        a.character = caseChar;\
-        break;\
-        default:\
-        break;\
+        case Double:    a.decimal = caseDouble; break;\
+        case Int: a.integer = caseInt;          break;\
+        case Char: a.character = caseChar;      break;\
+        default:                                break;\
     }\
     return a;\
 }
@@ -110,24 +103,13 @@ void NumericOperationAux(Value *a, Value *b) {
 #define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\
     NumericOperationAux(&a, &b);\
     Value result;\
-    switch (a.type)\
-    {\
-        case Double:\
-        result.type = Double;\
-        result.decimal = caseDouble;\
-        break;\
-        case Int:\
-        result.type = Int;\
-        result.integer = caseInt;\
-        break;\
-        case Char:\
-        result.type = Char;\
-        result.character = caseChar;\
-        break;\
-        default:\
-        break;\
+    result.type = a.type;\
+    switch (a.type) {\
+        case Double:    result.decimal = caseDouble;    break;\
+        case Int:       result.integer = caseInt;       break;\
+        case Char:      result.character = caseChar;    break;\
+        default:                                        break;\
     }\
-\
     return result;\
 }
 

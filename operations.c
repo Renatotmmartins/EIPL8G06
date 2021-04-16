@@ -45,6 +45,8 @@ char* getInput ()
         case Char:\
         a.character = caseChar;\
         break;\
+        default:\
+        break;\
     }\
     return a;\
 }

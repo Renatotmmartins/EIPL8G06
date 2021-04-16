@@ -28,6 +28,8 @@
         case String:\
         result.unionArg = fromString;\
         break;\
+        default:\
+        break;\
     }\
     return result;\
 }

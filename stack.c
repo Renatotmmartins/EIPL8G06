@@ -125,25 +125,3 @@ Value fromString(char* str){
 
     return val;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

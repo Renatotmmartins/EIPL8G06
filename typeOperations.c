@@ -1,3 +1,8 @@
+/**
+ * @file contém a implementação das funções correspondentes
+ * às operações relacionadas com o tipo das variáveis
+ */
+
 #include "typeOperations.h"
 #include <string.h>
 #include <math.h>
@@ -5,187 +10,126 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#define UNDEFINED 13
+
+#define Convert(toType, unionArg, fromDouble, fromInt, fromChar, fromString) Value convertTo##toType(Value a) {\
+    Value result;\
+    result.type = toType;\
+    switch(a.type) {\
+        case Double:\
+        result.unionArg = fromDouble;\
+        break;\
+        case Int:\
+        result.unionArg = fromInt;\
+        break;\
+        case Char:\
+        result.unionArg = fromChar;\
+        break;\
+        case String:\
+        result.unionArg = fromString;\
+        break;\
+    }\
+    return result;\
+}
+
+
 /**
  * \brief Converte o #Value dado para outro que armazena um inteiro
  *
- * @param v  O #Value fornecido
+ * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada num inteiro
  */
-Value convertToInt(Value v) {
-    Value result;
-    result.type = Int;
-
-    // Escolha do método de conversão em função do tipo guardado em v
-    switch(v.type) {
-        case Char:
-            result.integer = (int)v.character;
-            break;
-        case Double:
-            result.integer = (int)v.decimal;
-            break;
-        case String:
-            result.integer = atoi(v.string);
-            break;
-        default:
-            result.integer = v.integer;
-            break;
-    }
-
-    return result;
-}
+Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, atoi(a.string))
 
 
 /**
  * \brief Converte o #Value dado para outro que armazena um valor decimal
  *
- * @param v  O #Value fornecido
+ * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada num double
  */
-Value convertToDouble(Value v) {
-    Value result;
-
-    result.type = Double;
-
-    // Escolha do método de conversão em função do tipo guardado em v
-    switch(v.type) {
-        case Char:
-            result.decimal = (double)v.character;
-            break;
-        case Int:
-            result.decimal = (double)v.integer;
-            break;
-        case String:
-            result.decimal = atof(v.string);//strtod(v.string, &v.string + (int)strlen(v.string));
-            break;
-        default:
-            result.decimal = v.decimal;
-            break;
-    }
-
-    return result;
-}
+Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, atof(a.string))
 
 
 /**
  * \brief Converte o #Value dado para outro que armazena um caracter
  *
- * @param v  O #Value fornecido
+ * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada num caracter
  */
-Value convertToChar(Value v) {
-    Value result;
-    result.type = Char;
-
-    // Escolha do método de conversão em função do tipo guardado em v
-    switch(v.type) {
-        case Double:
-            result.character = (char)(int)v.decimal;
-            break;
-        case Int:
-            result.character = (char)v.integer;
-            break;
-        default:
-            result.character = v.character;
-            break;
-    }
-
-    return result;
-}
+Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, UNDEFINED)
 
 
 /**
  * \brief Converte o #Value dado para outro que armazena texto
  *
- * @param v  O #Value fornecido
+ * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada sob a forma de texto
  */
-Value convertToString(Value v) {
-    Value result;
-
-    // Escolha do método de conversão em função do tipo guardado em v
-    switch(v.type) {
-        case Double:
-            result = convertFloatToString(v);
-            break;
-        case Int:
-            result = convertIntToString(v);
-            break;
-
-        case Char:
-            result = convertCharToString(v);
-            break;
-        default:
-            result = copyString(v);
-            break;
-    }
-
-    return result;
-}
+Convert(String, string, convertFloatToString(a), convertIntToString(a), convertCharToString(a), copyString(a))
 
 /**
- * \brief Converte o #Value dado, que armazena um número fracionário para outro que armazena texto
+ * \brief Converte o #Value dado, que armazena um número fracionário, para texto
  *
  * @param v  O #Value fornecido
- * @return   O #Value com a informação armazenada sob a forma de texto
+ * @return   Um apontador com a informação armazenada sob a forma de texto
  */
-Value convertFloatToString(Value v) {
-    Value result;
+char* convertFloatToString(Value v) {
+    char* ans;
     int size = (int)((ceil(log10(v.decimal))+1)*sizeof(char));
-    result.string = malloc(size);
+    ans = malloc(size);
 
     //Converter para string
-    snprintf(result.string, size, "%f", v.decimal);
+    snprintf(ans, size, "%f", v.decimal);
 
-    return result;
+    return ans;
 }
 
 
 /**
- * \brief Converte o #Value dado, que armazena um número inteiro para outro que armazena texto
+ * \brief Converte o #Value dado, que armazena um número inteiro, para texto
  *
  * @param v  O #Value fornecido
- * @return   O #Value com a informação armazenada sob a forma de texto
+ * @return  Um apontador com a informação armazenada sob a forma de texto
  */
-Value convertIntToString(Value v) {
-    Value result;
+char* convertIntToString(Value v) {
+
     int size = (int)((ceil(log10(v.integer))+1)*sizeof(char));
-    result.string = malloc(size); //Aloca memória suficiente
+    char* ans = malloc(size); //Aloca memória suficiente
 
     //Converte para inteiro
-    snprintf(result.string, size, "%d", v.integer);
+    snprintf(ans, size, "%d", v.integer);
 
-    return result;
+    return ans;
 }
 
 
 /**
- * \brief Converte o #Value dado, que armazena um caracter para outro que armazena texto
+ * \brief Converte o #Value dado, que armazena um caracter, para texto
  *
  * @param v  O #Value fornecido
- * @return   O #Value com a informação armazenada sob a forma de texto
+ * @return   Um apontador com a informação armazenada sob a forma de texto
  */
-Value convertCharToString(Value v) {
-    Value result;
+char* convertCharToString(Value v) {
 
-    result.string = malloc(2); //Aloca memória suficiente
-    result.string[0] = v.character;
-    result.string[1] = '\0';
+    char* ans = malloc(2); //Aloca memória suficiente
+    ans[0] = v.character;
+    ans[1] = '\0';
 
-    return result;
+    return ans;
 }
 
 
 /**
- * \brief Copia a string do #Value dado para outro #Value
+ * \brief Copia a string do #Value dado para outra string
  *
  * @param v  O #Value fornecido
- * @return   O #Value com a string copiada
+ * @return   Um apontador para a cópia
  */
-Value copyString(Value v) {
-    Value result;
+char* copyString(Value v) {
 
-    result.string = malloc(strlen(v.string) + 1);//Aloca memória suficiente
-    strcpy(result.string, v.string);
+    char* ans = malloc(strlen(v.string) + 1);//Aloca memória suficiente
+    strcpy(ans, v.string);
 
-    return result;
+    return ans;
 }

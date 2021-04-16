@@ -11,6 +11,8 @@
 #include "operations.h"
 #include "typeOperations.h"
 
+#define UNDEFINED 13
+
 /**
  * \brief Lê uma linha de input
  *
@@ -24,169 +26,53 @@ char* getInput ()
     char *line = malloc(10000);
 
     assert(fgets(line, 10000,stdin) != NULL);
+    int l = strlen(line);
+
+    if (line[l - 1] == '\n')
+        line[l - 1] = '\0';
 
     return line;
 }
 
-/**
- * \brief Retorna uma cópia do n-ésimo elemento da stack dada (o topo da stack é 0)
- *
- * Um erro ocorre quando n é negativo ou a stack tem n ou menos elementos (segmentation fault)
- *
- * @param st A stack dada
- * @param n  A posição do elemento a retornar
- *
- * @return Uma cópia do n-ésimo elemento da stack
- */
-Value getElement(Stack* st, int n)
-{
-    //if (n < 0)
-        //ERRO: input inválido
-
-    while (n--)
-    {
-        st = st->previous;
-
-        //if (st->previous == 0)
-            //ERRO: a stack tem n ou menos elementos
-    }
-
-    Value copy = st->value;
-
-    if (copy.type == String)
-    {
-        copy.string = malloc(strlen(copy.string));
-        strcpy(copy.string, st->value.string);
-    }
-
-    return copy;
+#define UnaryOperation(name, caseDouble, caseInt, caseChar) Value name(Value a) {\
+    switch (a.type) {\
+        case Double:\
+        a.decimal = caseDouble;\
+        break;\
+        case Int:\
+        a.integer = caseInt;\
+        break;\
+        case Char:\
+        a.character = caseChar;\
+        break;\
+    }\
+    return a;\
 }
 
-/**
- * \brief Roda os primeiros n elementos da stack
- *
- * @param st A stack dada
- * @param n  O número de elementos a rodar
- */
-void rotateTop(Stack* st, int n) {
-    /* Para rodar os primeiros n elementos da stack basta removê-los
-       e inseri-los novamente pela ordem que foram removidos. */
-
-    Value elements[n];
-
-    int i;
-
-    for(i = n - 1; i >= 0; i--) {
-        elements[i] = pop(st);
-    }
-
-    for(int i = 1; i < n; i++) {
-        push(st, elements[i]);
-    }
-
-    push(st, elements[0]);
-}
 
 /**
  * \brief Decrementa o valor do tipo #Value.
  *
- * @param v  o elemento do tipo #Value.
+ * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value decrementado.
  */
-Value decrement(Value v)
-{
-    switch (v.type)
-    {
-        case Char:
-        v.character--;
-        break;
-
-        case Int:
-        v.integer--;
-        break;
-
-        case Double:
-        v.decimal--;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return v;
-}
+UnaryOperation(decrement, a.decimal - 1, a.integer - 1, a.character - 1)
 
 /**
  * \brief Incrementa o valor do tipo #Value.
  *
- * @param v  o elemento do tipo #Value.
+ * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value incrementado.
  */
-Value increment(Value v)
-{
-    switch (v.type)
-    {
-        case Char:
-        v.character++;
-        break;
-
-        case Int:
-        v.integer++;
-        break;
-
-        case Double:
-        v.decimal++;
-        break;
-
-        default:
-        break;
-
-        //case String:
-    }
-
-    return v;
-}
+UnaryOperation(increment, a.decimal + 1, a.integer + 1, a.character + 1)
 
 /**
  * \brief Aplica a negação binária a um elemento do tipo #Value.
  *
- * @param v  o elemento do tipo #Value.
+ * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
-Value negate(Value v)
-{
-    switch (v.type)
-    {
-        case Char:
-        v.character = ~v.character;
-        break;
-
-        case Int:
-        v.integer = ~v.integer;
-        break;
-
-        default:
-        break;
-        //case Double:
-
-        //case String:
-    }
-
-    return v;
-}
-
-
-/**
- * \brief Lê uma linha do input e insere-a como uma string na stack.
- *
- * @param st A stack dada
- */
-void readLine(Stack* st)
-{
-    char* line = getInput();
-    push (st, fromString (line));
-}
+UnaryOperation(negate, UNDEFINED, ~a.integer, ~a.character)
 
 
 /**
@@ -219,6 +105,31 @@ void NumericOperationAux(Value *a, Value *b) {
     }
 }
 
+#define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\
+    NumericOperationAux(&a, &b);\
+    Value result;\
+    switch (a.type)\
+    {\
+        case Double:\
+        result.type = Double;\
+        result.decimal = caseDouble;\
+        break;\
+        case Int:\
+        result.type = Int;\
+        result.integer = caseInt;\
+        break;\
+        case Char:\
+        result.type = Char;\
+        result.character = caseChar;\
+        break;\
+        default:\
+        break;\
+    }\
+\
+    return result;\
+}
+
+
 /**
  * \brief Soma dois elementos do tipo #Value.
  *
@@ -226,36 +137,7 @@ void NumericOperationAux(Value *a, Value *b) {
  * @param b  o elemento do tipo #Value.
  * @return     resultado da soma de a com b.
  */
-Value sum(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        case Double:
-        result.type = Double;
-        result.decimal = a.decimal + b.decimal;
-        break;
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer + b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character + b.character;
-        break;
-
-        default:
-        break;
-
-        //case String:
-    }
-
-    return result;
-}
+NumericOperation(sum, a.decimal + b.decimal, a.integer + b.integer, a.character + b.character)
 
 /**
  * \brief Subtrai dois elementos do tipo #Value.
@@ -264,35 +146,7 @@ Value sum(Value a, Value b)
  * @param b  o elemento do tipo #Value.
  * @return     resultado da subtração de a com b.
  */
-Value subtract(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        case Double:
-        result.type = Double;
-        result.decimal = a.decimal - b.decimal;
-        break;
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer - b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character - b.character;
-        break;
-
-        //case String:
-        default:
-        break;
-    }
-
-    return result;
-}
+NumericOperation(subtract, a.decimal - b.decimal, a.integer - b.integer, a.character - b.character)
 
 /**
  * \brief Divide dois elementos do tipo #Value.
@@ -301,35 +155,7 @@ Value subtract(Value a, Value b)
  * @param b  o elemento do tipo #Value.
  * @return     resultado da divisão de a com b.
  */
-Value divide(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        case Double:
-        result.type = Double;
-        result.decimal = a.decimal / b.decimal;
-        break;
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer / b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character / b.character;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
+NumericOperation(divide, a.decimal / b.decimal, a.integer / b.integer, a.character / b.character)
 
 /**
  * \brief Multiplica dois elementos do tipo #Value.
@@ -338,35 +164,7 @@ Value divide(Value a, Value b)
  * @param b  o elemento do tipo #Value.
  * @return     resultado da multiplicação de a com b.
  */
-Value multiply(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        case Double:
-        result.type = Double;
-        result.decimal = a.decimal * b.decimal;
-        break;
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer * b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character * b.character;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
+NumericOperation(multiply, a.decimal * b.decimal, a.integer * b.integer, a.character * b.character)
 
 /**
  * \brief Aplica a conjunção a dois elementos do tipo #Value.
@@ -375,32 +173,7 @@ Value multiply(Value a, Value b)
  * @param b  o elemento do tipo #Value.
  * @return     o elemento do tipo #Value resultante de aplicar a conjunção.
  */
-Value AND(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        //case Double:
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer & b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character & b.character;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
+NumericOperation(AND, UNDEFINED, a.integer & b.integer, a.character & b.character)
 
 /**
  * \brief Aplica a disjunção a dois elementos de tipo #Value.
@@ -409,32 +182,7 @@ Value AND(Value a, Value b)
  * @param b  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a disjunção.
  */
-Value OR(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        //case Double:
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer | b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character | b.character;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
+NumericOperation(OR, UNDEFINED, a.integer | b.integer, a.character | b.character)
 
 /**
  * \brief Aplica o ou explosivo a dois elementos do tipo #Value.
@@ -443,32 +191,7 @@ Value OR(Value a, Value b)
  * @param b  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar o ou explosivo.
  */
-Value XOR(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        //case Double:
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer ^ b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character ^ b.character;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
+NumericOperation(XOR, UNDEFINED, a.integer ^ b.integer, a.character ^ b.character)
 
 /**
  * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value.
@@ -477,35 +200,8 @@ Value XOR(Value a, Value b)
  * @param b  o elemento do tipo #Value que atua como divisor.
  * @return   o resto da divisao inteira.
  */
-Value module(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
+NumericOperation(module, fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character)
 
-    switch (a.type)
-    {
-        case Double:
-        result.type = Double;
-        result.decimal = fmod(a.decimal, b.decimal);
-        break;
-
-        case Int:
-        result.type = Int;
-        result.integer = a.integer % b.integer;
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = a.character % b.character;
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
 
 /**
  * \brief Calcula a potencia entre dois elementos do tipo #Value.
@@ -514,51 +210,4 @@ Value module(Value a, Value b)
  * @param b  o elemento do tipo #Value que atua como expoente.
  * @return   a potencia de a com b.
  */
-Value exponentiate(Value a, Value b)
-{
-    NumericOperationAux(&a, &b);
-    Value result;
-
-    switch (a.type)
-    {
-        case Double:
-        result.type = Double;
-        result.decimal = pow(a.decimal, b.decimal);
-        break;
-
-        case Int:
-        result.type = Int;
-        result.integer = (int)pow(a.integer, b.integer);
-        break;
-
-        case Char:
-        result.type = Char;
-        result.character = (char)pow(a.character, b.character);
-        break;
-
-        default:
-        break;
-        //case String:
-    }
-
-    return result;
-}
-
-/**
- * \brief Duplica o elemento do topo da stack (i.e. coloca uma cópia do topo da stack no topo da stack)
- *
- * @param st  A stack
- */
-void duplicate(Stack* st) {
-
-    Value top = pop (st);
-    if (top.type == String) {
-        char* str = malloc(strlen(top.string));
-        strcpy(str,top.string);
-        push(st,fromString(str));
-    }
-    else {
-        push(st,top);
-    }
-    push(st,top);
-}
+NumericOperation(exponentiate, pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character))

@@ -15,9 +15,9 @@ Value convertToDouble(Value v);
 Value convertToChar(Value v);
 Value convertToString(Value v);
 
-Value convertFloatToString(Value v);
-Value convertIntToString(Value v);
-Value convertCharToString(Value v);
-Value copyString(Value v);
+char* convertFloatToString(Value v);
+char* convertIntToString(Value v);
+char* convertCharToString(Value v);
+char* copyString(Value v);
 
 #endif

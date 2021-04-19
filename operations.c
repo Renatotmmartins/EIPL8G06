@@ -81,12 +81,10 @@ void NumericOperationAux(Value *a, Value *b) {
         Arrays com os diferentes tipos de operandos e as funções a usar para converter um Value
         para esse tipo.
     */
-    Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToChar, &convertToString };
-
     if(a.type < b.type)
-        b = converters[a.type](b);
+        b = convertToType(a.type, b)
     else 
-        a = converters[b.type](a);
+        a = convertToType(b.type, a);
 }
 
 #define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\

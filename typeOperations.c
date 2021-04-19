@@ -34,6 +34,15 @@
     return result;\
 }
 
+Value convertToType(DataType type, Value val) {
+    switch(type) {
+        case Double: return convertToDouble(val);
+        case Int:    return convertToInt(val);
+        case Char:   return convertToChar(val);
+        case String: return convertToString(val);
+    }
+}
+
 
 /**
  * \brief Converte o #Value dado para outro que armazena um inteiro

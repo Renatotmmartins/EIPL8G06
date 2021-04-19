@@ -23,8 +23,8 @@
  * na stack
  */
 typedef enum dataType {
-	Int, //!< Valor Inteiro
 	Double, //!< Valor Fracionário
+	Int, //!< Valor Inteiro
 	Char, //!< Caracter
 	String //!< Texto
 } DataType; //! Representa a enum DataType

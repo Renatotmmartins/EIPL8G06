@@ -81,23 +81,12 @@ void NumericOperationAux(Value *a, Value *b) {
         Arrays com os diferentes tipos de operandos e as funções a usar para converter um Value
         para esse tipo.
     */
-    DataType numericTypes[4] = { Double, Int, Char, String };
     Value (*converters[4])(Value) = { &convertToDouble, &convertToInt, &convertToChar, &convertToString };
 
-    /*
-        De notar que a ordem dos elementos na array numericTypes é importante. Double tem de ser o 1º
-        elemento, pois este tipo tem precedência sobre os outros (isto é, basta um operando ser double
-        para o resultado também o ser)
-    */
-    for (int i = 0; i < 4; i++) {
-        if (a->type == numericTypes[i]) {
-            *b = (*converters[i])(*b);
-            return;
-        } else if (b->type == numericTypes[i]) {
-            *a = (*converters[i])(*a);
-            return;
-        }
-    }
+    if(a.type < b.type)
+        b = converters[a.type](b);
+    else 
+        a = converters[b.type](a);
 }
 
 #define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\

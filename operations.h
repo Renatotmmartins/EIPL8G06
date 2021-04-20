@@ -8,21 +8,46 @@
 //! Include guard
 #define OPERATIONS_H
 
+#define UNDEFINED 13
+
+
 #include "stack.h"
+
 
 char* getInput ();
 
-Value getElement(Stack* st, int n);
-void rotateTop(Stack* st, int n);
+
+#define UnaryOperation(name, caseDouble, caseInt, caseChar) Value name(Value a) {\
+    switch (a.type) {\
+        case Double:    a.decimal = caseDouble; break;\
+        case Int: a.integer = caseInt;          break;\
+        case Char: a.character = caseChar;      break;\
+        default:                                break;\
+    }\
+    return a;\
+}
+
 
 Value decrement(Value v);
 Value increment(Value v);
 Value negate(Value v);
 
-void duplicate(Stack* st);
-void readLine(Stack* st);
-
 void NumericOperationAux(Value *a, Value *b);
+
+
+#define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\
+    NumericOperationAux(&a, &b);\
+    Value result;\
+    result.type = a.type;\
+    switch (a.type) {\
+        case Double:    result.decimal = caseDouble;    break;\
+        case Int:       result.integer = caseInt;       break;\
+        case Char:      result.character = caseChar;    break;\
+        default:                                        break;\
+    }\
+    return result;\
+}
+
 
 Value sum(Value a, Value b);
 Value subtract(Value a, Value b);

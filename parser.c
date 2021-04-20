@@ -5,48 +5,29 @@
  * 
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include "parser.h"
-#include "operations.h"
-#include "typeOperations.h"
 
 
-#define POP_0 st
-#define POP_1 pop(st)
-#define POP_2 pop(st), pop(st)
-
-#define PUSH_0(x,y) y
-#define PUSH_1(x,y) push(x,y)
-#define PUSH_2(x,y) push(x,y)
-
-#define JUMP_TABLE \
-        ENTRY('+',sum,2) \
-        ENTRY('~',negate,1)
-
-/**
- * \brief Verifica se o caracter fornecido é um algarismo.
- * 
- * @param ch O caracter fornecido
- * @return   Se for um algarismo, 1, senão, 0
- */
-bool isNumeric(char ch) {
-    return (ch - '0' >= 0 && ch - '0' <= 9);
-}
-
-int operation2(char ch, Stack* st) {
-    #define ENTRY(a,b,c) if(ch == a) {PUSH_##c(st, b(POP_##c )); return c;}
+bool operation(char* str, Stack* st) {
+    #define ENTRY(a,b,c) if(*str == a) {PUSH_##c(st, b(POP_##c )); return true;}
             JUMP_TABLE
     #undef ENTRY
 
-    return -1;
+    return false;
 }
 
 
-Value castToValue(char* str)  {
-    return fromInteger(atoi(str));
+Value readValue(char* str) {
+    //if ('A' <= *str && *str <= 'Z') //variável
+        //return 
+    if (strchr(str, '.') == NULL) //double (tem um separador decimal)
+        return fromInteger(atoi(str));
+    else
+        return fromDecimal(atof(str)); //inteiro
 }
 
 /**
@@ -61,8 +42,8 @@ void resolveWord(char* str, int length, Stack* st)
     if (length <= 0)
         return;
 
-    if(operation2(*str, st) == -1)
-        push(st, castToValue(str));
+    if(!operation(str, st))
+        push(st, readValue(str));
 }
 
 
@@ -86,12 +67,11 @@ void processInput(char* str, Stack* st) {
 
 
 void printVal(Value top) {
-    switch (top.type)
-    {
-        case Double: printf("%g", top.decimal); break;
-        case Int: printf("%d", top.integer); break;
-        case Char: printf("%c", top.character); break;
-        case String: printf("\"%s\"", top.string); break;
+    switch (top.type) {
+        case Double:    printf("%g", top.decimal);      break;
+        case Int:       printf("%d", top.integer);      break;
+        case Char:      printf("%c", top.character);    break;
+        case String:    printf("\"%s\"", top.string);   break;
     }
 }
 

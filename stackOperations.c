@@ -18,12 +18,12 @@
  *
  * @return Uma cópia do n-ésimo elemento da stack
  */
-Value getElement(Stack* st, int n)
+Value getElement(Stack* st, Value n)
 {
-    //if (n < 0)
+    //if (n < 0 || n.type != Integer) //permitir doubles?
         //ERRO: input inválido
 
-    while (n--)
+    while (n.integer--)
     {
         st = st->previous;
 

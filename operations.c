@@ -11,8 +11,6 @@
 #include "operations.h"
 #include "typeOperations.h"
 
-#define UNDEFINED 13
-
 /**
  * \brief Lê uma linha de input
  *
@@ -32,16 +30,6 @@ char* getInput ()
         line[l - 1] = '\0';
 
     return line;
-}
-
-#define UnaryOperation(name, caseDouble, caseInt, caseChar) Value name(Value a) {\
-    switch (a.type) {\
-        case Double:    a.decimal = caseDouble; break;\
-        case Int: a.integer = caseInt;          break;\
-        case Char: a.character = caseChar;      break;\
-        default:                                break;\
-    }\
-    return a;\
 }
 
 
@@ -77,27 +65,10 @@ UnaryOperation(negate, UNDEFINED, ~a.integer, ~a.character)
  * @param b  o elemento do tipo #Value.
  */
 void NumericOperationAux(Value *a, Value *b) {
-    /*
-        Arrays com os diferentes tipos de operandos e as funções a usar para converter um Value
-        para esse tipo.
-    */
-    if(a.type < b.type)
-        b = convertToType(a.type, b)
+    if(a->type < b->type)
+        *b = convertToType(a->type, *b);
     else 
-        a = convertToType(b.type, a);
-}
-
-#define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\
-    NumericOperationAux(&a, &b);\
-    Value result;\
-    result.type = a.type;\
-    switch (a.type) {\
-        case Double:    result.decimal = caseDouble;    break;\
-        case Int:       result.integer = caseInt;       break;\
-        case Char:      result.character = caseChar;    break;\
-        default:                                        break;\
-    }\
-    return result;\
+        *a = convertToType(b->type, *a);
 }
 
 
@@ -172,7 +143,6 @@ NumericOperation(XOR, UNDEFINED, a.integer ^ b.integer, a.character ^ b.characte
  * @return   o resto da divisao inteira.
  */
 NumericOperation(module, fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character)
-
 
 /**
  * \brief Calcula a potencia entre dois elementos do tipo #Value.

@@ -11,9 +11,13 @@
 #include "stack.h"
 
 
-Value getElement(Stack* st, int n);
+#define swap(st) rotateTop(st, 2)
+
+#define rotate(st) rotateTop(st, 3)
 
 void rotateTop(Stack* st, int n);
+
+Value getElement(Stack* st, Value n);
 
 void readLine(Stack* st);
 

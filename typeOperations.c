@@ -10,36 +10,14 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define UNDEFINED 13
-
-#define Convert(toType, unionArg, fromDouble, fromInt, fromChar, fromString) Value convertTo##toType(Value a) {\
-    Value result;\
-    result.type = toType;\
-    switch(a.type) {\
-        case Double:\
-        result.unionArg = fromDouble;\
-        break;\
-        case Int:\
-        result.unionArg = fromInt;\
-        break;\
-        case Char:\
-        result.unionArg = fromChar;\
-        break;\
-        case String:\
-        result.unionArg = fromString;\
-        break;\
-        default:\
-        break;\
-    }\
-    return result;\
-}
 
 Value convertToType(DataType type, Value val) {
     switch(type) {
-        case Double: return convertToDouble(val);
-        case Int:    return convertToInt(val);
-        case Char:   return convertToChar(val);
-        case String: return convertToString(val);
+        case Double:    return convertToDouble(val);
+        case Int:       return convertToInt(val);
+        case Char:      return convertToChar(val);
+        case String:    return convertToString(val);
+        default:        return fromDecimal(UNDEFINED);
     }
 }
 
@@ -139,7 +117,7 @@ char* convertCharToString(Value v) {
  */
 char* copyString(Value v) {
 
-    char* ans = malloc(strlen(v.string) + 1);//Aloca memória suficiente
+    char* ans = malloc((strlen(v.string) + 1) * sizeof(char));//Aloca memória suficiente
     strcpy(ans, v.string);
 
     return ans;

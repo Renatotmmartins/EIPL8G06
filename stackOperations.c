@@ -89,8 +89,3 @@ void duplicate(Stack st) {
 
     push(st,top);
 }
-
-void erase(Stack st)
-{
-    dispose(pop(st));
-}

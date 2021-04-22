@@ -23,7 +23,5 @@ void readLine(Stack);
 
 void duplicate(Stack);
 
-void erase(Stack);
-
 
 #endif

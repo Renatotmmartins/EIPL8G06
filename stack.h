@@ -68,19 +68,28 @@ typedef struct stack {
 
 SSTACK empty();
 
-bool isEmpty(Stack s);
+bool isEmpty(Stack);
 
-void push(Stack s, Value value);
+void push(Stack, Value);
 
-Value pop(Stack s);
+Value pop(Stack);
 
-Value fromInteger(int i);
+void eraseTop(Stack);
 
-Value fromDecimal(double d);
+SSTACK clone(Stack);
 
-Value fromCharacter(char ch);
+Stack merge(Stack, Stack);
 
-Value fromString(char* str);
+void erase(Stack);
+
+
+Value fromInteger(int);
+
+Value fromDecimal(double);
+
+Value fromCharacter(char);
+
+Value fromString(char*);
 
 Value deepCopy(Value);
 

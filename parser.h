@@ -33,7 +33,7 @@
 
 #define JUMP_TABLE \
         ENTRY('l', readLine, 0S) \
-        ENTRY(';', erase, 0S) \
+        ENTRY(';', eraseTop, 0S) \
         ENTRY('_', duplicate, 0S) \
         ENTRY('\\', swap, 0S) \
         ENTRY('@', rotate, 0S) \

@@ -62,6 +62,44 @@ Value pop(Stack s) {
 	return top;
 }
 
+void eraseTop(Stack st) {
+    dispose(pop(st));
+}
+
+SSTACK clone(Stack st)
+{
+    SSTACK copy = *st;
+    Stack ans = &copy;
+
+    while (ans->previous != NULL) {
+        ans->value = deepCopy(ans->value);
+        Stack previous = malloc(sizeof(SSTACK));
+        *previous = *ans->previous;
+        ans->previous = previous;
+        ans = ans->previous;
+    }
+
+    return copy;
+}
+
+//Se uma stack for representada Tail---Head:
+//{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }
+//Ou seja, a cabeça do resultado é a cabeça da segunda stack passada
+Stack merge(Stack a, Stack b) {
+    Stack last = b;
+
+    while (!isEmpty(last))
+        last = last->previous;
+
+    *last = *a;
+    return b;
+}
+
+void erase(Stack st) {
+    while (!isEmpty(st))
+        eraseTop(st);
+}
+
 /**
  * \brief Converte um inteiro para tipo #Value.
  *

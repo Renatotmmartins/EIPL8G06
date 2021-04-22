@@ -58,9 +58,9 @@
         ENTRY('/', divide, 2) \
         ENTRY('%', module, 2) \
         ENTRY('#', exponentiate, 2) \
-        ENTRY('&', AND, 2) \
-        ENTRY('|', OR, 2) \
-        ENTRY('^', XOR, 2) \
+        ENTRY('&', and, 2) \
+        ENTRY('|', or, 2) \
+        ENTRY('^', xor, 2) \
         \
         ENTRY('e', shortcutSelect, 2O) \
 

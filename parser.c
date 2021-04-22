@@ -12,7 +12,7 @@
 #include "parser.h"
 
 
-bool operation(char* str, Stack* st) {
+bool operation(char* str, Stack st) {
     #define ENTRY(a,b,c) if(*str == a) {PUSH_##c(st, b(POP_##c )); return true;}
             JUMP_TABLE
     #undef ENTRY
@@ -37,7 +37,7 @@ Value readValue(char* str) {
  * @param length    O tamanho da palavra
  * @param st        A stack a preencher
  */
-void resolveWord(char* str, int length, Stack* st)
+void resolveWord(char* str, int length, Stack st)
 {
     if (length <= 0)
         return;
@@ -53,7 +53,7 @@ void resolveWord(char* str, int length, Stack* st)
  * @param str   A string correspondente ao input
  * @param st    A stack a preencher
  */
-void processInput(char* str, Stack* st) {
+void processInput(char* str, Stack st) {
     char* accum = str;
     while(*str && *str != '\n') {
         if(*str == ' ') {
@@ -84,12 +84,13 @@ void printVal(Value top) {
  * 
  * @param st   A stack a imprimir
  */
-void printStack(Stack* st) {
+void printStack(Stack st) {
     if(!isEmpty(st)) {
         Value top = pop(st);
 
         printStack(st);
         printVal(top);
+        dispose(top);
     }
 }
 
@@ -101,7 +102,7 @@ void printStack(Stack* st) {
  * 
  * @param st   A stack a imprimir
  */
-void printStackLine(Stack* st) {
+void printStackLine(Stack st) {
     printStack(st);
     printf("\n");
 }

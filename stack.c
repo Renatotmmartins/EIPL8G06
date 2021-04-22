@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "stack.h"
 
 /**
@@ -11,13 +12,9 @@
  
  * @return   Um objeto do tipo Stack sem nenhum elemento
  */
-Stack empty() {
-    Value v;
-    v.type = Int;
-    v.integer = 0;
-	Stack s;
-	s.previous = 0;
-	s.value = v;
+SSTACK empty() {
+	SSTACK s;
+	s.previous = NULL;
 	return s;
 }
 
@@ -27,8 +24,8 @@ Stack empty() {
  * @param s  O pointer para o qual se quer averiguar se a stack é vazia
  * @return   1 (true) se a stack for vazia, 0 (false) se for
  */
-bool isEmpty(Stack* s) {
-	return s->previous == 0;
+bool isEmpty(Stack s) {
+	return s->previous == NULL;
 }
 
 /**
@@ -37,8 +34,8 @@ bool isEmpty(Stack* s) {
  *  @param s     O pointer para a stack
  *  @param value O valor a inserir na stack
  */
-void push(Stack* s, Value value) {
-	Stack* a = malloc(sizeof(Stack));
+void push(Stack s, Value value) {
+	Stack a = malloc(sizeof(SSTACK));
 
     *a = *s;
     s->value = value;
@@ -52,15 +49,15 @@ void push(Stack* s, Value value) {
  * @param s     O pointer para a stack
  * @return 	O elemento removido do topo da stack
  */
-Value pop(Stack* s) {
-	Stack* previous = s->previous;
+Value pop(Stack s) {
+	Stack previous = s->previous;
 	Value top = s->value;
 	*s = *previous;
 
     if(previous != NULL)
 	    free(previous);
-
-    previous = NULL;
+    //else
+        //
 
 	return top;
 }
@@ -124,4 +121,22 @@ Value fromString(char* str){
     val.string=str;
 
     return val;
+}
+
+Value deepCopy(Value v) {
+    Value copy = v;
+
+    if (v.type == String) {
+        copy.string = malloc((strlen(v.string) + 1) * sizeof(char));
+        strcpy(copy.string, v.string);
+    }
+
+    return copy;
+}
+
+void dispose(Value v) {
+    switch (v.type) {
+        case String:    free(v.string);     break;
+        default:                            break;
+    }
 }

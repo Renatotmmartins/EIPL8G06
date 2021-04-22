@@ -15,13 +15,15 @@
 
 #define rotate(st) rotateTop(st, 3)
 
-void rotateTop(Stack* st, int n);
+void rotateTop(Stack, int);
 
-Value getElement(Stack* st, Value n);
+Value getElement(Stack, Value);
 
-void readLine(Stack* st);
+void readLine(Stack);
 
-void duplicate(Stack* st);
+void duplicate(Stack);
+
+void erase(Stack);
 
 
 #endif

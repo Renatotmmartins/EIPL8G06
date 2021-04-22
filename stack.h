@@ -63,16 +63,16 @@ typedef struct stack {
 
 	/*! O valor armazenado na lista ligada.*/
 	Value value;
-} Stack; //! Representa a Stack
+} SSTACK, * Stack; //! Representa a Stack
 
 
-Stack empty();
+SSTACK empty();
 
-bool isEmpty(Stack* s);
+bool isEmpty(Stack s);
 
-void push(Stack* s, Value value);
+void push(Stack s, Value value);
 
-Value pop(Stack* s);
+Value pop(Stack s);
 
 Value fromInteger(int i);
 
@@ -81,4 +81,9 @@ Value fromDecimal(double d);
 Value fromCharacter(char ch);
 
 Value fromString(char* str);
+
+Value deepCopy(Value);
+
+void dispose(Value);
+
 #endif

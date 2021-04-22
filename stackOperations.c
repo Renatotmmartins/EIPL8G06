@@ -18,7 +18,7 @@
  *
  * @return Uma cópia do n-ésimo elemento da stack
  */
-Value getElement(Stack* st, Value n)
+Value getElement(Stack st, Value n)
 {
     //if (n < 0 || n.type != Integer) //permitir doubles?
         //ERRO: input inválido
@@ -31,15 +31,7 @@ Value getElement(Stack* st, Value n)
             //ERRO: a stack tem n ou menos elementos
     }
 
-    Value copy = st->value;
-
-    if (copy.type == String)
-    {
-        copy.string = malloc(strlen(copy.string));
-        strcpy(copy.string, st->value.string);
-    }
-
-    return copy;
+    return deepCopy(st->value);
 }
 
 
@@ -49,15 +41,13 @@ Value getElement(Stack* st, Value n)
  * @param st A stack dada
  * @param n  O número de elementos a rodar
  */
-void rotateTop(Stack* st, int n) {
+void rotateTop(Stack st, int n) {
     /* Para rodar os primeiros n elementos da stack basta removê-los
        e inseri-los novamente pela ordem que foram removidos. */
 
     Value elements[n];
 
-    int i;
-
-    for(i = n - 1; i >= 0; i--) {
+    for(int i = n - 1; i >= 0; i--) {
         elements[i] = pop(st);
     }
 
@@ -74,7 +64,7 @@ void rotateTop(Stack* st, int n) {
  *
  * @param st A stack dada
  */
-void readLine(Stack* st)
+void readLine(Stack st)
 {
     char* line = getInput();
     push (st, fromString (line));
@@ -86,16 +76,21 @@ void readLine(Stack* st)
  *
  * @param st  A stack
  */
-void duplicate(Stack* st) {
+void duplicate(Stack st) {
 
     Value top = pop (st);
     if (top.type == String) {
-        char* str = malloc(strlen(top.string));
+        char* str = malloc((strlen(top.string) + 1) * sizeof(char));
         strcpy(str,top.string);
         push(st,fromString(str));
     }
-    else {
+    else
         push(st,top);
-    }
+
     push(st,top);
+}
+
+void erase(Stack st)
+{
+    dispose(pop(st));
 }

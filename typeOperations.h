@@ -26,8 +26,12 @@
     return result;\
 }
 
+#define convertAndDisposeTo(type) Value convertAndDisposeTo##type(Value a) { \
+    Value ans = convertTo##type(a); \
+    dispose(a); \
+    return ans; \
+}
 
-Value convertToType(DataType, Value);
 
 Value convertToInt(Value v);
 Value convertToDouble(Value v);
@@ -38,5 +42,12 @@ char* convertFloatToString(Value v);
 char* convertIntToString(Value v);
 char* convertCharToString(Value v);
 char* copyString(Value v);
+
+Value convertToType(DataType, Value);
+
+Value convertAndDisposeToDouble(Value);
+Value convertAndDisposeToInt(Value);
+Value convertAndDisposeToChar(Value);
+Value convertAndDisposeToString(Value);
 
 #endif

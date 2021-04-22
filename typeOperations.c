@@ -11,17 +11,6 @@
 #include <assert.h>
 
 
-Value convertToType(DataType type, Value val) {
-    switch(type) {
-        case Double:    return convertToDouble(val);
-        case Int:       return convertToInt(val);
-        case Char:      return convertToChar(val);
-        case String:    return convertToString(val);
-        default:        return fromDecimal(UNDEFINED);
-    }
-}
-
-
 /**
  * \brief Converte o #Value dado para outro que armazena um inteiro
  *
@@ -64,9 +53,9 @@ Convert(String, string, convertFloatToString(a), convertIntToString(a), convertC
  * @return   Um apontador com a informação armazenada sob a forma de texto
  */
 char* convertFloatToString(Value v) {
-    char* ans;
-    int size = (int)((ceil(log10(v.decimal))+1)*sizeof(char));
-    ans = malloc(size);
+    char useless[100];
+    int size = snprintf(useless, 100, "%f", v.decimal) + 1;
+    char* ans = malloc(size * sizeof(char));
 
     //Converter para string
     snprintf(ans, size, "%f", v.decimal);
@@ -83,8 +72,8 @@ char* convertFloatToString(Value v) {
  */
 char* convertIntToString(Value v) {
 
-    int size = (int)((ceil(log10(v.integer))+1)*sizeof(char));
-    char* ans = malloc(size); //Aloca memória suficiente
+    int size = (int)((ceil(log10(v.integer))+1));
+    char* ans = malloc(size * sizeof(char)); //Aloca memória suficiente
 
     //Converte para inteiro
     snprintf(ans, size, "%d", v.integer);
@@ -101,7 +90,7 @@ char* convertIntToString(Value v) {
  */
 char* convertCharToString(Value v) {
 
-    char* ans = malloc(2); //Aloca memória suficiente
+    char* ans = malloc(2 * sizeof(char)); //Aloca memória suficiente
     ans[0] = v.character;
     ans[1] = '\0';
 
@@ -122,3 +111,21 @@ char* copyString(Value v) {
 
     return ans;
 }
+
+
+Value convertToType(DataType type, Value val) {
+    switch(type) {
+        case Double:    return convertToDouble(val);
+        case Int:       return convertToInt(val);
+        case Char:      return convertToChar(val);
+        case String:    return convertToString(val);
+        default:        return fromDecimal(UNDEFINED);
+    }
+}
+
+
+convertAndDisposeTo(Double);
+convertAndDisposeTo(Int);
+convertAndDisposeTo(Char);
+
+Value convertAndDisposeToString(Value a) { return a; }

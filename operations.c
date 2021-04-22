@@ -66,9 +66,9 @@ UnaryOperation(negate, UNDEFINED, ~a.integer, ~a.character)
  */
 void NumericOperationAux(Value *a, Value *b) {
     if(a->type < b->type)
-        *b = convertToType(a->type, *b);
-    else 
-        *a = convertToType(b->type, *a);
+        NumericOperationAux(b,a);
+    
+    *a = convertToType(b->type, *a);
 }
 
 

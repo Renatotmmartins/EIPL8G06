@@ -124,8 +124,8 @@ Value convertToType(DataType type, Value val) {
 }
 
 
-convertAndDisposeTo(Double);
+/*convertAndDisposeTo(Double);
 convertAndDisposeTo(Int);
-convertAndDisposeTo(Char);
+convertAndDisposeTo(Char);*/
 
 Value convertAndDisposeToString(Value a) { return a; }

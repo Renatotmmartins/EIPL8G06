@@ -39,7 +39,10 @@ char* getInput ()
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value decrementado.
  */
-UnaryOperation(decrement, a.decimal - 1, a.integer - 1, a.character - 1)
+Value decrement(Value a) {
+    UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
+}
+
 
 /**
  * \brief Incrementa o valor do tipo #Value.
@@ -47,7 +50,9 @@ UnaryOperation(decrement, a.decimal - 1, a.integer - 1, a.character - 1)
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value incrementado.
  */
-UnaryOperation(increment, a.decimal + 1, a.integer + 1, a.character + 1)
+Value increment(Value a) {
+    UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1);
+}
 
 /**
  * \brief Aplica a negação binária a um elemento do tipo #Value.
@@ -55,7 +60,9 @@ UnaryOperation(increment, a.decimal + 1, a.integer + 1, a.character + 1)
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
-UnaryOperation(negate, UNDEFINED, ~a.integer, ~a.character)
+Value negate(Value a) {
+    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character);
+}
 
 
 /**
@@ -65,6 +72,11 @@ UnaryOperation(negate, UNDEFINED, ~a.integer, ~a.character)
  * @param b  o elemento do tipo #Value.
  */
 void NumericOperationAux(Value *a, Value *b) {
+    /*
+        Para realizar uma operação numérica é necessário
+        que se use o menor dos dois tipos (Double é o menor, depois Int, e
+        finalmente Char)
+    */
     if(a->type < b->type)
         NumericOperationAux(b,a);
     
@@ -79,7 +91,10 @@ void NumericOperationAux(Value *a, Value *b) {
  * @param b  o elemento do tipo #Value.
  * @return     resultado da soma de a com b.
  */
-NumericOperation(sum, a.decimal + b.decimal, a.integer + b.integer, a.character + b.character)
+Value sum(Value a, Value b) {
+    NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
+}
+
 
 /**
  * \brief Subtrai dois elementos do tipo #Value.
@@ -88,8 +103,9 @@ NumericOperation(sum, a.decimal + b.decimal, a.integer + b.integer, a.character 
  * @param b  o elemento do tipo #Value.
  * @return     resultado da subtração de a com b.
  */
-NumericOperation(subtract, a.decimal - b.decimal, a.integer - b.integer, a.character - b.character)
-
+Value subtract(Value a, Value b) {
+    NUMERICOPERATION(a.decimal - b.decimal, a.integer - b.integer, a.character - b.character);
+}
 /**
  * \brief Divide dois elementos do tipo #Value.
  *
@@ -97,8 +113,9 @@ NumericOperation(subtract, a.decimal - b.decimal, a.integer - b.integer, a.chara
  * @param b  o elemento do tipo #Value.
  * @return     resultado da divisão de a com b.
  */
-NumericOperation(divide, a.decimal / b.decimal, a.integer / b.integer, a.character / b.character)
-
+Value divide(Value a, Value b) {
+    NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
+}
 /**
  * \brief Multiplica dois elementos do tipo #Value.
  *
@@ -106,8 +123,9 @@ NumericOperation(divide, a.decimal / b.decimal, a.integer / b.integer, a.charact
  * @param b  o elemento do tipo #Value.
  * @return     resultado da multiplicação de a com b.
  */
-NumericOperation(multiply, a.decimal * b.decimal, a.integer * b.integer, a.character * b.character)
-
+Value multiply(Value a, Value b) {
+    NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
+}
 /**
  * \brief Aplica a conjunção a dois elementos do tipo #Value.
  *
@@ -115,8 +133,9 @@ NumericOperation(multiply, a.decimal * b.decimal, a.integer * b.integer, a.chara
  * @param b  o elemento do tipo #Value.
  * @return     o elemento do tipo #Value resultante de aplicar a conjunção.
  */
-NumericOperation(AND, UNDEFINED, a.integer & b.integer, a.character & b.character)
-
+Value and(Value a, Value b) {
+    NUMERICOPERATION(UNDEFINED, a.integer & b.integer, a.character & b.character);
+}
 /**
  * \brief Aplica a disjunção a dois elementos de tipo #Value.
  *
@@ -124,8 +143,9 @@ NumericOperation(AND, UNDEFINED, a.integer & b.integer, a.character & b.characte
  * @param b  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a disjunção.
  */
-NumericOperation(OR, UNDEFINED, a.integer | b.integer, a.character | b.character)
-
+Value or(Value a, Value b) {
+    NUMERICOPERATION(UNDEFINED, a.integer | b.integer, a.character | b.character);
+}
 /**
  * \brief Aplica o ou explosivo a dois elementos do tipo #Value.
  *
@@ -133,8 +153,9 @@ NumericOperation(OR, UNDEFINED, a.integer | b.integer, a.character | b.character
  * @param b  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar o ou explosivo.
  */
-NumericOperation(XOR, UNDEFINED, a.integer ^ b.integer, a.character ^ b.character)
-
+Value xor(Value a, Value b) {
+    NUMERICOPERATION(UNDEFINED, a.integer ^ b.integer, a.character ^ b.character);
+}
 /**
  * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value.
  *
@@ -142,7 +163,9 @@ NumericOperation(XOR, UNDEFINED, a.integer ^ b.integer, a.character ^ b.characte
  * @param b  o elemento do tipo #Value que atua como divisor.
  * @return   o resto da divisao inteira.
  */
-NumericOperation(module, fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character)
+Value module(Value a, Value b) {
+    NUMERICOPERATION(fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character);
+}
 
 /**
  * \brief Calcula a potencia entre dois elementos do tipo #Value.
@@ -151,4 +174,6 @@ NumericOperation(module, fmod(a.decimal, b.decimal), a.integer % b.integer, a.ch
  * @param b  o elemento do tipo #Value que atua como expoente.
  * @return   a potencia de a com b.
  */
-NumericOperation(exponentiate, pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character))
+Value exponentiate(Value a, Value b) {
+    NUMERICOPERATION(pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character));
+}

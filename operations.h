@@ -17,15 +17,14 @@
 char* getInput ();
 
 
-#define UnaryOperation(name, caseDouble, caseInt, caseChar) Value name(Value a) {\
+#define UNARYOPERATION(caseDouble, caseInt, caseChar)\
     switch (a.type) {\
         case Double:    a.decimal = caseDouble; break;\
         case Int: a.integer = caseInt;          break;\
         case Char: a.character = caseChar;      break;\
         default:                                break;\
     }\
-    return a;\
-}
+    return a\
 
 
 Value decrement(Value v);
@@ -35,7 +34,7 @@ Value negate(Value v);
 void NumericOperationAux(Value *a, Value *b);
 
 
-#define NumericOperation(name, caseDouble, caseInt, caseChar) Value name(Value a, Value b) {\
+#define NUMERICOPERATION(caseDouble, caseInt, caseChar) \
     NumericOperationAux(&a, &b);\
     Value result;\
     result.type = a.type;\
@@ -45,17 +44,17 @@ void NumericOperationAux(Value *a, Value *b);
         case Char:      result.character = caseChar;    break;\
         default:                                        break;\
     }\
-    return result;\
-}
+    return result\
+
 
 
 Value sum(Value a, Value b);
 Value subtract(Value a, Value b);
 Value divide(Value a, Value b);
 Value multiply(Value a, Value b);
-Value AND(Value a, Value b);
-Value OR(Value a, Value b);
-Value XOR(Value a, Value b);
+Value and(Value a, Value b);
+Value or(Value a, Value b);
+Value xor(Value a, Value b);
 Value module(Value a, Value b);
 Value exponentiate(Value a, Value b);
 

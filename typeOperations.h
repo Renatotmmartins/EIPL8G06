@@ -26,12 +26,10 @@
     return result;\
 }
 
-#define convertAndDisposeTo(type) Value convertAndDisposeTo##type(Value a) { \
+#define convertAndDisposeTo(type)  \
     Value ans = convertTo##type(a); \
-    dispose(a); \
-    return ans; \
-}
-
+    disposeValue(a); \
+    return ans; 
 
 Value convertToInt(Value v);
 Value convertToDouble(Value v);

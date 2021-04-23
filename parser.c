@@ -90,7 +90,7 @@ void printStack(Stack st) {
 
         printStack(st);
         printVal(top);
-        dispose(top);
+        disposeValue(top);
     }
 }
 

@@ -124,8 +124,18 @@ Value convertToType(DataType type, Value val) {
 }
 
 
-/*convertAndDisposeTo(Double);
-convertAndDisposeTo(Int);
-convertAndDisposeTo(Char);*/
+Value convertAndDisposeToDouble(Value a) {
+    convertAndDisposeTo(Double)
+}
 
-Value convertAndDisposeToString(Value a) { return a; }
+Value convertAndDisposeToInt(Value a) {
+    convertAndDisposeTo(Int)
+}
+
+Value convertAndDisposeToChar(Value a) {
+    convertAndDisposeTo(Char)
+}
+
+Value convertAndDisposeToString(Value a) {
+    return a;
+}

@@ -12,10 +12,10 @@
  
  * @return   Um objeto do tipo Stack sem nenhum elemento
  */
-SSTACK empty() {
-	SSTACK s;
-	s.previous = NULL;
-	return s;
+Stack empty() {
+	Stack st = malloc(sizeof(struct stack));
+	st->previous = NULL;
+	return st;
 }
 
 /**
@@ -35,7 +35,7 @@ bool isEmpty(Stack s) {
  *  @param value O valor a inserir na stack
  */
 void push(Stack s, Value value) {
-	Stack a = malloc(sizeof(SSTACK));
+	Stack a = malloc(sizeof(struct stack));
 
     *a = *s;
     s->value = value;
@@ -63,23 +63,22 @@ Value pop(Stack s) {
 }
 
 void eraseTop(Stack st) {
-    dispose(pop(st));
+    disposeValue(pop(st));
 }
 
-SSTACK clone(Stack st)
+Stack clone(Stack st)
 {
-    SSTACK copy = *st;
-    Stack ans = &copy;
+    Stack ans = malloc(sizeof(struct stack));
 
     while (ans->previous != NULL) {
         ans->value = deepCopy(ans->value);
-        Stack previous = malloc(sizeof(SSTACK));
+        Stack previous = malloc(sizeof(struct stack));
         *previous = *ans->previous;
         ans->previous = previous;
         ans = ans->previous;
     }
 
-    return copy;
+    return ans;
 }
 
 //Se uma stack for representada Tail---Head:
@@ -92,12 +91,15 @@ Stack merge(Stack a, Stack b) {
         last = last->previous;
 
     *last = *a;
+    free(a);
     return b;
 }
 
-void erase(Stack st) {
+void disposeStack(Stack st) {
     while (!isEmpty(st))
         eraseTop(st);
+
+    free(st);
 }
 
 /**
@@ -172,7 +174,7 @@ Value deepCopy(Value v) {
     return copy;
 }
 
-void dispose(Value v) {
+void disposeValue(Value v) {
     switch (v.type) {
         case String:    free(v.string);     break;
         default:                            break;

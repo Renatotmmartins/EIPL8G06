@@ -11,7 +11,12 @@
 #include <string.h>
 #include "parser.h"
 
-
+/**
+ * \brief Verifica se o operador existe. Caso exista chama o operador e caso não exista retorna 0 (false).
+ * @param str Contém o operador
+ * @param st A stack a preencher
+ * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
+ */
 bool operation(char* str, Stack st) {
     #define ENTRY(a,b,c) if(*str == a) {PUSH_##c(st, b(POP_##c )); return true;}
             JUMP_TABLE
@@ -20,7 +25,11 @@ bool operation(char* str, Stack st) {
     return false;
 }
 
-
+/**
+ * \brief Lê um input e retorna um value com o valor do input
+ * @param str input dado
+ * @return value que foi dado no input
+ */
 Value readValue(char* str) {
     //if ('A' <= *str && *str <= 'Z') //variável
         //return 
@@ -90,7 +99,7 @@ void printStack(Stack st) {
 
         printStack(st);
         printVal(top);
-        disposeValue(top);
+        dispose(top);
     }
 }
 

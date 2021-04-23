@@ -10,8 +10,6 @@ bool isTrue(Value a);
 
 Value shortcutSelect(char*, Value, Value);
 
-Value setVariable(char* var, Value x);
-
 Value conditional(Value x, Value y, Value z);
 
 Value isEqual (Value x, Value y);
@@ -21,5 +19,9 @@ Value isLess (Value x, Value y);
 Value isGreater (Value x, Value y);
 
 Value logicNot (Value x);
+
+Value setVariable(char var, Value x, State s);
+
+void initializeVariables(State *s);
 
 #endif 

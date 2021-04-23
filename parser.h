@@ -17,17 +17,17 @@
 #include "logicOperations.h"
 
 //! Seleciona os argumentos das funções sobre a stack
-#define POP_0S st
+#define POP_0S st.stack
 //! Seleciona o argumento das funções com um arguemnto
-#define POP_1 pop(st)
+#define POP_1 pop(st.stack)
 //! Seleciona o argumento das funções com um argumento sobre a stack
-#define POP_1S st, pop(st)
+#define POP_1S st.stack, pop(st.stack)
 //! Seleciona o argumento das funções com um argumento e sub operações
-#define POP_1O str + 1, pop(st)
+#define POP_1O str + 1, pop(st.stack), st
 //! Seleciona o argumento das funções com dois argumentos
-#define POP_2 pop(st), pop(st)
+#define POP_2 pop(st.stack), pop(st.stack)
 //! Seleciona o argumento das funções com dois argumentos e sub operações
-#define POP_2O str + 1, pop(st), pop(st)
+#define POP_2O str + 1, pop(st.stack), pop(st.stack)
 
 //! Não efetua push do resultado da operação.
 #define PUSH_0S(x,y) y
@@ -78,15 +78,15 @@
 
 
 
-bool operation(char*, Stack);
+bool operation(char* str, State st);
 
-Value readValue(char* str);
+Value readValue(char* str, State st);
 
-void resolveWord(char*, int, Stack);
+void resolveWord(char* str, int length, State st);
 
-void processInput(char* str, Stack st);
+void processInput(char* str, State st);
 
-void printVal(Value);
+void printVal(Value val);
 
 void printStack(Stack st);
 

@@ -65,6 +65,15 @@ typedef struct stack {
 	Value value;
 } * Stack; //! Representa a Stack
 
+/**
+ * \brief Representa o estado atual do programa, ou seja, as variáveis e a stack
+ */
+typedef struct state{
+	//! A stack
+	Stack stack;
+	//! O array das variáveis
+	Value variables[26];
+} State;//!Representa o State do programa
 
 Stack empty();
 

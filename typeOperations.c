@@ -17,8 +17,9 @@
  * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada num inteiro
  */
-Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, atoi(a.string))
-
+Value convertToInt(Value a) {
+    Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, atoi(a.string))    
+}
 
 /**
  * \brief Converte o #Value dado para outro que armazena um valor decimal
@@ -26,8 +27,9 @@ Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, atoi(a.string
  * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada num double
  */
-Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, atof(a.string))
-
+Value convertToDouble(Value a) {
+    Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, atof(a.string))
+}
 
 /**
  * \brief Converte o #Value dado para outro que armazena um caracter
@@ -35,8 +37,9 @@ Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, atof
  * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada num caracter
  */
-Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, UNDEFINED)
-
+Value convertToChar(Value a) {
+    Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, UNDEFINED)
+}
 
 /**
  * \brief Converte o #Value dado para outro que armazena texto
@@ -44,7 +47,9 @@ Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, UND
  * @param a  O #Value fornecido
  * @return   O #Value com a informação armazenada sob a forma de texto
  */
-Convert(String, string, convertFloatToString(a), convertIntToString(a), convertCharToString(a), copyString(a))
+Value convertToString(Value a) {
+    Convert(String, string, convertFloatToString(a), convertIntToString(a), convertCharToString(a), copyString(a))
+}
 
 /**
  * \brief Converte o #Value dado, que armazena um número fracionário, para texto

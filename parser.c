@@ -18,8 +18,8 @@
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
 bool operation(char* str, Stack st) {
-    #define ENTRY(a,b,c) if(*str == a) {PUSH_##c(st, b(POP_##c )); return true;}
-            JUMP_TABLE
+    #define ENTRY(a,b,c) case a: PUSH_##c(st, b(POP_##c )); return true;
+    switch (*str) (JUMP_TABLE)
     #undef ENTRY
 
     return false;

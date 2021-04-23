@@ -1,4 +1,5 @@
 #include "logicOperations.h"
+#include <string.h>
 
 /**
  * \brief Avalia o valor lógico do value
@@ -38,6 +39,104 @@ Value shortcutSelect(char* str, Value x, Value y)
 }
 
 
+/**
+ * \brief Operação if then else
+ * @param x   o elemento do tipo #Value que atua como condição
+ * @param y   o elemento do tipo #Value que é o resultado caso a condição seja verdadeira
+ * @param z   o elemento do tipo #Value que é o resultado caso a condição seja falsa
+ * @return    y se for verdade, z se for falso
+ */
+
+Value conditional(Value x, Value y, Value z){
+
+	return isTrue(x) ? y : z;
+}
+
+/**
+ * \brief Operação de comparação de valores
+ * @param x   o elemento do tipo #Value 
+ * @param y   o elemento do tipo #Value 
+ * @return    1 se for verdade, 0 se for falso
+ */
+
+Value isEqual (Value x, Value y){
+
+	if(x.type==y.type){
+		switch(x.type){
+			case Double:
+			return fromInteger(x.decimal==y.decimal);//testar tolerâncias
+			case Int:
+			return fromInteger(x.integer==y.integer);
+			case Char:
+			return fromInteger(x.character==y.character);
+			case String:
+			return fromInteger (strcmp (x.string,y.string)==0);
+		}
+
+	}else{//se forem tipos diferentes automaticamente não são iguais
+		return fromInteger(0);
+	}
+}
+
+/**
+ * \brief Verifica se o primeiro argumento é menor que o segundo
+ * @param x   o elemento do tipo #Value 
+ * @param y   o elemento do tipo #Value 
+ * @return    1 se for verdade, 0 se for falso
+ */
+
+Value isLess (Value x, Value y){
+
+	switch(x.type){
+		case Double:
+		return fromInteger(x.decimal<y.decimal);//testar tolerâncias
+		case Int:
+		return fromInteger(x.integer<y.integer);
+		case Char:
+		return fromInteger(x.character<y.character);
+		case String:
+		return fromInteger (strcmp (x.string,y.string)<0);
+	}
+}
+
+/**
+ * \brief Verifica se o primeiro argumento é maior que o segundo
+ * @param x   o elemento do tipo #Value 
+ * @param y   o elemento do tipo #Value 
+ * @return    1 se for verdade, 0 se for falso
+ */
+
+Value isGreater (Value x, Value y){
+
+	switch(x.type){
+		case Double:
+		return fromInteger(x.decimal>y.decimal);//testar tolerâncias
+		case Int:
+		return fromInteger(x.integer>y.integer);
+		case Char:
+		return fromInteger(x.character>y.character);
+		case String:
+		return fromInteger (strcmp (x.string,y.string)>0);
+	}
+}
+
+/**
+ * \brief Devolve 1 se for 0 e devolve 0 caso contrário
+ * @param x   o elemento do tipo #Value 
+ * @return    1 se for 0 e 0 se for 1
+ */
+
+Value logicNot (Value x){
+
+	switch(x.type){
+		case Double:
+		return fromInteger(x.decimal==0.0);//testar tolerâncias
+		case Int:
+		return fromInteger(x.integer==0);
+		case Char:
+		return fromInteger(x.character==0);
+	}
+}
 /**
  * \brief Muda o valor da variável para ser o x
  * @param var variável dada (letra de A a Z)

@@ -19,7 +19,7 @@
  */
 bool operation(char* str, Stack st) {
     #define ENTRY(a,b,c) case a: PUSH_##c(st, b(POP_##c )); return true;
-    switch (*str) (JUMP_TABLE)
+    switch (*str) { JUMP_TABLE }
     #undef ENTRY
 
     return false;
@@ -99,7 +99,7 @@ void printStack(Stack st) {
 
         printStack(st);
         printVal(top);
-        dispose(top);
+        disposeValue(top);
     }
 }
 

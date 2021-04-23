@@ -63,10 +63,10 @@ typedef struct stack {
 
 	/*! O valor armazenado na lista ligada.*/
 	Value value;
-} SSTACK, * Stack; //! Representa a Stack
+} * Stack; //! Representa a Stack
 
 
-SSTACK empty();
+Stack empty();
 
 bool isEmpty(Stack);
 
@@ -76,11 +76,11 @@ Value pop(Stack);
 
 void eraseTop(Stack);
 
-SSTACK clone(Stack);
+Stack clone(Stack);
 
 Stack merge(Stack, Stack);
 
-void erase(Stack);
+void disposeStack(Stack);
 
 
 Value fromInteger(int);
@@ -93,6 +93,6 @@ Value fromString(char*);
 
 Value deepCopy(Value);
 
-void dispose(Value);
+void disposeValue(Value);
 
 #endif

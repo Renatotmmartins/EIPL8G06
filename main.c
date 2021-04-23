@@ -20,10 +20,11 @@
  */
 int main() {
     char *line = getInput();
-    SSTACK st = empty();
-    processInput(line, &st);
-    printStackLine(&st);
+    Stack st = empty();
+    processInput(line, st);
+    printStackLine(st);
     //O line é alocado dinamicamente e, por isso, deve ser desalocado quando deixar de ser usado.
     free(line);
+    disposeStack(st);
     return 0;
 }

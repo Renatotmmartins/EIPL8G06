@@ -16,7 +16,7 @@
 
 char* getInput ();
 
-
+//! Usada para simplificar as funções só com um argumento.
 #define UNARYOPERATION(caseDouble, caseInt, caseChar)\
     switch (a.type) {\
         case Double:    a.decimal = caseDouble; break;\
@@ -33,7 +33,7 @@ Value negate(Value v);
 
 void NumericOperationAux(Value *a, Value *b);
 
-
+//! Usada para simplficar as funções com dois argumentos.
 #define NUMERICOPERATION(caseDouble, caseInt, caseChar) \
     NumericOperationAux(&a, &b);\
     Value result;\

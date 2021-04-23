@@ -13,7 +13,7 @@
 #include "stack.h"
 
 
-#define Convert(toType, unionArg, fromDouble, fromInt, fromChar, fromString) Value convertTo##toType(Value a) {\
+#define Convert(toType, unionArg, fromDouble, fromInt, fromChar, fromString) \
     Value result;\
     result.type = toType;\
     switch(a.type) {\
@@ -23,15 +23,13 @@
         case String:    result.unionArg = fromString;   break;\
         default:                                        break;\
     }\
-    return result;\
-}
+    return result;
 
-#define convertAndDisposeTo(type) Value convertAndDisposeTo##type(Value a) { \
+
+#define convertAndDisposeTo(type)  \
     Value ans = convertTo##type(a); \
-    dispose(a); \
-    return ans; \
-}
-
+    disposeValue(a); \
+    return ans; 
 
 Value convertToInt(Value v);
 Value convertToDouble(Value v);

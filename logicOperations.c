@@ -1,6 +1,6 @@
 #include "logicOperations.h"
 #include <string.h>
-
+#include <stdio.h>
 /**
  * \brief Avalia o valor lógico do value
  * @param a   o elemento do tipo #Value
@@ -32,8 +32,8 @@ Value shortcutSelect(char* str, Value x, Value y)
 	{
 		case '&':	return isTrue(x) ? y : x;
 		case '|':	return isTrue(x) ? x : y;
-		//case '<':	return isTrue(menor(x, y)) ? x : y;
-		//case '>':	return isTrue(maior(x, y)) ? x : y;
+		case '<':	return isTrue(isLess(x, y)) ? x : y;
+		case '>':	return isTrue(isGreater(x, y)) ? x : y;
 		default: 	return isTrue(x) ? x : y;
 	}
 }
@@ -72,6 +72,8 @@ Value isEqual (Value x, Value y){
 			return fromInteger(x.integer==y.integer);
 			case Char:
 			return fromInteger(x.character==y.character);
+			default:
+			return fromInteger(0); //Caso de erro
 		}
 	}
 }
@@ -96,6 +98,8 @@ Value isLess (Value x, Value y){
 			return fromInteger(x.integer<y.integer);
 			case Char:
 			return fromInteger(x.character<y.character);
+			default:
+			return fromInteger(0); //Caso de erro
 		}
 	}
 }
@@ -120,6 +124,8 @@ Value isGreater (Value x, Value y){
 			return fromInteger(x.integer>y.integer);
 			case Char:
 			return fromInteger(x.character>y.character);
+			default:
+			return fromInteger(0); //Caso de erro
 		}
 	}
 }
@@ -139,6 +145,8 @@ Value logicNot (Value x){
 		return fromInteger(x.integer==0);
 		case Char:
 		return fromInteger(x.character==0);
+		default:
+		return fromInteger(0); //Caso de erro
 	}
 }
 /**
@@ -147,8 +155,8 @@ Value logicNot (Value x){
  * @param x   o elemento do tipo #Value
  * @param s   o state do programa
  */
-Value setVariable(char var, Value x, State s){
-	s.variables[var-'A']=x;
+Value setVariable(char var, Value x, State *s){
+	s->variables[var-'A'] = x;
 	return x;
 }
 
@@ -160,11 +168,11 @@ void initializeVariables(State *s){
 	int i;
 
 	for(i=0;i<=5;i++){
-		setVariable('A'+i,fromInteger(10+i),*s);
+		setVariable('A'+i,fromInteger(10+i),s);
 	}
 	for(i=0;i<=2;i++){
-		setVariable('X'+i,fromInteger(i),*s);
+		setVariable('X'+i,fromInteger(i),s);
 	}
-	setVariable('N',fromCharacter('\n'),*s);
-	setVariable('S',fromCharacter(' '),*s);
+	setVariable('N',fromCharacter('\n'),s);
+	setVariable('S',fromCharacter(' '),s);
 }

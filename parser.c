@@ -17,8 +17,8 @@
  * @param st O state a preencher
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
-bool operation(char* str, State st) {
-    #define ENTRY(a,b,c) case a: PUSH_##c(st.stack, b(POP_##c )); return true;
+bool operation(char* str, State* st) {
+    #define ENTRY(a,b,c) case a: PUSH_##c(st->stack, b(POP_##c )); return true;
     switch (*str) { JUMP_TABLE }
     #undef ENTRY
 
@@ -31,9 +31,10 @@ bool operation(char* str, State st) {
  * @param st o state do programa
  * @return value que foi dado no input
  */
-Value readValue(char* str, State st) {
+Value readValue(char* str, State* st) {
     if ('A' <= *str && *str <= 'Z') //variável
-        return st.variables[*str-'A'];
+        return st->variables[*str-'A'];
+        
     if (strchr(str, '.') == NULL) //double (tem um separador decimal)
         return fromInteger(atoi(str));
     else
@@ -47,13 +48,13 @@ Value readValue(char* str, State st) {
  * @param length    O tamanho da palavra
  * @param st        O state a preencher
  */
-void resolveWord(char* str, int length, State st)
+void resolveWord(char* str, int length, State* st)
 {
     if (length <= 0)
         return;
 
     if(!operation(str, st))
-        push(st.stack, readValue(str, st));
+        push(st->stack, readValue(str, st));
 }
 
 
@@ -63,7 +64,7 @@ void resolveWord(char* str, int length, State st)
  * @param str   A string correspondente ao input
  * @param st    O state a preencher
  */
-void processInput(char* str, State st) {
+void processInput(char* str, State* st) {
     char* accum = str;
     while(*str && *str != '\n') {
         if(*str == ' ') {

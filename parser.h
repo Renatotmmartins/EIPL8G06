@@ -17,17 +17,19 @@
 #include "logicOperations.h"
 
 //! Seleciona os argumentos das funções sobre a stack
-#define POP_0S st.stack
+#define POP_0S st->stack
 //! Seleciona o argumento das funções com um arguemnto
-#define POP_1 pop(st.stack)
+#define POP_1 pop(st->stack)
 //! Seleciona o argumento das funções com um argumento sobre a stack
-#define POP_1S st.stack, pop(st.stack)
+#define POP_1S st->stack, pop(st->stack)
 //! Seleciona o argumento das funções com um argumento e sub operações
-#define POP_1O str + 1, pop(st.stack), st
+#define POP_1O *(str + 1), pop(st->stack), st
 //! Seleciona o argumento das funções com dois argumentos
-#define POP_2 pop(st.stack), pop(st.stack)
+#define POP_2 pop(st->stack), pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos e sub operações
-#define POP_2O str + 1, pop(st.stack), pop(st.stack)
+#define POP_2O str + 1, pop(st->stack), pop(st->stack)
+//! Seleciona o argumento das funções com três argumentos
+#define POP_3 pop(st->stack), pop(st->stack), pop(st->stack)
 
 //! Não efetua push do resultado da operação.
 #define PUSH_0S(x,y) y
@@ -41,6 +43,8 @@
 #define PUSH_2(x,y) push(x,y)
 //! Efetua push do resultado da operação.
 #define PUSH_2O(x,y) push(x,y)
+//! Efetua push do resultado da operação.
+#define PUSH_3(x,y) push(x,y)
 
 //! Contém o registo de todos os operadores e respetivos argumentos
 #define JUMP_TABLE \
@@ -58,6 +62,7 @@
         ENTRY('i', convertAndDisposeToInt, 1) \
         ENTRY('c', convertAndDisposeToChar, 1) \
         ENTRY('s', convertAndDisposeToString, 1) \
+        ENTRY('!', logicNot,1) \
         \
         ENTRY('$', getElement, 1S) \
         \
@@ -73,18 +78,23 @@
         ENTRY('&', and, 2) \
         ENTRY('|', or, 2) \
         ENTRY('^', xor, 2) \
+        ENTRY('=', isEqual, 2) \
+        ENTRY('<', isLess, 2) \
+        ENTRY('>', isGreater, 2) \
         \
         ENTRY('e', shortcutSelect, 2O) \
+        \
+        ENTRY('?', conditional, 3)
 
 
 
-bool operation(char* str, State st);
+bool operation(char* str, State* st);
 
-Value readValue(char* str, State st);
+Value readValue(char* str, State* st);
 
-void resolveWord(char* str, int length, State st);
+void resolveWord(char* str, int length, State* st);
 
-void processInput(char* str, State st);
+void processInput(char* str, State* st);
 
 void printVal(Value val);
 

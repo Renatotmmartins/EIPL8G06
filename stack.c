@@ -65,7 +65,7 @@ Value pop(Stack s) {
 void eraseTop(Stack st) {
     disposeValue(pop(st));
 }
-
+/*
 Stack clone(Stack st)
 {
     Stack ans = malloc(sizeof(struct stack));
@@ -79,7 +79,7 @@ Stack clone(Stack st)
     }
 
     return ans;
-}
+}*/
 
 //Se uma stack for representada Tail---Head:
 //{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }

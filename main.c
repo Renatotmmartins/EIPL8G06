@@ -23,7 +23,7 @@ int main() {
     char *line = getInput();
     st.stack=empty();
     initializeVariables(&st);
-    processInput(line, st);
+    processInput(line, &st);
     printStackLine(st.stack);
     //O line é alocado dinamicamente e, por isso, deve ser desalocado quando deixar de ser usado.
     free(line);

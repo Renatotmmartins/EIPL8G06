@@ -1,5 +1,11 @@
 #include "logicOperations.h"
 
+/**
+ * \brief Avalia o valor lógico do value
+ * @param a   o elemento do tipo #Value
+ * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro e 0 caso seja falso)
+ */
+
 bool isTrue(Value a)
 {
 	switch (a.type) {
@@ -11,6 +17,13 @@ bool isTrue(Value a)
 	}
 }
 
+/**
+ * \brief Executa as operações pedidas
+ * @param str A string correspondente aos operadores
+ * @param x   o elemento do tipo #Value
+ * @param y   o elemento do tipo #Value
+ * @return    x ou y, dependendo do resultado da operação que for efetuada
+ */
 
 Value shortcutSelect(char* str, Value x, Value y)
 {
@@ -24,6 +37,13 @@ Value shortcutSelect(char* str, Value x, Value y)
 	}
 }
 
+
+/**
+ * \brief Muda o valor da variável para ser o x
+ * @param var variável dada (letra de A a Z)
+ * @param x   o elemento do tipo #Value
+ * @return O valor dado (x)
+ */
 Value setVariable(char* var, Value x)
 {
 	return x;

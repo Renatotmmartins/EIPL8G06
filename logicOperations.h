@@ -20,7 +20,7 @@ Value isGreater (Value x, Value y);
 
 Value logicNot (Value x);
 
-Value setVariable(char var, Value x, State *s);
+Value setVariable(char var, State* s, Value x);
 
 void initializeVariables(State *s);
 

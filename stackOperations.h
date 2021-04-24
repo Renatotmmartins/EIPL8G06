@@ -17,11 +17,15 @@
 
 void rotateTop(Stack, int);
 
-Value getElement(Stack, Value);
+Value copyElement(Stack, Value);
 
 void readLine(Stack);
 
 void duplicate(Stack);
+
+Stack range(int);
+
+Stack repeat(Stack, int);
 
 
 #endif

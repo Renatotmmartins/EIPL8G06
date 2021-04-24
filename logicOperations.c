@@ -155,7 +155,7 @@ Value logicNot (Value x){
  * @param x   o elemento do tipo #Value
  * @param s   o state do programa
  */
-Value setVariable(char var, Value x, State *s){
+Value setVariable(char var, State* s, Value x){
 	s->variables[var-'A'] = x;
 	return x;
 }
@@ -168,11 +168,11 @@ void initializeVariables(State *s){
 	int i;
 
 	for(i=0;i<=5;i++){
-		setVariable('A'+i,fromInteger(10+i),s);
+		setVariable('A'+i,s,fromInteger(10+i));
 	}
 	for(i=0;i<=2;i++){
-		setVariable('X'+i,fromInteger(i),s);
+		setVariable('X'+i,s,fromInteger(i));
 	}
-	setVariable('N',fromCharacter('\n'),s);
-	setVariable('S',fromCharacter(' '),s);
+	setVariable('N',s,fromCharacter('\n'));
+	setVariable('S',s,fromCharacter(' '));
 }

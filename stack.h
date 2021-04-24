@@ -79,11 +79,17 @@ Stack empty();
 
 bool isEmpty(Stack);
 
+int length(Stack);
+
 void push(Stack, Value);
 
 Value pop(Stack);
 
+Value popBottom(Stack);
+
 void eraseTop(Stack);
+
+Value getElement(Stack, int);
 
 Stack clone(Stack);
 

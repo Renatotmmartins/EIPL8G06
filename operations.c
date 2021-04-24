@@ -39,7 +39,7 @@ char* getInput ()
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value decrementado.
  */
-Value decrement(Value a) {
+Value decrement(Stack st, Value a) {
     UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
 }
 
@@ -50,7 +50,7 @@ Value decrement(Value a) {
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value incrementado.
  */
-Value increment(Value a) {
+Value increment(Stack st, Value a) {
     UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1);
 }
 
@@ -60,7 +60,7 @@ Value increment(Value a) {
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
-Value negate(Value a) {
+Value negate(Stack st, Value a) {
     UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character);
 }
 

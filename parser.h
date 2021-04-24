@@ -23,7 +23,7 @@
 //! Seleciona o argumento das funções com um argumento sobre a stack
 #define POP_1S st->stack, pop(st->stack)
 //! Seleciona o argumento das funções com um argumento e sub operações
-#define POP_1O *(str + 1), pop(st->stack), st
+#define POP_1SO *(str + 1), st, pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos
 #define POP_2 pop(st->stack), pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos e sub operações
@@ -38,7 +38,7 @@
 //! Efetua push do resultado da operação.
 #define PUSH_1S(x,y) push(x,y)
 //! Efetua push do resultado da operação.
-#define PUSH_1O(x,y) push(x,y)
+#define PUSH_1SO(x,y) push(x,y)
 //! Efetua push do resultado da operação.
 #define PUSH_2(x,y) push(x,y)
 //! Efetua push do resultado da operação.
@@ -55,18 +55,18 @@
         ENTRY('@', rotate, 0S) \
         \
         \
-        ENTRY('(', decrement, 1) \
-        ENTRY(')', increment, 1) \
-        ENTRY('~', negate, 1) \
+        ENTRY('(', decrement, 1S) \
+        ENTRY(')', increment, 1S) \
+        ENTRY('~', negate, 1S) \
         ENTRY('f', convertAndDisposeToDouble, 1) \
         ENTRY('i', convertAndDisposeToInt, 1) \
         ENTRY('c', convertAndDisposeToChar, 1) \
         ENTRY('s', convertAndDisposeToString, 1) \
         ENTRY('!', logicNot,1) \
         \
-        ENTRY('$', getElement, 1S) \
+        ENTRY('$', copyElement, 1S) \
         \
-        ENTRY(':', setVariable, 1O) \
+        ENTRY(':', setVariable, 1SO) \
         \
         \
         ENTRY('+', sum, 2) \
@@ -83,6 +83,7 @@
         ENTRY('>', isGreater, 2) \
         \
         ENTRY('e', shortcutSelect, 2O) \
+        \
         \
         ENTRY('?', conditional, 3)
 

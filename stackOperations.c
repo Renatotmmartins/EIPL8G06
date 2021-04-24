@@ -18,8 +18,11 @@
  *
  * @return Uma cópia do n-ésimo elemento da stack
  */
-Value getElement(Stack st, Value n)
-{
+Value copyElement(Stack st, Value n) {
+    return deepCopy(getElement(st, n.integer));
+
+
+/*
     //if (n < 0 || n.type != Integer) //permitir doubles?
         //ERRO: input inválido
 
@@ -32,6 +35,7 @@ Value getElement(Stack st, Value n)
     }
 
     return deepCopy(st->value);
+    */
 }
 
 

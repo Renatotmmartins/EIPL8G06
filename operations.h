@@ -27,9 +27,9 @@ char* getInput ();
     return a\
 
 
-Value decrement(Stack, Value);
-Value increment(Stack, Value);
-Value negate(Stack, Value);
+Value decrement(Value);
+Value increment(Value);
+Value negate(Value);
 
 void NumericOperationAux(Value *a, Value *b);
 

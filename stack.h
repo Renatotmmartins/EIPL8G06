@@ -26,18 +26,21 @@ typedef enum dataType {
 	Double, //!< Valor Fracionário
 	Int, //!< Valor Inteiro
 	Char, //!< Caracter
-	String //!< Texto
-} DataType; //! Representa a enum DataType
+	String, //!< Texto
+	Array //!< Array
+} DataType;
 
+//! O tipo de dados usado para representar s stack
+struct stack;
 
 /**
  * \brief Representa os diferentes valores que é possível armazenar
  * na stack
  */
 typedef struct value {
-/**
- * \brief Representa o tipo de dados armazenado
- */
+	/**
+ 	 * \brief Representa o tipo de dados armazenado
+ 	 */
 	DataType type;
 	/**
  	 * \brief Guarda os diferentes tipos possíveis de armazenar
@@ -47,9 +50,10 @@ typedef struct value {
 		double decimal; //!< Valor Fracionário
 		char character; //!< Caracter
 		char* string; //!< Texto
+		struct stack* array; //!< Array
 	};
 
-} Value; //! Representa a enum DataType
+} Value;
 
 
 /**
@@ -63,7 +67,7 @@ typedef struct stack {
 
 	/*! O valor armazenado na lista ligada.*/
 	Value value;
-} * Stack; //! Representa a Stack
+} * Stack;
 
 /**
  * \brief Representa o estado atual do programa, ou seja, as variáveis e a stack
@@ -73,7 +77,7 @@ typedef struct state{
 	Stack stack;
 	//! O array das variáveis
 	Value variables[26];
-} State;//!Representa o State do programa
+} State;
 
 Stack empty();
 

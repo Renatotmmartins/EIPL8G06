@@ -56,8 +56,6 @@ Value pop(Stack s) {
 
     if(previous != NULL)
 	    free(previous);
-    //else
-        //
 
 	return top;
 }
@@ -79,9 +77,9 @@ Stack clone(Stack st)
     Stack ans = malloc(sizeof(struct stack));
 
     while (ans->previous != NULL) {
-        ans->value = deepCopy(ans->value);
+        ans->value = deepCopy(st->value);
         Stack previous = malloc(sizeof(struct stack));
-        *previous = *ans->previous;
+        *previous = *st->previous;
         ans->previous = previous;
         ans = ans->previous;
     }

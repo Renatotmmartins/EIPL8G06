@@ -83,6 +83,7 @@ void printVal(Value top) {
         case Int:       printf("%d", top.integer);      break;
         case Char:      printf("%c", top.character);    break;
         case String:    printf("\"%s\"", top.string);   break;
+        case Array:     printStack(top.array);          break;
     }
 }
 

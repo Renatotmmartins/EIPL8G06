@@ -106,7 +106,7 @@ char* convertCharToString(Value v) {
 /**
  * \brief Copia a string do #Value dado para outra string
  *
- * @param v  O #Value fornecido
+ * @param v  O #Value fornecidos
  * @return   Um apontador para a cópia
  */
 char* copyString(Value v) {

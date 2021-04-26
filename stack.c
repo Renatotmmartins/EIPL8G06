@@ -87,17 +87,12 @@ void eraseTop(Stack st) {
  */
 Stack clone(Stack st)
 {
-    Stack ans = malloc(sizeof(struct stack));
+    if (isEmpty(st))
+        return empty();
 
-    while (ans->previous != NULL) {
-        ans->value = deepCopy(st->value);
-        Stack previous = malloc(sizeof(struct stack));
-        *previous = *st->previous;
-        ans->previous = previous;
-        ans = ans->previous;
-    }
-
-    return ans;
+    Stack copy = clone(st->previous);
+    push(copy, deepCopy(st->value));
+    return copy;
 }
 
 /**
@@ -194,6 +189,21 @@ Value fromString(char* str){
 }
 
 /**
+ * \brief Converte uma stack para tipo #Value.
+ *
+ * @param st   a stack
+ * @return     a stack convertida para #Value.
+ */
+Value fromStack(Stack st) {
+    Value val;
+
+    val.type = Array;
+    val.array = st;
+
+    return val;
+}
+
+/**
  * \brief Copia valor que esteja inicialmente na stack
  * @param v Valor inicialmente dado
  * @return Valor copiado na sua nova localização.
@@ -201,10 +211,10 @@ Value fromString(char* str){
 Value deepCopy(Value v) {
     Value copy = v;
 
-    if (v.type == String) {
-        copy.string = malloc((strlen(v.string) + 1) * sizeof(char));
-        strcpy(copy.string, v.string);
-    }
+    if (v.type == String)
+        copy.string = strdup(v.string);
+    else if (v.type == Array)
+        copy.array = clone(v.array);
 
     return copy;
 }
@@ -216,6 +226,7 @@ Value deepCopy(Value v) {
 void disposeValue(Value v) {
     switch (v.type) {
         case String:    free(v.string);     break;
+        case Array:     free(v.array);      break;
         default:                            break;
     }
 }

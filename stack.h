@@ -110,6 +110,8 @@ Value fromCharacter(char);
 
 Value fromString(char*);
 
+Value fromStack(Stack);
+
 Value deepCopy(Value);
 
 void disposeValue(Value);

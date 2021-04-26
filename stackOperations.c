@@ -81,15 +81,5 @@ void readLine(Stack st)
  * @param st  A stack
  */
 void duplicate(Stack st) {
-
-    Value top = pop (st);
-    if (top.type == String) {
-        char* str = malloc((strlen(top.string) + 1) * sizeof(char));
-        strcpy(str,top.string);
-        push(st,fromString(str));
-    }
-    else
-        push(st,top);
-
-    push(st,top);
+    push(st, deepCopy(st->value));
 }

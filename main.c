@@ -21,9 +21,10 @@
 int main() {
     State st;
     char *line = getInput();
+    char *pointer = line;
     st.stack=empty();
     initializeVariables(&st);
-    processInput(line, &st);
+    processInput(&pointer, &st);
     printStackLine(st.stack);
     //O line é alocado dinamicamente e, por isso, deve ser desalocado quando deixar de ser usado.
     free(line);

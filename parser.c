@@ -41,6 +41,36 @@ Value readValue(char* str, State* st) {
         return fromDecimal(atof(str)); //inteiro
 }
 
+char getControlChar(char c) {
+    switch (c) {
+        case 'n':   return '\n';
+        case 't':   return '\t';
+        case '0':   return '\0'; //isto vai dar porcaria, não vai?
+        case '\"':  return '\"';
+        case '\\':  return '\\';
+        default:    return '\\';
+        //se nao foi detetado um caracter de controlo assumimos
+        //que se pretendia escrever o próprio backslash
+    }
+}
+
+//mete *str a apontar para a aspa que fecha
+Value readString(char** str) {
+    Stack read = empty();
+    bool escape = false;
+
+    while (escape || **str != '"') {
+        if (escape)
+            push(read, fromCharacter(getControlChar(**str)));
+        else
+            push(read, fromCharacter(**str));
+        
+        (*str)++;
+    }
+    
+    return fromStack(read);
+}
+
 /**
  * \brief Processa a palavra fornecida, preenchendo a stack dada ou efetuando a operação descrita.
  * 
@@ -64,16 +94,35 @@ void resolveWord(char* str, int length, State* st)
  * @param str   A string correspondente ao input
  * @param st    O state a preencher
  */
-void processInput(char* str, State* st) {
-    char* accum = str;
-    while(*str && *str != '\n') {
-        if(*str == ' ') {
-            resolveWord(accum, str - accum, st);
-            accum = str + 1;
+void processInput(char** str, State* st) {
+    char* accum = *str;
+    Stack current;
+    while(**str && **str != '\n' && **str != ']') {
+        switch (**str)
+        {
+            case ' ':
+            resolveWord(accum, *str - accum, st);
+            accum = *str + 1;
+            break;
+
+            case '"':
+            push(st->stack, readString(str));
+            accum = *str + 1;
+            break;
+
+            case '[':
+            current = st->stack; //guarda a stack atual
+            st->stack = empty();
+            (*str)++;
+            processInput(str, st); //chama processInput recursivamente com uma stack vazia
+            push(current, fromStack(st->stack));
+            st->stack = current; //recupera a stack
+            accum = *str + 1;
+            break;
         }
-        ++str;
+        (*str)++;
     }
-    resolveWord(accum, str - accum, st); // Resolve o que faltar
+    resolveWord(accum, *str - accum, st); // Resolve o que faltar
 }
 
 

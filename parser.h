@@ -49,8 +49,8 @@
 //! Contém o registo de todos os operadores e respetivos argumentos
 #define JUMP_TABLE \
         ENTRY('l', readLine, 0S) \
-        ENTRY(';', eraseTop, 0S) \
         ENTRY('_', duplicate, 0S) \
+        ENTRY(';', eraseTop, 0S) \
         ENTRY('\\', swap, 0S) \
         ENTRY('@', rotate, 0S) \
         \
@@ -64,7 +64,7 @@
         ENTRY('s', convertAndDisposeToString, 1) \
         ENTRY('!', logicNot,1) \
         \
-        /*ENTRY('$', copyElement, 1S)*/ \
+        ENTRY('$', copyElement, 1S) \
         \
         ENTRY(':', setVariable, 1SO) \
         \
@@ -93,9 +93,13 @@ bool operation(char* str, State* st);
 
 Value readValue(char* str, State* st);
 
+char getControlChar(char);
+
+Value readString(char**);
+
 void resolveWord(char* str, int length, State* st);
 
-void processInput(char* str, State* st);
+void processInput(char** str, State* st);
 
 void printVal(Value val);
 

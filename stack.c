@@ -60,6 +60,11 @@ Value pop(Stack s) {
 	return top;
 }
 
+/**
+ * \brief Retorna o valor que está no fundo da stack
+ * @param st A stack dada
+ * @return Valor no fundo da stack
+ */
 Value popBottom(Stack st) {
     while (!isEmpty(st->previous))
         st = st->previous;
@@ -67,11 +72,19 @@ Value popBottom(Stack st) {
     st->previous = NULL;
     return st->value;
 }
-
+/**
+ * \brief Apaga o valor que está no topo da stack
+ * @param st A stack dada
+ */
 void eraseTop(Stack st) {
     disposeValue(pop(st));
 }
 
+/**
+ * \brief Faz uma cópia da stack dada
+ * @param st A stack dada
+ * @return Uma stack igual à stack original
+ */
 Stack clone(Stack st)
 {
     Stack ans = malloc(sizeof(struct stack));
@@ -87,10 +100,16 @@ Stack clone(Stack st)
     return ans;
 }
 
-//Se uma stack for representada Tail---Head:
+/**
+ * \brief "Junta" duas stacks
+ * @param a Primeira stack dada
+ * @param b Segunda stack dada
+ * @return Stack que resulta da junção das duas stacks dadas inicialmente
+ */
+Stack merge(Stack a, Stack b) {
+    //Se uma stack for representada Tail---Head:
 //{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }
 //Ou seja, a cabeça do resultado é a cabeça da segunda stack passada
-Stack merge(Stack a, Stack b) {
     Stack last = b;
 
     while (!isEmpty(last))
@@ -100,6 +119,11 @@ Stack merge(Stack a, Stack b) {
     free(a);
     return b;
 }
+
+/**
+ * \brief Enquanto o topo da stack for vazio, elimina as células vazias
+ * @param st Stack dada
+ */
 
 void disposeStack(Stack st) {
     while (!isEmpty(st))
@@ -169,6 +193,11 @@ Value fromString(char* str){
     return val;
 }
 
+/**
+ * \brief Copia valor que esteja inicialmente na stack
+ * @param v Valor inicialmente dado
+ * @return Valor copiado na sua nova localização.
+ */
 Value deepCopy(Value v) {
     Value copy = v;
 
@@ -180,6 +209,10 @@ Value deepCopy(Value v) {
     return copy;
 }
 
+/**
+ * \brief Desaloca valor que esteja presente na memória
+ * @param v
+ */
 void disposeValue(Value v) {
     switch (v.type) {
         case String:    free(v.string);     break;

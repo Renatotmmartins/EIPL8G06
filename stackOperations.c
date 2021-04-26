@@ -18,26 +18,8 @@
  *
  * @return Uma cópia do n-ésimo elemento da stack
  */
-//Value copyElement(Stack st, Value n) {
-   // return deepCopy(getElement(st, n.integer));
-
-
-/*
-    //if (n < 0 || n.type != Integer) //permitir doubles?
-        //ERRO: input inválido
-
-    while (n.integer--)
-    {
-        st = st->previous;
-
-        //if (st->previous == 0)
-            //ERRO: a stack tem n ou menos elementos
-    }
-
-    return deepCopy(st->value);
-    */
-//}
-
+Value copyElement(Stack st, Value n) {
+    return deepCopy(getElement(st, n.integer));
 
 /**
  * \brief Roda os primeiros n elementos da stack
@@ -92,4 +74,31 @@ void duplicate(Stack st) {
         push(st,top);
 
     push(st,top);
+}
+
+/**
+ * \brief Repete a stack n vezes
+ *
+ * @param st Stack dada
+ *
+ * @param n número de vezes que a stack é repetida
+ *
+ * @return stack n vezes repetida
+ */
+Stack repeat(Stack st, int n) {
+    stack b = st;
+    for (int i = 0; i < n; ++i) {
+        b = merge (b,clone(st));
+
+    }
+    return b;
+}
+
+
+Stack range(int n) {
+    stack a = empty();
+    for (int i = 0; i < n; ++i) {
+        push (a,i);
+    }
+    return a;
 }

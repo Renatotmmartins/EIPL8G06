@@ -18,6 +18,7 @@
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
 bool operation(char* str, State* st) {
+    //! Expansão da JumpTable para Switch
     #define ENTRY(a,b,c) case a: PUSH_##c(st->stack, b(POP_##c )); return true;
     switch (*str) { JUMP_TABLE }
     #undef ENTRY
@@ -76,6 +77,10 @@ void processInput(char* str, State* st) {
     resolveWord(accum, str - accum, st); // Resolve o que faltar
 }
 
+/**
+ * \brief Efetua print do valor dado
+ * @param top Valor a ser dado print
+ */
 
 void printVal(Value top) {
     switch (top.type) {

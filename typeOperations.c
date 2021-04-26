@@ -106,7 +106,7 @@ char* convertCharToString(Value v) {
 /**
  * \brief Copia a string do #Value dado para outra string
  *
- * @param v  O #Value fornecido
+ * @param v  O #Value fornecidos
  * @return   Um apontador para a cópia
  */
 char* copyString(Value v) {
@@ -117,7 +117,12 @@ char* copyString(Value v) {
     return ans;
 }
 
-
+/**
+ * \brief Converte os valores dados para o tipo pedido
+ * @param type Tipo do valor
+ * @param val Valor dado
+ * @return Valor dado no tipo pedido
+ */
 Value convertToType(DataType type, Value val) {
     switch(type) {
         case Double:    return convertToDouble(val);
@@ -128,19 +133,35 @@ Value convertToType(DataType type, Value val) {
     }
 }
 
-
+/**
+ * \brief Converte o valor para o tipo pedido e desaloca-o
+ * @param a Valor dado
+ * @return Valor convertido para o tipo pedido
+ */
 Value convertAndDisposeToDouble(Value a) {
     convertAndDisposeTo(Double)
 }
-
+/**
+ * \brief Converte o valor para o tipo pedido e desaloca-o
+ * @param a Valor dado
+ * @return Valor convertido para o tipo pedido
+ */
 Value convertAndDisposeToInt(Value a) {
     convertAndDisposeTo(Int)
 }
-
+/**
+ * \brief Converte o valor para o tipo pedido e desaloca-o
+ * @param a Valor dado
+ * @return Valor convertido para o tipo pedido
+ */
 Value convertAndDisposeToChar(Value a) {
     convertAndDisposeTo(Char)
 }
-
+/**
+ * \brief Converte o valor para o tipo pedido e desaloca-o
+ * @param a Valor dado
+ * @return Valor convertido para o tipo pedido
+ */
 Value convertAndDisposeToString(Value a) {
     return a;
 }

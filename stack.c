@@ -29,6 +29,22 @@ bool isEmpty(Stack s) {
 }
 
 /**
+ * \brief Devolve o valor do tamanho da stack (número de elementos na stack)
+ * 
+ * @param s  O pointer da stack
+ * @return   O valor do tamanho da stack
+ */
+int length(Stack s){
+    int r=0;
+
+    while(isEmpty(s)==0){
+        r++;
+        s=s->previous;
+    }
+    return r;
+}
+
+/**
  * \brief Insere o valor especificado na stack fornecida.
  * 
  *  @param s     O pointer para a stack
@@ -78,6 +94,21 @@ Value popBottom(Stack st) {
  */
 void eraseTop(Stack st) {
     disposeValue(pop(st));
+}
+
+/**
+ * \brief Devolve o n-ésimo elemento da stack (0 é o topo da stack)
+ * 
+ *  @param s     O pointer para a stack
+ *  @param value O valor do n-ésimo elemento
+ */
+Value getElement(Stack st, int n){
+
+    while(n>0){
+        st=st->previous;
+        n--;
+    }
+    return st->value;
 }
 
 /**

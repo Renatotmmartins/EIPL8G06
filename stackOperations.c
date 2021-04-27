@@ -83,7 +83,11 @@ Stack repeat(Stack st, int n) {
 
     return b;
 }
-
+/**
+ * \brief Função que cria uma stack com os números de 0 a n-1
+ * @param n Número dado
+ * @return Stack preenchida com o conteúdo pedido
+ */
 
 Stack range(int n) {    
     Stack a = empty();

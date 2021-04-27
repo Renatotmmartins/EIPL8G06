@@ -17,7 +17,7 @@
 
 void rotateTop(Stack, int);
 
-//Value copyElement(Stack, Value);
+Value copyElement(Stack, Value);
 
 void readLine(Stack);
 

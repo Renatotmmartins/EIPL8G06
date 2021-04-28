@@ -134,8 +134,8 @@ Stack clone(Stack st)
  */
 Stack merge(Stack a, Stack b) {
     //Se uma stack for representada Tail---Head:
-//{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }
-//Ou seja, a cabeça do resultado é a cabeça da segunda stack passada
+    //{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }
+    //Ou seja, a cabeça do resultado é a cabeça da segunda stack passada
     if (isEmpty(b)) {
         free(b);
         return a;

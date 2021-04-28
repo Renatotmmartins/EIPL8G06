@@ -8,6 +8,29 @@
 #include <stdlib.h>
 
 /**
+ * \brief Procura pelo padrão fornecido na string dada, desalocando os argumentos
+ *        fornecidos.
+ * 
+ *        Retorna o índice no qual o padrão inicia na string dada, ou -1 
+ *        caso o padrão não exista na string.
+ *
+ * @param st  A string dada (sob a forma de #Value)
+ *
+ * @param pat O padrão a procurar na string dada (sob a forma de #Value)
+ *
+ * @return    O #Value com um inteiro correspondente ao índice da 
+ *  1ª ocorrência na string, -1 se o padrão não for uma substring da string dada
+ */
+Value substrAndDispose(Value st, Value pat) {
+    Value res = substr(st, pat);
+    //Desaloca os valores
+    disposeValue(st);
+    disposeValue(pat);
+
+    return res;
+}
+
+/**
  * \brief Procura pelo padrão fornecido na string dada. 
  * 
  *        Retorna o índice no qual o padrão inicia na string dada, ou -1 
@@ -90,6 +113,10 @@ Value separateBySubstr(Value s, Value pat) {
         //Atualiza o apontador para a próxima posição de interesse
         str += v.integer + length;
     }
+
+    //Libertar valores, pq não vão ser reutilizados
+    disposeValue(s);
+    disposeValue(pat);
 
     return fromStack(st);
 }

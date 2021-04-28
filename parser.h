@@ -53,6 +53,7 @@
         ENTRY(';', eraseTop, 0S) \
         ENTRY('\\', swap, 0S) \
         ENTRY('@', rotate, 0S) \
+        ENTRY('t', readAllLines, 0S) \
         \
         \
         ENTRY('(', decrement, 1) \

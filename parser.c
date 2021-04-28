@@ -61,11 +61,15 @@ Value readString(char** str) {
     bool escape = false;
 
     while (escape || **str != '"') {
-        if (escape)
+        if (escape) {
             push(read, fromCharacter(getControlChar(**str)));
+            escape = false;
+        }
+        else if (**str == '\\')
+            escape = true;
         else
             push(read, fromCharacter(**str));
-        
+            
         (*str)++;
     }
     
@@ -107,6 +111,7 @@ void processInput(char** str, State* st) {
             break;
 
             case '"':
+            (*str)++;
             push(st->stack, readString(str));
             accum = *str + 1;
             break;

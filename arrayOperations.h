@@ -11,12 +11,14 @@
 #include "stack.h"
 
 
+Value substrAndDispose(Value st, Value pat);
+
 Value substr(Value st, Value pat);
 
 void copyPrefix(char* src, char* dest, int length);
 
 Value separateBySubstr(Value s, Value pat);
 
-Stack split(Stack , int );
+Stack split(Stack, int);
 
 #endif

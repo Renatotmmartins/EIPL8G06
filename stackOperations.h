@@ -27,4 +27,6 @@ Stack range(int);
 
 Stack repeat(Stack, int);
 
+Value comma(Value);
+
 #endif

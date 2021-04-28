@@ -104,14 +104,14 @@ Stack range(int n) {
  */
 Value comma(Value a){
     Value tamanho;
-
     switch(a.type){
-        case Int:
+        case Int: //Retorna o range [0...n-1]
         return fromStack(range(a.integer));
-        case Array:
-        tamanho=fromInteger(length(a.array));
+        case Array: //Retorna o tamanho da array
+        tamanho = fromInteger(length(a.array));
         disposeStack(a.array);
         return tamanho;
-        default: return tamanho;
+        //Operação não definida
+        default: return fromInteger(UNDEFINED);
     }
 }

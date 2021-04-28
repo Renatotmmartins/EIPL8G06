@@ -65,7 +65,7 @@ Value increment( Value a) {
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
 Value negate(Stack st, Value a) {
-    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character, merge(st,a.array);st=a.array;a=pop(st));
+    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character,merge(st,a.array);st=a.array;a=pop(st));
 }
 
 
@@ -185,7 +185,7 @@ Value module(Value a, Value b) {
 Value exponentiate(Value a, Value b) {
     //Se estivermos a tratar de strings, faz a operação correspondente
     if(a.type == String)
-        return substr(a,b); //TODO:: VERIFICAR ORDEM
+        return substrAndDispose(a,b); //TODO:: VERIFICAR ORDEM
 
     NUMERICOPERATION(pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character));
 }

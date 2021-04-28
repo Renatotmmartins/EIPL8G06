@@ -136,13 +136,18 @@ Stack merge(Stack a, Stack b) {
     //Se uma stack for representada Tail---Head:
 //{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }
 //Ou seja, a cabeça do resultado é a cabeça da segunda stack passada
+    if (isEmpty(b)) {
+        free(b);
+        return a;
+    }
+
     Stack last = b;
 
-    while (!isEmpty(last))
+    while (!isEmpty(last->previous))
         last = last->previous;
 
-    *last = *a;
-    free(a);
+    free(last->previous);
+    last->previous = a;
     return b;
 }
 

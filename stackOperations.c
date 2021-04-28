@@ -18,8 +18,8 @@
  *
  * @return Uma cópia do n-ésimo elemento da stack
  */
-Value copyElement(Stack st, Value n) {
-    return deepCopy(getElement(st, n.integer));
+Value copyElement(State* s, Value n) {
+    return deepCopy(getElement(s->stack, n.integer));
 }
 
 /**

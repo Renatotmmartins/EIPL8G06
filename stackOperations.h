@@ -17,7 +17,7 @@
 
 void rotateTop(Stack, int);
 
-Value copyElement(Stack, Value);
+Value copyElement(State*, Value);
 
 void readLine(Stack);
 
@@ -26,5 +26,7 @@ void duplicate(Stack);
 Stack range(int);
 
 Stack repeat(Stack, int);
+
+Value comma(Value);
 
 #endif

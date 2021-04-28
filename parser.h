@@ -21,7 +21,7 @@
 //! Seleciona o argumento das funções com um arguemnto
 #define POP_1 pop(st->stack)
 //! Seleciona o argumento das funções com um argumento sobre a stack
-#define POP_1S st->stack, pop(st->stack)
+#define POP_1S st, pop(st->stack)
 //! Seleciona o argumento das funções com um argumento e sub operações
 #define POP_1SO *(str + 1), st, pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos
@@ -58,7 +58,6 @@
         \
         ENTRY('(', decrement, 1) \
         ENTRY(')', increment, 1) \
-        ENTRY('~', negate, 1S) \
         ENTRY('f', convertAndDisposeToDouble, 1) \
         ENTRY('i', convertAndDisposeToInt, 1) \
         ENTRY('c', convertAndDisposeToChar, 1) \
@@ -66,6 +65,7 @@
         ENTRY('!', logicNot,1) \
         ENTRY(',', comma, 1)\
         \
+        ENTRY('~', negate, 1S) \
         ENTRY('$', copyElement, 1S) \
         \
         ENTRY(':', setVariable, 1SO) \

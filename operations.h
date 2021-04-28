@@ -30,7 +30,7 @@ char* getInput ();
 
 Value decrement(Value);
 Value increment(Value);
-Value negate(Stack, Value);
+Value negate(State*, Value);
 
 void NumericOperationAux(Value *a, Value *b);
 

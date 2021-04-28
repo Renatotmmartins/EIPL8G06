@@ -64,8 +64,8 @@ Value increment( Value a) {
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
-Value negate(Stack st, Value a) {
-    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character, merge(st,a.array);st=a.array;a=pop(st));
+Value negate(State* s, Value a) {
+    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character, merge(s->stack,a.array);s->stack=a.array;a=pop(a.array));
 }
 
 

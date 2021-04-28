@@ -64,9 +64,10 @@ Value conditional(Value x, Value y, Value z){
 
 Value isEqual (Value x, Value y){
 
-    if(x.type==Int && y.type==Array){
-		Value resultado = copyElement(y.array,x);
-		disposeValue(y);
+    if(x.type==Array && y.type==Int){
+    	//estamos a procurar do fundo da stack para cima
+		Value resultado = deepCopy(getElement(x.array, length(x.array) - y.integer - 1));
+		disposeValue(x);
 		return resultado;
 	}
 	if(x.type==String){

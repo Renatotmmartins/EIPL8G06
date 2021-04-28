@@ -10,6 +10,10 @@
 #include <assert.h>
 #include "operations.h"
 #include "typeOperations.h"
+#include "arrayOperations.h"
+
+//! O comprimento máximo de uma string de input
+#define MAXINPUTLENGTH 10000
 
 /**
  * \brief Lê uma linha de input
@@ -21,9 +25,9 @@
  */
 char* getInput ()
 {
-    char *line = malloc(10000);
+    char *line = malloc(MAXINPUTLENGTH);
 
-    assert(fgets(line, 10000,stdin) != NULL);
+    assert(fgets(line, MAXINPUTLENGTH,stdin) != NULL);
     int l = strlen(line);
 
     if (line[l - 1] == '\n')
@@ -114,6 +118,10 @@ Value subtract(Value a, Value b) {
  * @return     resultado da divisão de a com b.
  */
 Value divide(Value a, Value b) {
+    //Se estivermos a tratar de strings, faz a operação correspondente
+    if(a.type == String)
+        return separateBySubstr(a,b); //TODO:: VERIFICAR ORDEM
+
     NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
 }
 /**
@@ -175,5 +183,33 @@ Value module(Value a, Value b) {
  * @return   a potencia de a com b.
  */
 Value exponentiate(Value a, Value b) {
+    //Se estivermos a tratar de strings, faz a operação correspondente
+    if(a.type == String)
+        return substr(a,b); //TODO:: VERIFICAR ORDEM
+
     NUMERICOPERATION(pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character));
+}
+
+/**
+ * \brief    Lê todas as linhas restantes do input e insere-as na stack.
+ *           
+ *           Concatena todas as linhas numa só string.
+ * 
+ * @param st A stack fornecida
+ */
+void readAllLines(Stack st) {
+    //Alocar dinamicamente a string de resultado e a
+    //string que guarda o valor de cada linha individualmente
+    char* str = malloc(sizeof(char) * MAXINPUTLENGTH);
+    char* curLine = malloc(sizeof(char) * MAXINPUTLENGTH);
+
+    //Enquanto houver input para ler
+    while(scanf("%s", curLine)) {
+        //Concatena as strings
+        strcat(str, curLine);
+    }
+    //Liberta a string que guarda a linha atual, por não ser mais precisa
+    free(curLine);
+
+    push(st, fromString(str));
 }

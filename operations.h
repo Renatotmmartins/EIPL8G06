@@ -58,5 +58,6 @@ Value xor(Value a, Value b);
 Value module(Value a, Value b);
 Value exponentiate(Value a, Value b);
 
+void readAllLines(Stack st);
 
 #endif

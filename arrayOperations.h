@@ -17,4 +17,6 @@ void copyPrefix(char* src, char* dest, int length);
 
 Value separateBySubstr(Value s, Value pat);
 
+Stack split(Stack , int );
+
 #endif

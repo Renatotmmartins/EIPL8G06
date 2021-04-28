@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include "arrayOperations.h"
+#include <stdlib.h>
 
 /**
  * \brief Procura pelo padrão fornecido na string dada. 
@@ -91,4 +92,22 @@ Value separateBySubstr(Value s, Value pat) {
     }
 
     return fromStack(st);
+}
+
+/**
+ * \brief Separa a stack st pelo índice x a contar de cima
+ * @param st      A stack a separar; é alterada para ter tamanho x
+ * @param x       O índice pelo o qual se vai separar
+ * @return       Retorna a stack de baixo
+ */
+Stack split(Stack st, int x){
+   
+   while(x>0){
+       st=st->previous;
+       x--;
+    }
+    Stack a=empty();
+    *a=*st;
+    st->previous=NULL;
+    return a;
 }

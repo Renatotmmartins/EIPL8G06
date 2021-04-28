@@ -58,12 +58,13 @@
         \
         ENTRY('(', decrement, 1) \
         ENTRY(')', increment, 1) \
-        ENTRY('~', negate, 1) \
+        ENTRY('~', negate, 1S) \
         ENTRY('f', convertAndDisposeToDouble, 1) \
         ENTRY('i', convertAndDisposeToInt, 1) \
         ENTRY('c', convertAndDisposeToChar, 1) \
         ENTRY('s', convertAndDisposeToString, 1) \
         ENTRY('!', logicNot,1) \
+        ENTRY(',', comma, 1)\
         \
         ENTRY('$', copyElement, 1S) \
         \

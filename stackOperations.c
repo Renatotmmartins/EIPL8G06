@@ -96,3 +96,22 @@ Stack range(int n) {
 
     return a;
 }
+
+/**
+ * \brief Se o Input for um inteiro devolve o seu range, se for um array devolve o seu tamanho
+ * @param a o elemento do tipo Value
+ * @return Devolve o range, se for inteiro, ou o tamanho, se for array.
+ */
+Value comma(Value a){
+    Value tamanho;
+
+    switch(a.type){
+        case Int:
+        return fromStack(range(a.integer));
+        case Array:
+        tamanho=fromInteger(length(a.array));
+        disposeStack(a.array);
+        return tamanho;
+        default: return tamanho;
+    }
+}

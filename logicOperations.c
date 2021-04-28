@@ -1,6 +1,9 @@
 #include "logicOperations.h"
 #include <string.h>
 #include <stdio.h>
+#include "stackOperations.h"
+#include "arrayOperations.h"
+#include "stack.h"
 /**
  * \brief Avalia o valor lógico do value
  * @param a   o elemento do tipo #Value
@@ -61,6 +64,11 @@ Value conditional(Value x, Value y, Value z){
 
 Value isEqual (Value x, Value y){
 
+    if(x.type==Int && y.type==Array){
+		Value resultado = copyElement(y.array,x);
+		disposeValue(y);
+		return resultado;
+	}
 	if(x.type==String){
 		return fromInteger (strcmp (x.string,y.string)==0);
 	}else{//se forem tipos diferentes automaticamente não são iguais
@@ -86,7 +94,13 @@ Value isEqual (Value x, Value y){
  */
 
 Value isLess (Value x, Value y){
+	int tamanho;
 
+    if(x.type==Array && y.type==Int){
+		for(tamanho=length(x.array);tamanho>y.integer;tamanho--)
+			pop(x.array);
+		return x;
+	}
 	if(x.type==String){
 		return fromInteger (strcmp (x.string,y.string)<0);
 	}else{//se forem tipos diferentes automaticamente não são iguais
@@ -113,6 +127,10 @@ Value isLess (Value x, Value y){
 
 Value isGreater (Value x, Value y){
 
+    if(x.type==Array && y.type==Int){
+		disposeStack(split(x.array,y.integer));
+		return fromStack(x.array);
+	}
 	if(x.type==String){
 		return fromInteger (strcmp (x.string,y.string)>0);
 	}else{//se forem tipos diferentes automaticamente não são iguais

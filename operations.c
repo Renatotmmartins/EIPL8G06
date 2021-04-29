@@ -43,7 +43,12 @@ char* getInput ()
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value decrementado.
  */
-Value decrement(Value a) {
+Value decrement(State* s,Value a) {
+    if (a.type == Array) {
+        Value aux = popBottom(a.array);
+        push(s->stack,a);
+        return aux;
+    }
     UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1, a.array);
 }
 
@@ -54,7 +59,11 @@ Value decrement(Value a) {
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value incrementado.
  */
-Value increment( Value a) {
+Value increment(State* s,Value a) {
+    if (a.type == Array) {
+        Value aux = pop(a.array);
+        push(s->stack,a);
+        return aux;
     UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1, a.array);
 }
 
@@ -96,6 +105,17 @@ void NumericOperationAux(Value *a, Value *b) {
  * @return     resultado da soma de a com b.
  */
 Value sum(Value a, Value b) {
+    if (a.type == Array) {
+        return merge(a,b);
+    }
+    if (a.type == String) {
+        char* str = (char*) malloc ((sizeof (char))*(1+strlen(a.string )+ strlen(b.string)));
+        strcat(str,a.string);
+        strcat(str,b.string);
+        disposeValue(a);
+        disposeValue(b);
+        return fromString(str);
+    }
     NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
 }
 
@@ -132,6 +152,15 @@ Value divide(Value a, Value b) {
  * @return     resultado da multiplicação de a com b.
  */
 Value multiply(Value a, Value b) {
+    if (a.type == Array) {
+        int i;
+        Stack result = empty();
+        for (i = 0; i < b.integer ; ++i) {
+           Stack s = clone(a.array);
+           result = merge(result,s);
+        }
+        return fromStack(result);
+    }
     NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
 }
 /**

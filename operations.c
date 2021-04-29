@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "stack.h"
 #include "operations.h"
 #include "typeOperations.h"
 #include "arrayOperations.h"
@@ -40,6 +41,7 @@ char* getInput ()
 /**
  * \brief Decrementa o valor do tipo #Value.
  *
+ * @param s  o pointer para o estado do programa.
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value decrementado.
  */
@@ -56,6 +58,7 @@ Value decrement(State* s,Value a) {
 /**
  * \brief Incrementa o valor do tipo #Value.
  *
+ * @param s  o pointer para o estado do programa.
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value incrementado.
  */
@@ -71,6 +74,7 @@ Value increment(State* s,Value a) {
 /**
  * \brief Aplica a negação binária a um elemento do tipo #Value.
  *
+ * @param s  o pointer para o estado do programa.
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
@@ -106,7 +110,13 @@ void NumericOperationAux(Value *a, Value *b) {
  * @return     resultado da soma de a com b.
  */
 Value sum(Value a, Value b) {
-    if (a.type == Array) {
+    if (a.type == Array || b.type == Array) {
+        printf("AQUI\n");
+        if(a.type != Array)
+            a = convertToStack(a);
+
+        if(b.type != Array)
+            b = convertToStack(b);
         return fromStack(merge(a.array,b.array));
     }
     NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
@@ -230,6 +240,9 @@ void readAllLines(Stack st) {
     while(scanf("%s", curLine)) {
         //Concatena as strings
         strcat(str, curLine);
+
+        if(strcmp(curLine, "--ENDOFFILE--") == 0)
+            break;
     }
     //Liberta a string que guarda a linha atual, por não ser mais precisa
     free(curLine);

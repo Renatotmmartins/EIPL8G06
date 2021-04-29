@@ -102,6 +102,8 @@ Stack merge(Stack, Stack);
 void disposeStack(Stack);
 
 
+Value convertToStack(Value v);
+
 Value fromInteger(int);
 
 Value fromDecimal(double);
@@ -115,5 +117,7 @@ Value fromStack(Stack);
 Value deepCopy(Value);
 
 void disposeValue(Value);
+
+char* toString(Value v);
 
 #endif

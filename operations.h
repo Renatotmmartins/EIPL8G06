@@ -28,9 +28,9 @@ char* getInput ();
     return a\
 
 
-Value decrement(Value);
-Value increment(Value);
-Value negate(State*, Value);
+Value decrement(State* s, Value a);
+Value increment(State* s, Value a);
+Value negate(State* s, Value a);
 
 void NumericOperationAux(Value *a, Value *b);
 

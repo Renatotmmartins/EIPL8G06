@@ -9,7 +9,7 @@
 
 /**
  * \brief A stack vazia.
- 
+ *
  * @return   Um objeto do tipo Stack sem nenhum elemento
  */
 Stack empty() {
@@ -78,6 +78,7 @@ Value pop(Stack s) {
 
 /**
  * \brief Retorna o valor que está no fundo da stack
+ * 
  * @param st A stack dada
  * @return Valor no fundo da stack
  */
@@ -97,6 +98,18 @@ void eraseTop(Stack st) {
 }
 
 /**
+ * \brief Converte um #Value para outro que armazena uma stack
+ * 
+ *  @param v     O #Value a converter
+ *  @return      O #Value que guarda a stack
+ */
+Value convertToStack(Value v) {
+    Stack st = empty();
+    push(st, v);
+    return fromStack(st);
+}
+
+/**
  * \brief Devolve o n-ésimo elemento da stack (0 é o topo da stack)
  * 
  *  @param s     O pointer para a stack
@@ -113,6 +126,7 @@ Value getElement(Stack st, int n){
 
 /**
  * \brief Faz uma cópia da stack dada
+ * 
  * @param st A stack dada
  * @return Uma stack igual à stack original
  */
@@ -128,6 +142,7 @@ Stack clone(Stack st)
 
 /**
  * \brief "Junta" duas stacks
+ * 
  * @param a Primeira stack dada
  * @param b Segunda stack dada
  * @return Stack que resulta da junção das duas stacks dadas inicialmente
@@ -153,9 +168,9 @@ Stack merge(Stack a, Stack b) {
 
 /**
  * \brief Enquanto o topo da stack for vazio, elimina as células vazias
+ * 
  * @param st Stack dada
  */
-
 void disposeStack(Stack st) {
     while (!isEmpty(st))
         eraseTop(st);
@@ -218,8 +233,18 @@ Value fromCharacter(char ch){
 Value fromString(char* str){
     Value val;
 
-    val.type=String;
+    val.type = String;
     val.string=str;
+
+    Stack st = empty();
+
+    int elem = strlen(str);
+
+    for(elem--; elem >= 0; elem--)
+        push(st, fromCharacter(str[elem]));
+
+    free(str);
+    val.array = st;
 
     return val;
 }
@@ -247,12 +272,30 @@ Value fromStack(Stack st) {
 Value deepCopy(Value v) {
     Value copy = v;
 
-    if (v.type == String)
-        copy.string = strdup(v.string);
-    else if (v.type == Array)
+    if (v.type == Array || v.type == String)
         copy.array = clone(v.array);
 
     return copy;
+}
+
+/**
+ * \brief Converte um #Value para string
+ * 
+ * @param v
+ * @return A string obtida a partir do #Value
+ */
+char* toString(Value v) {
+    int size = length(v.array);
+    char* str = (char*) malloc(sizeof(char) * (size + 1));
+
+
+    int i;
+    for(i = 0; i < size; i++) {
+        Value temp = pop(v.array);
+        str[i] = temp.character;
+    }
+
+    return str;
 }
 
 /**
@@ -261,7 +304,7 @@ Value deepCopy(Value v) {
  */
 void disposeValue(Value v) {
     switch (v.type) {
-        case String:    free(v.string);     break;
+        case String:
         case Array:     free(v.array);      break;
         default:                            break;
     }

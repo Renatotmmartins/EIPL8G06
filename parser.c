@@ -37,10 +37,12 @@ Value readValue(char* str, State* st) {
     if ('A' <= *str && *str <= 'Z') //variável
         return st->variables[*str-'A'];
         
-    if (strchr(str, '.') == NULL) //double (tem um separador decimal)
+    if (strchr(str, '.') == NULL) //inteiro (não tem um separador decimal)
         return fromInteger(atoi(str));
+    else if(strchr(str, '\"') == NULL)
+        return fromDecimal(atof(str)); //double
     else
-        return fromDecimal(atof(str)); //inteiro
+        return fromString(str);
 }
 
 /**
@@ -97,6 +99,7 @@ Value readString(char** str) {
  */
 void resolveWord(char* str, int length, State* st)
 {
+    printf("%s\n", str);
     if (length <= 0)
         return;
 

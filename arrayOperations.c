@@ -45,7 +45,7 @@ Value substrAndDispose(Value st, Value pat) {
  */
 Value substr(Value st, Value pat) {
     //Obtém as strings através dos Values
-    char *str = st.string, *pattern = pat.string;
+    char *str = toString(st), *pattern = toString(pat);
     int res = -1;
     int i;
     for(i = 0; str[i]; i++) {
@@ -60,6 +60,9 @@ Value substr(Value st, Value pat) {
             break;
         }
     }
+
+    free(str);
+    free(pattern);
 
     return fromInteger(res);
 }
@@ -95,8 +98,8 @@ Value separateBySubstr(Value s, Value pat) {
     Stack st = empty();
 
     //Obtém as strings a partir dos Values
-    char* str = s.string;
-    char* pattern = pat.string;
+    char* str = toString(s);
+    char* pattern = toString(pat);
 
     int length = strlen(pattern);
     Value v = substr(fromString(str), fromString(pattern));;
@@ -117,6 +120,9 @@ Value separateBySubstr(Value s, Value pat) {
     //Libertar valores, pq não vão ser reutilizados
     disposeValue(s);
     disposeValue(pat);
+
+    free(str);
+    free(pattern);
 
     return fromStack(st);
 }

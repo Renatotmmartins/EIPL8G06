@@ -10,9 +10,16 @@
 
 #include "stack.h"
 
-
+/**
+ * \brief Roda os dois primeiros elementos da stack
+ * @param st Stack dada
+ */
 #define swap(st) rotateTop(st, 2)
 
+/**
+ *  \brief Roda os três primeiros elementos da stack
+ *  @param st Stack dada
+ */
 #define rotate(st) rotateTop(st, 3)
 
 void rotateTop(Stack, int);

@@ -56,8 +56,6 @@
         ENTRY('t', readAllLines, 0S) \
         \
         \
-        ENTRY('(', decrement, 1) \
-        ENTRY(')', increment, 1) \
         ENTRY('f', convertAndDisposeToDouble, 1) \
         ENTRY('i', convertAndDisposeToInt, 1) \
         ENTRY('c', convertAndDisposeToChar, 1) \
@@ -67,6 +65,8 @@
         \
         ENTRY('~', negate, 1S) \
         ENTRY('$', copyElement, 1S) \
+        ENTRY('(', decrement, 1S) \
+        ENTRY(')', increment, 1S) \
         \
         ENTRY(':', setVariable, 1SO) \
         \

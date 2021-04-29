@@ -64,6 +64,7 @@ Value increment(State* s,Value a) {
         Value aux = pop(a.array);
         push(s->stack,a);
         return aux;
+    }
     UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1, a.array);
 }
 
@@ -106,15 +107,7 @@ void NumericOperationAux(Value *a, Value *b) {
  */
 Value sum(Value a, Value b) {
     if (a.type == Array) {
-        return merge(a,b);
-    }
-    if (a.type == String) {
-        char* str = (char*) malloc ((sizeof (char))*(1+strlen(a.string )+ strlen(b.string)));
-        strcat(str,a.string);
-        strcat(str,b.string);
-        disposeValue(a);
-        disposeValue(b);
-        return fromString(str);
+        return fromStack(merge(a.array,b.array));
     }
     NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
 }
@@ -152,7 +145,8 @@ Value divide(Value a, Value b) {
  * @return     resultado da multiplicação de a com b.
  */
 Value multiply(Value a, Value b) {
-    if (a.type == Array) {
+
+    if (a.type == String || a.type == Array) {
         int i;
         Stack result = empty();
         for (i = 0; i < b.integer ; ++i) {

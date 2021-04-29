@@ -42,6 +42,12 @@ Value readValue(char* str, State* st) {
         return fromDecimal(atof(str)); //inteiro
 }
 
+/**
+ * \brief Converte um caracter escapado para o respetivo caracter de controlo
+ * @param c Caracter dado
+ * @return Caracter de controlo
+ */
+
 char getControlChar(char c) {
     switch (c) {
         case 'n':   return '\n';
@@ -55,8 +61,13 @@ char getControlChar(char c) {
     }
 }
 
-//mete *str a apontar para a aspa que fecha
+/**
+ * \brief converte uma string para uma Stack de caracteres
+ * @param str String dada
+ * @return Stack de caracteres
+ */
 Value readString(char** str) {
+    //mete *str a apontar para a aspa que fecha
     Stack read = empty();
     bool escape = false;
 

@@ -90,6 +90,8 @@
         ENTRY('?', conditional, 3)
 
 
+//! Expansão da JumpTable para Switch
+#define ENTRY(a,b,c) case a: PUSH_##c(st->stack, b(POP_##c )); return true;
 
 bool operation(char* str, State* st);
 

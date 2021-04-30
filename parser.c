@@ -18,11 +18,8 @@
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
 bool operation(char* str, State* st) {
-    //! Expansão da JumpTable para Switch
-    #define ENTRY(a,b,c) case a: PUSH_##c(st->stack, b(POP_##c )); return true;
+   
     switch (*str) { JUMP_TABLE }
-    //! Remover a macro para voltar a utilizar a JumpTable
-    #undef ENTRY
 
     return false;
 }

@@ -18,7 +18,8 @@
  * @return   O #Value com a informação armazenada num inteiro
  */
 Value convertToInt(Value a) {
-    Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, atoi(a.string))    
+    char* str;
+    Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, str = toString(a); a.integer = atoi(str); free(str);)  
 }
 
 /**
@@ -28,7 +29,8 @@ Value convertToInt(Value a) {
  * @return   O #Value com a informação armazenada num double
  */
 Value convertToDouble(Value a) {
-    Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, atof(a.string))
+    char* str;
+    Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, str = toString(a); a.decimal = atof(str); free(str);)
 }
 
 /**
@@ -38,7 +40,7 @@ Value convertToDouble(Value a) {
  * @return   O #Value com a informação armazenada num caracter
  */
 Value convertToChar(Value a) {
-    Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, UNDEFINED)
+    Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, a.character = '\0';);
 }
 
 /**
@@ -48,7 +50,7 @@ Value convertToChar(Value a) {
  * @return   O #Value com a informação armazenada sob a forma de texto
  */
 Value convertToString(Value a) {
-    Convert(String, string, convertFloatToString(a), convertIntToString(a), convertCharToString(a), copyString(a))
+    Convert(String, array, stringToStack(convertFloatToString(a)), stringToStack(convertIntToString(a)), stringToStack(convertCharToString(a)), a.array = stringToStack(copyString(a));)
 }
 
 /**
@@ -110,9 +112,11 @@ char* convertCharToString(Value v) {
  * @return   Um apontador para a cópia
  */
 char* copyString(Value v) {
+    char *str = toString(v);
+    char* ans = malloc((strlen(str) + 1) * sizeof(char));//Aloca memória suficiente
+    strcpy(ans, str);
 
-    char* ans = malloc((strlen(v.string) + 1) * sizeof(char));//Aloca memória suficiente
-    strcpy(ans, v.string);
+    free(str);
 
     return ans;
 }

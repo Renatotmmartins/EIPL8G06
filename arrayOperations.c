@@ -6,6 +6,7 @@
 #include <string.h>
 #include "arrayOperations.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * \brief Procura pelo padrão fornecido na string dada, desalocando os argumentos
@@ -46,13 +47,16 @@ Value substrAndDispose(Value st, Value pat) {
 Value substr(Value st, Value pat) {
     //Obtém as strings através dos Values
     char *str = toString(st), *pattern = toString(pat);
+
+    printf("%s %s\n", str, pattern);
+
     int res = -1;
     int i;
     for(i = 0; str[i]; i++) {
         int j;
 
         //Calcula até onde é que as strings coincidem
-        for(j = i; str[i + j] && str[i + j] == pattern[j]; j++);
+        for(j = 0; str[i + j] && str[i + j] == pattern[j]; j++);
 
         //Se chegamos ao fim do padrão então encontramos uma correspondência
         if(!pattern[j]) {
@@ -101,21 +105,27 @@ Value separateBySubstr(Value s, Value pat) {
     char* str = toString(s);
     char* pattern = toString(pat);
 
-    int length = strlen(pattern);
-    Value v = substr(fromString(str), fromString(pattern));;
+
+    int length[2] = {strlen(pattern), strlen(str)};
+    Value v = substr(fromString(str), fromString(pattern));
 
     //Variável temporária para armazenar substrings de str
     char* temp = malloc(sizeof(char) * strlen(str));
-
+    int lastPattern = 0;
     //Enquanto houver string e houver correspondência
-    while(v.integer != -1 && *str) {
+    while(v.integer != -1 && lastPattern < length[1]) {
         //Copia apenas a substring
-        copyPrefix(str, temp, v.integer);
+        copyPrefix(str + lastPattern, temp, v.integer);
         //Insere na stack uma cópia dessa substring
+        printf("%s\n", temp);
         push(st, deepCopy(fromString(temp)));
         //Atualiza o apontador para a próxima posição de interesse
-        str += v.integer + length;
+        lastPattern += v.integer + length[0];
+        if(lastPattern < length[1])
+            v = substr(fromString(str + lastPattern), fromString(pattern));
     }
+
+    push(st, deepCopy(fromString(str + lastPattern)));
 
     //Libertar valores, pq não vão ser reutilizados
     disposeValue(s);

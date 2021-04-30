@@ -29,7 +29,7 @@
         case Double:    result.unionArg = fromDouble;   break;\
         case Int:       result.unionArg = fromInt;      break;\
         case Char:      result.unionArg = fromChar;     break;\
-        case String:    result.unionArg = fromString;   break;\
+        case String:    fromString   break;\
         default:                                        break;\
     }\
     return result;

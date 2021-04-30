@@ -1,6 +1,7 @@
 #include "logicOperations.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "stackOperations.h"
 #include "arrayOperations.h"
 #include "stack.h"
@@ -16,7 +17,7 @@ bool isTrue(Value a)
 		case Double:	return a.decimal != 0;
 		case Int: 		return a.integer != 0;
 		case Char: 		return a.character != '\0';
-		case String:	return *a.string != '\0';
+		case String:	return length(a.array) != 0;
 		default:		return false;
 	}
 }
@@ -63,7 +64,7 @@ Value conditional(Value x, Value y, Value z){
  */
 
 Value isEqual (Value x, Value y){
-
+			printf("Afjdsjfndskg");
     if(x.type==Array && y.type==Int){
     	//estamos a procurar do fundo da stack para cima
 		Value resultado = deepCopy(getElement(x.array, length(x.array) - y.integer - 1));
@@ -71,7 +72,11 @@ Value isEqual (Value x, Value y){
 		return resultado;
 	}
 	if(x.type==String){
-		return fromInteger (strcmp (x.string,y.string)==0);
+		char* xstr = toString(x), *ystr = toString(y);
+		Value res = fromInteger (!strcmp ("abc", "abc"));
+		free(xstr);
+		free(ystr);
+		return res;
 	}else{//se forem tipos diferentes automaticamente não são iguais
 	   NumericOperationAux(&x,&y);
 		switch(x.type){
@@ -103,7 +108,13 @@ Value isLess (Value x, Value y){
 		return x;
 	}
 	if(x.type==String){
-		return fromInteger (strcmp (x.string,y.string)<0);
+		char *xstr = toString(x), *ystr = toString(y);
+		Value res = fromInteger (strcmp (xstr,ystr) < 0);
+
+		free(xstr);
+		free(ystr);
+
+		return res;
 	}else{//se forem tipos diferentes automaticamente não são iguais
 	   NumericOperationAux(&x,&y);
 		switch(x.type){
@@ -133,7 +144,14 @@ Value isGreater (Value x, Value y){
 		return fromStack(x.array);
 	}
 	if(x.type==String){
-		return fromInteger (strcmp (x.string,y.string)>0);
+		char *xstr = toString(x), *ystr = toString(y);
+		Value res = fromInteger (strcmp (xstr,ystr)>0);
+
+		free(xstr);
+		free(ystr);
+
+		return res;
+
 	}else{//se forem tipos diferentes automaticamente não são iguais
 	   NumericOperationAux(&x,&y);
 		switch(x.type){

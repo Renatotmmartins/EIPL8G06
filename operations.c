@@ -142,8 +142,10 @@ Value subtract(Value a, Value b) {
  */
 Value divide(Value a, Value b) {
     //Se estivermos a tratar de strings, faz a operação correspondente
-    if(a.type == String)
+    if(a.type == String || a.type == Array)
+    {
         return separateBySubstr(a,b); //TODO:: VERIFICAR ORDEM
+    }
 
     NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
 }
@@ -217,7 +219,7 @@ Value module(Value a, Value b) {
  */
 Value exponentiate(Value a, Value b) {
     //Se estivermos a tratar de strings, faz a operação correspondente
-    if(a.type == String)
+    if(a.type == String || a.type == Array)
         return substrAndDispose(a,b); //TODO:: VERIFICAR ORDEM
 
     NUMERICOPERATION(pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character));
@@ -238,14 +240,12 @@ void readAllLines(Stack st) {
 
     //Enquanto houver input para ler
     while(scanf("%s", curLine)) {
-        //Concatena as strings
-        strcat(str, curLine);
-
         if(strcmp(curLine, "--ENDOFFILE--") == 0)
             break;
+        //Concatena as strings
+        strcat(str, curLine);        
     }
     //Liberta a string que guarda a linha atual, por não ser mais precisa
     free(curLine);
-
     push(st, fromString(str));
 }

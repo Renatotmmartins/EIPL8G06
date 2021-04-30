@@ -99,7 +99,6 @@ Value readString(char** str) {
  */
 void resolveWord(char* str, int length, State* st)
 {
-    printf("%s\n", str);
     if (length <= 0)
         return;
 
@@ -156,7 +155,7 @@ void printVal(Value top) {
         case Double:    printf("%g", top.decimal);      break;
         case Int:       printf("%d", top.integer);      break;
         case Char:      printf("%c", top.character);    break;
-        case String:    printf("\"%s\"", top.string);   break;
+        case String:
         case Array:     printStack(top.array);          break;
     }
 }

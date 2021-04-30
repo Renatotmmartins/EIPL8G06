@@ -112,6 +112,8 @@ Value fromCharacter(char);
 
 Value fromString(char*);
 
+Stack stringToStack(char* str);
+
 Value fromStack(Stack);
 
 Value deepCopy(Value);

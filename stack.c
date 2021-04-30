@@ -234,8 +234,20 @@ Value fromString(char* str){
     Value val;
 
     val.type = String;
-    val.string=str;
 
+    //free(str);
+    val.array = stringToStack(str);
+
+    return val;
+}
+
+/**
+ * \brief Converte uma string para uma stack
+ *
+ * @param str  a string dada
+ * @return     a stack resultante
+ */
+Stack stringToStack(char* str) {
     Stack st = empty();
 
     int elem = strlen(str);
@@ -243,10 +255,7 @@ Value fromString(char* str){
     for(elem--; elem >= 0; elem--)
         push(st, fromCharacter(str[elem]));
 
-    free(str);
-    val.array = st;
-
-    return val;
+    return st;
 }
 
 /**
@@ -292,8 +301,10 @@ char* toString(Value v) {
     int i;
     for(i = 0; i < size; i++) {
         Value temp = pop(v.array);
-        str[i] = temp.character;
+        str[size - i - 1] = temp.character;
     }
+    
+    str[size] = '\0';
 
     return str;
 }

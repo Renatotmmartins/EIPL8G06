@@ -79,7 +79,7 @@ Value increment(State* s,Value a) {
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
 Value negate(State* s, Value a) {
-    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character, merge(s->stack,a.array);s->stack=a.array;a=pop(a.array));
+    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character, merge(s->stack,a.array);s->stack=a.array;);
 }
 
 

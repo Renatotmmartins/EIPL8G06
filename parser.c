@@ -12,14 +12,18 @@
 #include "parser.h"
 
 /**
- * \brief Verifica se o operador existe. Caso exista chama o operador e caso não exista retorna 0 (false).
- * @param str Contém o operador
- * @param st O state a preencher
+ * \brief Verifica se o caracter especificado existe na string no tamanho indicado
+ * @param str     A string
+ * @param length  O tamanho da string
+ * @param c       O caracter
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
-bool operation(char* str, State* st) {
-    switch (*str) { JUMP_TABLE }
-
+bool contains(char* str, int length, char c) {
+    while (length--) {
+        if (*str == c)
+            return true;
+        str++;
+    }
     return false;
 }
 
@@ -29,17 +33,25 @@ bool operation(char* str, State* st) {
  * @param st o state do programa
  * @return value que foi dado no input
  */
-Value readValue(char* str, State* st) {
+Value readValue(char* str, int length, State* st) {
     if ('A' <= *str && *str <= 'Z' && *(str + 1) == ' ') //variável
         return deepCopy(st->variables[*str-'A']);
-    if('A' <= *str && *str <= 'Z' && *(str + 1) == '/')
-        return separateBy(*str, st);
-    if (strchr(str, '.') == NULL) //inteiro (não tem um separador decimal)
-        return fromInteger(atoi(str));
-    else if(strchr(str, '\"') == NULL)
-        return fromDecimal(atof(str)); //double
+    if (contains(str, length, '.')) //double (contém um separador decimal)
+        return fromDecimal(atof(str));
     else
-        return fromString(str);
+        return fromInteger(atoi(str)); //inteiro
+}
+
+/**
+ * \brief Verifica se o operador existe. Caso exista chama o operador e caso não exista retorna 0 (false).
+ * @param str Contém o operador
+ * @param st O state a preencher
+ * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
+ */
+bool operation(char* str, int length, State* st) {
+    switch (*str) { JUMP_TABLE }
+
+    return false;
 }
 
 /**
@@ -100,14 +112,9 @@ void resolveWord(char* str, int length, State* st)
 {
     if (length <= 0)
         return;
-
-    if(atof(str) < 0) {
-        if(strchr(str, '.') == NULL)
-            push(st->stack, fromInteger(atoi(str)));
-        else
-            push(st->stack, fromDecimal(atof(str)));
-    } else if(!operation(str, st))
-        push(st->stack, readValue(str, st));
+    
+    if(!operation(str, length, st))
+        push(st->stack, readValue(str, length, st));
 }
 
 

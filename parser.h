@@ -32,70 +32,62 @@
 #define POP_3 pop(st->stack), pop(st->stack), pop(st->stack)
 
 //! Não efetua push do resultado da operação.
-#define PUSH_0S(x,y) y
+#define PUSH_0(x,y) y
 //! Efetua push do resultado da operação.
 #define PUSH_1(x,y) push(x,y)
-//! Efetua push do resultado da operação.
-#define PUSH_1S(x,y) push(x,y)
-//! Efetua push do resultado da operação.
-#define PUSH_1SO(x,y) push(x,y)
-//! Efetua push do resultado da operação.
-#define PUSH_2(x,y) push(x,y)
-//! Efetua push do resultado da operação.
-#define PUSH_2O(x,y) push(x,y)
-//! Efetua push do resultado da operação.
-#define PUSH_3(x,y) push(x,y)
 
 //! Contém o registo de todos os operadores e respetivos argumentos
 #define JUMP_TABLE \
-        ENTRY('l', readLine, 0S) \
-        ENTRY('_', duplicate, 0S) \
-        ENTRY(';', eraseTop, 0S) \
-        ENTRY('\\', swap, 0S) \
-        ENTRY('@', rotate, 0S) \
-        ENTRY('t', readAllLines, 0S) \
+        ENTRY('l', 1, readLine, 0S, 0) \
+        ENTRY('_', 1, duplicate, 0S, 0) \
+        ENTRY(';', 1, eraseTop, 0S, 0) \
+        ENTRY('\\', 1, swap, 0S, 0) \
+        ENTRY('@', 1, rotate, 0S, 0) \
+        ENTRY('t', 1, readAllLines, 0S, 0) \
         \
         \
-        ENTRY('f', convertAndDisposeToDouble, 1) \
-        ENTRY('i', convertAndDisposeToInt, 1) \
-        ENTRY('c', convertAndDisposeToChar, 1) \
-        ENTRY('s', convertAndDisposeToString, 1) \
-        ENTRY('!', logicNot,1) \
-        ENTRY(',', comma, 1)\
+        ENTRY('f', 1, convertAndDisposeToDouble, 1, 1) \
+        ENTRY('i', 1, convertAndDisposeToInt, 1, 1) \
+        ENTRY('c', 1, convertAndDisposeToChar, 1, 1) \
+        ENTRY('s', 1, convertAndDisposeToString, 1, 1) \
+        ENTRY('!', 1, logicNot,1, 1) \
+        ENTRY(',', 1, comma, 1, 1) \
+        /*ENTRY('S', 2, splitByWhitespace, 1, 1)*/ \
+        /*ENTRY('N', 2, splitByLinebreak, 1, 1)*/ \
         \
-        ENTRY('~', negate, 1S) \
-        ENTRY('$', copyElement, 1S) \
-        ENTRY('(', decrement, 1S) \
-        ENTRY(')', increment, 1S) \
+        ENTRY('~', 1, negate, 1S, 0) \
+        ENTRY('$', 1, copyElement, 1S, 1) \
+        ENTRY('(', 1, decrement, 1S, 1) \
+        ENTRY(')', 1, increment, 1S, 1) \
         \
-        ENTRY(':', setVariable, 1SO) \
-        \
-        \
-        ENTRY('+', sum, 2) \
-        ENTRY('-', subtract, 2) \
-        ENTRY('*', multiply, 2) \
-        ENTRY('/', divide, 2) \
-        ENTRY('%', module, 2) \
-        ENTRY('#', exponentiate, 2) \
-        ENTRY('&', and, 2) \
-        ENTRY('|', or, 2) \
-        ENTRY('^', xor, 2) \
-        ENTRY('=', isEqual, 2) \
-        ENTRY('<', isLess, 2) \
-        ENTRY('>', isGreater, 2) \
-        \
-        ENTRY('e', shortcutSelect, 2O) \
+        ENTRY(':', 2, setVariable, 1SO, 1) \
         \
         \
-        ENTRY('?', conditional, 3)
+        ENTRY('+', 1, sum, 2, 1) \
+        ENTRY('-', 1, subtract, 2, 1) \
+        ENTRY('*', 1, multiply, 2, 1) \
+        ENTRY('/', 1, divide, 2, 1) \
+        ENTRY('%', 1, module, 2, 1) \
+        ENTRY('#', 1, exponentiate, 2, 1) \
+        ENTRY('&', 1, and, 2, 1) \
+        ENTRY('|', 1, or, 2, 1) \
+        ENTRY('^', 1, xor, 2, 1) \
+        ENTRY('=', 1, isEqual, 2, 1) \
+        ENTRY('<', 1, isLess, 2, 1) \
+        ENTRY('>', 1, isGreater, 2, 1) \
+        \
+        ENTRY('e', 2, shortcutSelect, 2O, 1) \
+        \
+        \
+        ENTRY('?', 1, conditional, 3, 1)
 
 
 //! Expansão da JumpTable para Switch
-#define ENTRY(a,b,c) case a: PUSH_##c(st->stack, b(POP_##c )); return true;
+#define ENTRY(a, b, c, d, e) case a: if (length == b) { PUSH_##e(st->stack, c(POP_##d)); return true; } break;
 
-bool operation(char* str, State* st);
+bool operation(char* str, int length, State* st);
 
-Value readValue(char* str, State* st);
+Value readValue(char* str, int length, State* st);
 
 char getControlChar(char);
 

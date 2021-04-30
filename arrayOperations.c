@@ -102,36 +102,42 @@ Value separateBySubstr(Value s, Value pat) {
     Stack st = empty();
 
     //Obtém as strings a partir dos Values
-    char* str = toString(s);
+    char* or, *str = toString(s);
     char* pattern = toString(pat);
+    or = str;
 
+    int pat_length = strlen(pattern);
+    char* current = pattern; //posicao atual no padrao
+    char* accum = str; //último split (no início nao houve splits)
 
-    int length[2] = {strlen(pattern), strlen(str)};
-    Value v = substr(fromString(str), fromString(pattern));
+    while (*str) {
+        if (*str == *current)
+            current++;
+        else
+            current = pattern;
 
-    //Variável temporária para armazenar substrings de str
-    char* temp = malloc(sizeof(char) * strlen(str));
-    int lastPattern = 0;
-    //Enquanto houver string e houver correspondência
-    while(v.integer != -1 && lastPattern < length[1]) {
-        //Copia apenas a substring
-        copyPrefix(str + lastPattern, temp, v.integer);
-        //Insere na stack uma cópia dessa substring
-        printf("%s\n", temp);
-        push(st, deepCopy(fromString(temp)));
-        //Atualiza o apontador para a próxima posição de interesse
-        lastPattern += v.integer + length[0];
-        if(lastPattern < length[1])
-            v = substr(fromString(str + lastPattern), fromString(pattern));
+        if (*current == '\0') {
+            if (str - pat_length > accum) {
+                char temp = *(str - pat_length + 1); //Guarda o caracter a seguir ao split
+                *(str - pat_length + 1) = '\0';      //e substitui por um null terminator
+                push(st, fromString(accum));         //para poder chamar fromString.
+                *(str - pat_length + 1) = temp;      //Depois é só substituir de volta.
+            }
+            current = pattern;
+            accum = str + 1;
+        }
+
+        str++;
     }
 
-    push(st, deepCopy(fromString(str + lastPattern)));
+    if (str > accum) //ultimo push (se for preciso...)
+        push(st, fromString(accum));
 
     //Libertar valores, pq não vão ser reutilizados
     disposeValue(s);
     disposeValue(pat);
 
-    free(str);
+    free(or);
     free(pattern);
 
     return fromStack(st);

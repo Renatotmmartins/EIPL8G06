@@ -87,7 +87,9 @@ Value readString(char** str) {
         (*str)++;
     }
     
-    return fromStack(read);
+    Value r = fromStack(read);
+    r.type = String;
+    return r;
 }
 
 /**

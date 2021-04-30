@@ -250,10 +250,8 @@ Value fromString(char* str){
 Stack stringToStack(char* str) {
     Stack st = empty();
 
-    int elem = strlen(str);
-
-    for(elem--; elem >= 0; elem--)
-        push(st, fromCharacter(str[elem]));
+    while (*str)
+        push(st, fromCharacter(*(str++)));
 
     return st;
 }

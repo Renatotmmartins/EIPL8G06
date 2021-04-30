@@ -17,7 +17,8 @@ bool isTrue(Value a)
 		case Double:	return a.decimal != 0;
 		case Int: 		return a.integer != 0;
 		case Char: 		return a.character != '\0';
-		case String:	return length(a.array) != 0;
+		case String:	
+		case Array:		return !isEmpty(a.array);
 		default:		return false;
 	}
 }
@@ -30,16 +31,24 @@ bool isTrue(Value a)
  * @return    x ou y, dependendo do resultado da operação que for efetuada
  */
 
-Value shortcutSelect(char* str, Value x, Value y)
-{
-	switch (*str)
-	{
-		case '&':	return isTrue(x) ? y : x;
-		case '|':	return isTrue(x) ? x : y;
-		case '<':	return isTrue(isLess(x, y)) ? x : y;
-		case '>':	return isTrue(isGreater(x, y)) ? x : y;
-		default: 	return isTrue(x) ? x : y;
+Value shortcutSelect(char* str, Value x, Value y) {
+	Value* r;
+
+	switch (*str) {
+		case '&':	r = isTrue(x) ? &y : &x;				break;
+		case '|':	r = isTrue(x) ? &x : &y;				break;
+		case '<':	r = isTrue(isLess(x, y)) ? &x : &y;		break;
+		case '>':	r = isTrue(isGreater(x, y)) ? &x : &y;	break;
+		default: 	r = isTrue(x) ? &x : &y;				break;
 	}
+
+	if (r == &x)
+		disposeValue(y);
+	else
+		disposeValue(x);
+
+	printVal(y);
+	return *r;
 }
 
 
@@ -64,7 +73,6 @@ Value conditional(Value x, Value y, Value z){
  */
 
 Value isEqual (Value x, Value y){
-			printf("Afjdsjfndskg");
     if(x.type==Array && y.type==Int){
     	//estamos a procurar do fundo da stack para cima
 		Value resultado = deepCopy(getElement(x.array, length(x.array) - y.integer - 1));
@@ -73,7 +81,7 @@ Value isEqual (Value x, Value y){
 	}
 	if(x.type==String){
 		char* xstr = toString(x), *ystr = toString(y);
-		Value res = fromInteger (!strcmp ("abc", "abc"));
+		Value res = fromInteger (!strcmp (xstr, ystr));
 		free(xstr);
 		free(ystr);
 		return res;

@@ -18,7 +18,6 @@
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
 bool operation(char* str, State* st) {
-   
     switch (*str) { JUMP_TABLE }
 
     return false;
@@ -31,9 +30,10 @@ bool operation(char* str, State* st) {
  * @return value que foi dado no input
  */
 Value readValue(char* str, State* st) {
-    if ('A' <= *str && *str <= 'Z') //variável
-        return st->variables[*str-'A'];
-        
+    if ('A' <= *str && *str <= 'Z' && *(str + 1) == ' ') //variável
+        return deepCopy(st->variables[*str-'A']);
+    if('A' <= *str && *str <= 'Z' && *(str + 1) == '/')
+        return separateBy(*str, st);
     if (strchr(str, '.') == NULL) //inteiro (não tem um separador decimal)
         return fromInteger(atoi(str));
     else if(strchr(str, '\"') == NULL)
@@ -101,7 +101,12 @@ void resolveWord(char* str, int length, State* st)
     if (length <= 0)
         return;
 
-    if(!operation(str, st))
+    if(atof(str) < 0) {
+        if(strchr(str, '.') == NULL)
+            push(st->stack, fromInteger(atoi(str)));
+        else
+            push(st->stack, fromDecimal(atof(str)));
+    } else if(!operation(str, st))
         push(st->stack, readValue(str, st));
 }
 

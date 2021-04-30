@@ -48,8 +48,6 @@ Value substr(Value st, Value pat) {
     //Obtém as strings através dos Values
     char *str = toString(st), *pattern = toString(pat);
 
-    printf("%s %s\n", str, pattern);
-
     int res = -1;
     int i;
     for(i = 0; str[i]; i++) {

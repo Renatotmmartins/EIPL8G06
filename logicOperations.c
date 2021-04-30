@@ -73,7 +73,7 @@ Value conditional(Value x, Value y, Value z){
  */
 
 Value isEqual (Value x, Value y){
-    if(x.type==Array && y.type==Int){
+    if(x.type>= String && y.type==Int){
     	//estamos a procurar do fundo da stack para cima
 		Value resultado = deepCopy(getElement(x.array, length(x.array) - y.integer - 1));
 		disposeValue(x);
@@ -201,7 +201,7 @@ Value logicNot (Value x){
  * @param s   o state do programa
  */
 Value setVariable(char var, State* s, Value x){
-	s->variables[var-'A'] = x;
+	s->variables[var-'A'] = deepCopy(x);
 	return x;
 }
 

@@ -7,6 +7,7 @@
 #include "stackOperations.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /**
  * \brief Retorna uma cópia do n-ésimo elemento da stack dada (o topo da stack é 0)
@@ -107,6 +108,7 @@ Value comma(Value a){
     switch(a.type){
         case Int: //Retorna o range [0...n-1]
         return fromStack(range(a.integer));
+        case String:
         case Array: //Retorna o tamanho da array
         tamanho = fromInteger(length(a.array));
         disposeStack(a.array);

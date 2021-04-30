@@ -46,7 +46,7 @@ char* getInput ()
  * @return   o elemento do tipo #Value decrementado.
  */
 Value decrement(State* s,Value a) {
-    if (a.type == Array) {
+    if (a.type >= String) {
         Value aux = popBottom(a.array);
         push(s->stack,a);
         return aux;
@@ -63,7 +63,7 @@ Value decrement(State* s,Value a) {
  * @return   o elemento do tipo #Value incrementado.
  */
 Value increment(State* s,Value a) {
-    if (a.type == Array) {
+    if (a.type >= String) {
         Value aux = pop(a.array);
         push(s->stack,a);
         return aux;
@@ -110,12 +110,11 @@ void NumericOperationAux(Value *a, Value *b) {
  * @return     resultado da soma de a com b.
  */
 Value sum(Value a, Value b) {
-    if (a.type == Array || b.type == Array) {
-        printf("AQUI\n");
-        if(a.type != Array)
+    if (a.type >= String || b.type >= String) {
+        if(a.type < Array)
             a = convertToStack(a);
 
-        if(b.type != Array)
+        if(b.type < Array)
             b = convertToStack(b);
         return fromStack(merge(a.array,b.array));
     }
@@ -142,7 +141,7 @@ Value subtract(Value a, Value b) {
  */
 Value divide(Value a, Value b) {
     //Se estivermos a tratar de strings, faz a operação correspondente
-    if(a.type == String || a.type == Array)
+    if(a.type >= String)
     {
         return separateBySubstr(a,b); //TODO:: VERIFICAR ORDEM
     }
@@ -158,7 +157,7 @@ Value divide(Value a, Value b) {
  */
 Value multiply(Value a, Value b) {
 
-    if (a.type == String || a.type == Array) {
+    if (a.type >= String) {
         int i;
         Stack result = empty();
         for (i = 0; i < b.integer ; ++i) {
@@ -219,7 +218,7 @@ Value module(Value a, Value b) {
  */
 Value exponentiate(Value a, Value b) {
     //Se estivermos a tratar de strings, faz a operação correspondente
-    if(a.type == String || a.type == Array)
+    if(a.type >= String)
         return substrAndDispose(a,b); //TODO:: VERIFICAR ORDEM
 
     NUMERICOPERATION(pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character));
@@ -239,13 +238,35 @@ void readAllLines(Stack st) {
     char* curLine = malloc(sizeof(char) * MAXINPUTLENGTH);
 
     //Enquanto houver input para ler
-    while(scanf("%s", curLine)) {
-        if(strcmp(curLine, "--ENDOFFILE--") == 0)
+    while(fgets(curLine, MAXINPUTLENGTH,stdin) != NULL) {
+        //Para ser possível parar a leitura na consola
+        if(strcmp(curLine, "--ENDOFFILE--\n") == 0)
             break;
         //Concatena as strings
         strcat(str, curLine);        
     }
+    int i;
+    for(i = 0; str[i]; i++)
+        if(str[i] == '\n')
+            str[i] = ' ';
     //Liberta a string que guarda a linha atual, por não ser mais precisa
     free(curLine);
     push(st, fromString(str));
+}
+
+/**
+ * \brief    Separa a última string da stack contida no state
+ *           pelo caracter indicado (N -> '\n' S -> ' ')
+ *           
+ * 
+ * @param ch O caracter indicado ('N' ou 'S');
+ * @param st O estado do programa
+ * 
+ * @return   O #Value que contém a stack resultante
+ */
+Value separateBy(char ch, State* st) {
+    char separator = (ch == 'S') ? ' ' : '\n';
+
+    return separateBySubstr(pop(st->stack),
+         convertToString(fromCharacter(separator)));
 }

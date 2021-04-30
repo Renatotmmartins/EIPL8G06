@@ -298,7 +298,8 @@ char* toString(Value v) {
 
     int i;
     for(i = 0; i < size; i++) {
-        Value temp = pop(v.array);
+        Value temp = v.array->value;
+        v.array = v.array->previous;
         str[size - i - 1] = temp.character;
     }
     

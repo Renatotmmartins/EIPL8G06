@@ -34,7 +34,7 @@ bool contains(char* str, int length, char c) {
  * @return value que foi dado no input
  */
 Value readValue(char* str, int length, State* st) {
-    if ('A' <= *str && *str <= 'Z' && *(str + 1) == ' ') //variável
+    if ('A' <= *str && *str <= 'Z') //variável
         return deepCopy(st->variables[*str-'A']);
     if (contains(str, length, '.')) //double (contém um separador decimal)
         return fromDecimal(atof(str));

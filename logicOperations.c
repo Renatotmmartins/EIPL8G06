@@ -110,7 +110,7 @@ Value isEqual (Value x, Value y){
 Value isLess (Value x, Value y){
 	int tamanho;
 
-    if(x.type==Array && y.type==Int){ //manter os primeiros y elementos
+    if(x.type >= String && y.type==Int){ //manter os primeiros y elementos
 		for(tamanho=length(x.array);tamanho>y.integer;tamanho--)
 			pop(x.array);
 		return x;
@@ -147,7 +147,7 @@ Value isLess (Value x, Value y){
 
 Value isGreater (Value x, Value y){
 
-    if(x.type==Array && y.type==Int){ //manter os últimos y elementos da array
+    if(x.type >= String && y.type==Int){ //manter os últimos y elementos da array
 		disposeStack(split(x.array,y.integer));
 		return fromStack(x.array);
 	}

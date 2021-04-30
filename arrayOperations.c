@@ -110,9 +110,10 @@ Stack separateBySubstrAux(char* str, char* pattern) {
             current = pattern;
 
         if (*current == '\0') {
-            if (str - pat_length > accum) {
+            if (str - pat_length >= accum) {
                 char temp = *(str - pat_length + 1); //Guarda o caracter a seguir ao split
                 *(str - pat_length + 1) = '\0';      //e substitui por um null terminator
+                //printf("Inserido: \"%s\"\n", accum);
                 push(st, fromString(accum));         //para poder chamar fromString.
                 *(str - pat_length + 1) = temp;      //Depois é só substituir de volta.
             }
@@ -123,8 +124,10 @@ Stack separateBySubstrAux(char* str, char* pattern) {
         str++;
     }
 
-    if (str > accum) //ultimo push (se for preciso...)
+    if (*accum) //ultimo push (se for preciso...)
         push(st, fromString(accum));
+
+    return st;
 }
 
 /**

@@ -14,7 +14,7 @@
 #include "arrayOperations.h"
 
 //! O comprimento máximo de uma string de input
-#define MAXINPUTLENGTH 10000
+#define MAXINPUTLENGTH 1000000
 
 /**
  * \brief Lê uma linha de input
@@ -245,28 +245,37 @@ void readAllLines(Stack st) {
         //Concatena as strings
         strcat(str, curLine);        
     }
-    int i;
-    for(i = 0; str[i]; i++)
-        if(str[i] == '\n')
-            str[i] = ' ';
+
     //Liberta a string que guarda a linha atual, por não ser mais precisa
     free(curLine);
     push(st, fromString(str));
 }
 
 /**
- * \brief    Separa a última string da stack contida no state
- *           pelo caracter indicado (N -> '\n' S -> ' ')
+ * \brief    Separa a string dada pelos espaços.
  *           
- * 
- * @param ch O caracter indicado ('N' ou 'S');
- * @param st O estado do programa
+ * @param v  O #Value que contém a string
  * 
  * @return   O #Value que contém a stack resultante
  */
-Value separateBy(char ch, State* st) {
-    char separator = (ch == 'S') ? ' ' : '\n';
+Value splitByWhitespace(Value v) {
+    Value copy = v;
+    while(!isEmpty(v.array)) {
+        if(v.array->value.character == '\n') 
+            v.array->value.character = ' ';
 
-    return separateBySubstr(pop(st->stack),
-         convertToString(fromCharacter(separator)));
+        v.array = v.array->previous;
+    }
+    return separateBySubstr(copy, convertToString(fromCharacter(' ')));
+}
+
+/**
+ * \brief    Separa a string dada pelos caracteres de mudança de linhas.
+ *           
+ * @param v  O #Value que contém a string
+ * 
+ * @return   O #Value que contém a stack resultante
+ */
+Value splitByLinebreak(Value v) {
+    return separateBySubstr(v, convertToString(fromCharacter('\n')));
 }

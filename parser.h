@@ -52,8 +52,8 @@
         ENTRY('s', 1, convertAndDisposeToString, 1, 1) \
         ENTRY('!', 1, logicNot,1, 1) \
         ENTRY(',', 1, comma, 1, 1) \
-        /*ENTRY('S', 2, splitByWhitespace, 1, 1)*/ \
-        /*ENTRY('N', 2, splitByLinebreak, 1, 1)*/ \
+        ENTRY('S', 2, splitByWhitespace, 1, 1) \
+        ENTRY('N', 2, splitByLinebreak, 1, 1) \
         \
         ENTRY('~', 1, negate, 1S, 0) \
         ENTRY('$', 1, copyElement, 1S, 1) \

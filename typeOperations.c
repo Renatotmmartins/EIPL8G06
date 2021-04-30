@@ -19,7 +19,7 @@
  */
 Value convertToInt(Value a) {
     char* str;
-    Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, str = toString(a); a.integer = atoi(str); free(str);)  
+    Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, str = toString(a); result.integer = atoi(str); free(str);)  
 }
 
 /**
@@ -30,7 +30,7 @@ Value convertToInt(Value a) {
  */
 Value convertToDouble(Value a) {
     char* str;
-    Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, str = toString(a); a.decimal = atof(str); free(str);)
+    Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, str = toString(a); result.decimal = atof(str); free(str);)
 }
 
 /**
@@ -40,7 +40,7 @@ Value convertToDouble(Value a) {
  * @return   O #Value com a informação armazenada num caracter
  */
 Value convertToChar(Value a) {
-    Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, a.character = '\0';);
+    Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, result.character = '\0';);
 }
 
 /**

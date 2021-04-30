@@ -60,5 +60,6 @@ Value module(Value a, Value b);
 Value exponentiate(Value a, Value b);
 
 void readAllLines(Stack st);
-Value separateBy(char ch, State* st);
+Value splitByWhitespace(Value v);
+Value splitByLinebreak(Value v);
 #endif

@@ -88,21 +88,16 @@ void copyPrefix(char* src, char* dest, int length) {
 }
 
 /**
- * \brief Separa uma string pela substring dada, retornando uma array de strings
+ * \brief Auxiliar da função separateBySubstr.
  *
- * @param s      A string a separar (sob a forma de #Value)
+ * @param str      A string a separar
  *
- * @param pat    O padrão a usar para separar a string (sob a forma de #Value)
+ * @param pattern  O padrão a usar para separar a string
  *
- * @return        O #Value correspondendo a uma array (stack) de strings
+ * @return         A array (stack) de strings
  */
-Value separateBySubstr(Value s, Value pat) {
+Stack separateBySubstrAux(char* str, char* pattern) {
     Stack st = empty();
-
-    //Obtém as strings a partir dos Values
-    char* or, *str = toString(s);
-    char* pattern = toString(pat);
-    or = str;
 
     int pat_length = strlen(pattern);
     char* current = pattern; //posicao atual no padrao
@@ -130,15 +125,32 @@ Value separateBySubstr(Value s, Value pat) {
 
     if (str > accum) //ultimo push (se for preciso...)
         push(st, fromString(accum));
+}
+
+/**
+ * \brief Separa uma string pela substring dada, retornando uma array de strings
+ *
+ * @param s      A string a separar (sob a forma de #Value)
+ *
+ * @param pat    O padrão a usar para separar a string (sob a forma de #Value)
+ *
+ * @return        O #Value correspondendo a uma array (stack) de strings
+ */
+Value separateBySubstr(Value s, Value pat) {
+    //Obtém as strings a partir dos Values
+    char *str = toString(s);
+    char* pattern = toString(pat);
+
+    Stack r = separateBySubstrAux(str, pattern);
 
     //Libertar valores, pq não vão ser reutilizados
     disposeValue(s);
     disposeValue(pat);
 
-    free(or);
+    free(str);
     free(pattern);
 
-    return fromStack(st);
+    return fromStack(r);
 }
 
 /**

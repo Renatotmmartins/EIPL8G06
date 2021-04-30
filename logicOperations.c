@@ -110,18 +110,18 @@ Value isEqual (Value x, Value y){
 Value isLess (Value x, Value y){
 	int tamanho;
 
-    if(x.type==Array && y.type==Int){
+    if(x.type==Array && y.type==Int){ //manter os primeiros y elementos
 		for(tamanho=length(x.array);tamanho>y.integer;tamanho--)
 			pop(x.array);
 		return x;
 	}
-	if(x.type==String){
+	if(x.type==String){ //comparação usando strcmp
 		char *xstr = toString(x), *ystr = toString(y);
 		Value res = fromInteger (strcmp (xstr,ystr) < 0);
 
+		//libertar strings auxiliares
 		free(xstr);
 		free(ystr);
-
 		return res;
 	}else{//se forem tipos diferentes automaticamente não são iguais
 	   NumericOperationAux(&x,&y);
@@ -147,19 +147,18 @@ Value isLess (Value x, Value y){
 
 Value isGreater (Value x, Value y){
 
-    if(x.type==Array && y.type==Int){
+    if(x.type==Array && y.type==Int){ //manter os últimos y elementos da array
 		disposeStack(split(x.array,y.integer));
 		return fromStack(x.array);
 	}
-	if(x.type==String){
+	if(x.type==String){ //comparar as strings com o strcmp
 		char *xstr = toString(x), *ystr = toString(y);
 		Value res = fromInteger (strcmp (xstr,ystr)>0);
 
+		//libertar strings auxiliares
 		free(xstr);
 		free(ystr);
-
 		return res;
-
 	}else{//se forem tipos diferentes automaticamente não são iguais
 	   NumericOperationAux(&x,&y);
 		switch(x.type){

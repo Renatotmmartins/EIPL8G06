@@ -103,6 +103,22 @@ Value readString(char** str) {
 }
 
 /**
+ * \brief converte uma string para uma array, retornada sob a forma de um Value
+ *
+ * @param s     O estado atual
+ * @param str   A string
+ */
+Value readArray(State* s, char** str) {
+    (*str)++;
+    Stack current = s->stack; //guarda a stack atual
+    s->stack = empty();
+    processInput(str, s); //chama processInput recursivamente com uma stack vazia
+    Value r = fromStack(s->stack);
+    s->stack = current; //recupera a stack
+    return r;
+}
+
+/**
  * \brief Avança o pointer dado até ao fim do bloco
  *
  * @param str Pointer dado
@@ -162,36 +178,29 @@ void processInput(char** str, State* st) {
     char *aux, *accum = *str;
     Stack current;
     while(**str && **str != '\n' && **str != ']') {
-        switch (**str)
-        {
-            case ' ':
+        switch (**str) {
+            case ' ': //Value simples ou operador
             resolveWord(accum, *str - accum, st);
-            accum = *str + 1;
             break;
 
-            case '"':
+            case '"': //String
             push(st->stack, readString(str));
-            accum = *str + 1;
             break;
 
-            case '[':
-            current = st->stack; //guarda a stack atual
-            st->stack = empty();
-            (*str)++;
-            processInput(str, st); //chama processInput recursivamente com uma stack vazia
-            push(current, fromStack(st->stack));
-            st->stack = current; //recupera a stack
-            accum = *str + 1;
+            case '[': //Array
+            push(st->stack, readArray(st, str));
             break;
 
-            case '{':
+            case '{': //Bloco
             aux = *str;     //guarda o início do bloco
             readBlock(str); //avança até ao fim do bloco
             //calcula o tamanho (dado como a diferença entre as posições das chavetas)
             push(st->stack, fromBlock(aux, *str - aux));
-            accum = *str + 1;
             break;
+
+            default:    (*str)++;   continue;
         }
+        accum = *str + 1; //foi lido um símbolo
         (*str)++;
     }
     resolveWord(accum, *str - accum, st); // Resolve o que faltar

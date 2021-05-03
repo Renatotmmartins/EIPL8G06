@@ -89,9 +89,11 @@ bool operation(char* str, int length, State* st);
 
 Value readValue(char* str, int length, State* st);
 
-char getControlChar(char);
+char getControlChar(char c);
 
-Value readString(char**);
+Value readString(char** str);
+
+void readBlock(char** str);
 
 void resolveWord(char* str, int length, State* st);
 

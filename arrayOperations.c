@@ -5,6 +5,7 @@
 
 #include <string.h>
 #include "arrayOperations.h"
+#include "logicOperations.h"
 #include <stdlib.h>
 #include <stdio.h>
 

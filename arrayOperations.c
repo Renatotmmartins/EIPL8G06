@@ -88,7 +88,8 @@ void copyPrefix(char* src, char* dest, int length) {
 }
 
 /**
- * \brief Auxiliar da função separateBySubstr.
+ * \brief Auxiliar da função separateBySubstr. Parte a string fornecida
+ *        pelo padrão dado (na forma de strings (char*))
  *
  * @param str      A string a separar
  *
@@ -103,17 +104,18 @@ Stack separateBySubstrAux(char* str, char* pattern) {
     char* current = pattern; //posicao atual no padrao
     char* accum = str; //último split (no início nao houve splits)
 
+    //Enquanto não acabar o string
     while (*str) {
         if (*str == *current)
             current++;
         else
             current = pattern;
 
+        //Se tivermos encontrado uma ocorrência do padrão
         if (*current == '\0') {
             if (str - pat_length >= accum) {
                 char temp = *(str - pat_length + 1); //Guarda o caracter a seguir ao split
                 *(str - pat_length + 1) = '\0';      //e substitui por um null terminator
-                //printf("Inserido: \"%s\"\n", accum);
                 push(st, fromString(accum));         //para poder chamar fromString.
                 *(str - pat_length + 1) = temp;      //Depois é só substituir de volta.
             }
@@ -124,7 +126,7 @@ Stack separateBySubstrAux(char* str, char* pattern) {
         str++;
     }
 
-    if (*accum) //ultimo push (se for preciso...)
+    if (*accum) //ultimo push se for preciso
         push(st, fromString(accum));
 
     return st;
@@ -137,7 +139,7 @@ Stack separateBySubstrAux(char* str, char* pattern) {
  *
  * @param pat    O padrão a usar para separar a string (sob a forma de #Value)
  *
- * @return        O #Value correspondendo a uma array (stack) de strings
+ * @return       O #Value correspondendo a uma array (stack) de strings
  */
 Value separateBySubstr(Value s, Value pat) {
     //Obtém as strings a partir dos Values
@@ -150,6 +152,7 @@ Value separateBySubstr(Value s, Value pat) {
     disposeValue(s);
     disposeValue(pat);
 
+    //Libertar strings
     free(str);
     free(pattern);
 
@@ -164,7 +167,7 @@ Value separateBySubstr(Value s, Value pat) {
  */
 Stack split(Stack st, int x){
    
-   while(x>0){
+    while(x>0){
        st=st->previous;
        x--;
     }
@@ -172,4 +175,71 @@ Stack split(Stack st, int x){
     *a=*st;
     st->previous=NULL;
     return a;
+}
+
+/**
+ * \brief Ordena o array dado de acordo com o bloco fornecido
+ * @param array   O array a ordenar
+ * @param x       O bloco que é usado para comparar elementos
+ * @return        O array ordenado
+ */
+Value sort(Value array, Value block) {
+    int size = length(array.array);
+    //Chama o merge sort
+    //Esta função auxiliar é necessária pois é preciso saber de antemão
+    //o tamanho da stack.
+    return fromStack(mergeSort(array.array, block, size));
+}
+
+
+/**
+ * \brief Ordena o array dado de acordo com o bloco fornecido
+ * @param l       O primeiro array a juntar
+ * @param r       O segundo array a juntar
+ * @param block   O bloco que é usado para comparar elementos
+ * @return        O array ordenado
+ */
+Stack mergeStacks(Stack l, Stack r, Value block) {
+    Stack res = empty();
+    //Enquanto nenhuma stack é vazia
+    while(!isEmpty(l) && !isEmpty(r)) {
+        Stack st;
+        push(st, deepCopy(l->value));
+        push(st, deepCopy(r->value));
+
+        //Se a condição executada retorna verdadeiro, então l < r
+        if(isTrue((execute(st, block)))) {
+            push(res, pop(l));
+        } else {
+            push(res, pop(r));
+        }
+    }
+
+    //Insere na stack res todos os elementos das duas stacks que ainda não foram
+    //inseridos (apenas tem efeito para uma das stacks)
+    res = merge(res, l);
+    res = merge(res, r);
+
+    return res;
+}
+
+/**
+ * \brief Ordena o array dado de acordo com o bloco fornecido
+ * @param array   O array a ordenar
+ * @param x       O bloco que é usado para comparar elementos
+ * @return        O array ordenado
+ */
+Stack mergeSort(Stack st, Value block, int n) {
+    //Caso base: a stack já está ordenada
+    if(n <= 1)
+        return st;
+    //Parte a stack em duas
+    Stack firstHalf = split(st, n / 2);
+
+    //Ordena as duas metades
+    firstHalf = mergeSort(firstHalf, block, n / 2);
+    st = mergeSort(st, block, n - (n / 2));
+
+    //Junta as metades ordenadas para uma nova stack ordenada
+    return mergeStacks(st, firstHalf, block);
 }

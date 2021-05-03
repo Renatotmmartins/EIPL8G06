@@ -21,4 +21,10 @@ Value separateBySubstr(Value s, Value pat);
 
 Stack split(Stack, int);
 
+Value sort(Value array, Value block);
+
+Stack mergeStacks(Stack l, Stack r, Value block);
+
+Stack mergeSort(Stack st, Value block, int n);
+
 #endif

@@ -47,7 +47,6 @@ Value shortcutSelect(char* str, Value x, Value y) {
 	else
 		disposeValue(x);
 
-	printVal(y);
 	return *r;
 }
 

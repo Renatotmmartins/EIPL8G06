@@ -117,10 +117,9 @@ Value convertToStack(Value v) {
  */
 Value getElement(Stack st, int n){
 
-    while(n>0){
+    while (n--)
         st=st->previous;
-        n--;
-    }
+
     return st->value;
 }
 

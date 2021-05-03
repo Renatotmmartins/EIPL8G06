@@ -82,6 +82,7 @@ Value readString(char** str) {
     //mete *str a apontar para a aspa que fecha
     Stack read = empty();
     bool escape = false;
+    (*str)++;
 
     while (escape || **str != '"') {
         if (escape) {
@@ -102,11 +103,35 @@ Value readString(char** str) {
 }
 
 /**
+ * \brief Avança o pointer dado até ao fim do bloco
+ *
+ * @param str Pointer dado
+ */
+void readBlock(char** str) {
+    (*str)++;
+    while (**str != '}' && **str != ']') {
+        switch (**str) {
+            case '"':
+            //dispose do valor lido (só queremos mudar a posição de *str)
+            disposeValue(readString(str));
+            break;
+
+            case '[':
+            case '{':
+            //chamada recursiva em vez de contar os parênteses e as chavetas
+            readBlock(str);
+            break;
+        }
+        (*str)++;
+    }
+}
+
+/**
  * \brief Processa a palavra fornecida, preenchendo a stack dada ou efetuando a operação descrita.
  * 
  * @param str       A string correspondente à palavra
  * @param length    O tamanho da palavra
- * @param st        O state a preencher
+ * @param st        O state a preencherstr
  */
 void resolveWord(char* str, int length, State* st)
 {
@@ -117,6 +142,15 @@ void resolveWord(char* str, int length, State* st)
         push(st->stack, readValue(str, length, st));
 }
 
+//TEMPORÁRIO!!! só para efeitos de teste. TODO: substituir pela funcao a sério
+Value fromBlock(char* inicio, int length) {
+    char aux = inicio[length + 1];
+    inicio[length + 1] = '"';
+    char* copy = inicio - 1;
+    Value a = readString(&copy);
+    inicio[length + 1] = aux;
+    return a;
+}
 
 /**
  * \brief Processa a string fornecida, e preenche a stack dada, efetuando todas as operações descritas na string.
@@ -125,7 +159,7 @@ void resolveWord(char* str, int length, State* st)
  * @param st    O state a preencher
  */
 void processInput(char** str, State* st) {
-    char* accum = *str;
+    char *aux, *accum = *str;
     Stack current;
     while(**str && **str != '\n' && **str != ']') {
         switch (**str)
@@ -136,7 +170,6 @@ void processInput(char** str, State* st) {
             break;
 
             case '"':
-            (*str)++;
             push(st->stack, readString(str));
             accum = *str + 1;
             break;
@@ -148,6 +181,14 @@ void processInput(char** str, State* st) {
             processInput(str, st); //chama processInput recursivamente com uma stack vazia
             push(current, fromStack(st->stack));
             st->stack = current; //recupera a stack
+            accum = *str + 1;
+            break;
+
+            case '{':
+            aux = *str;     //guarda o início do bloco
+            readBlock(str); //avança até ao fim do bloco
+            //calcula o tamanho (dado como a diferença entre as posições das chavetas)
+            push(st->stack, fromBlock(aux, *str - aux));
             accum = *str + 1;
             break;
         }

@@ -76,14 +76,14 @@
         ENTRY('<', 1, isLess, 2, 1) \
         ENTRY('>', 1, isGreater, 2, 1) \
         \
-        ENTRY('e', 2, shortcutSelect, 2O, 1) \
+        ENTRY('e', 1, shortcutSelect, 2O, 1) \
         \
         \
         ENTRY('?', 1, conditional, 3, 1)
 
 
 //! Expansão da JumpTable para Switch
-#define ENTRY(a, b, c, d, e) case a: if (length == b) { PUSH_##e(st->stack, c(POP_##d)); return true; } break;
+#define ENTRY(a, b, c, d, e) case a: if (length >= b) { PUSH_##e(st->stack, c(POP_##d)); return true; } break;
 
 bool operation(char* str, int length, State* st);
 

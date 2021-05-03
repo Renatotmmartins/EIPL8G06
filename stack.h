@@ -27,7 +27,8 @@ typedef enum dataType {
 	Int, //!< Valor Inteiro
 	Char, //!< Caracter
 	String, //!< Texto
-	Array //!< Array
+	Array, //!< Array
+	Block, //!< Bloco
 } DataType;
 
 //! O tipo de dados usado para representar s stack
@@ -49,7 +50,7 @@ typedef struct value {
 		int integer; //!< Valor Inteiro
 		double decimal; //!< Valor Fracionário
 		char character; //!< Caracter
-		char* string; //!< Texto
+		char* block; //!< Bloco
 		struct stack* array; //!< Array
 	};
 

@@ -271,6 +271,23 @@ Value fromStack(Stack st) {
 }
 
 /**
+ * \brief Cria um value a partir de um bloco com a forma de string
+ * @param block bloco dado
+ * @param length Tamanho da string + 1
+ * @return Value criado a partir de um bloco com a forma da string
+ */
+
+Value fromBlock(char* block, int length) {
+    Value val;
+
+    val.type = Block;
+    val.block = malloc( length * sizeof (char));
+    memcpy(val.block,block,(length-1) * sizeof (char);
+    val.block [(length-1)] = "\0";
+    return val;
+}
+
+/**
  * \brief Copia valor que esteja inicialmente na stack
  * @param v Valor inicialmente dado
  * @return Valor copiado na sua nova localização.
@@ -281,13 +298,16 @@ Value deepCopy(Value v) {
     if (v.type == Array || v.type == String)
         copy.array = clone(v.array);
 
+    else if (v.type == Block)
+        copy.block = strdup(v.block);
+
     return copy;
 }
 
 /**
  * \brief Converte um #Value para string
  * 
- * @param v
+ * @param v Value dado que vai ser convertido para string
  * @return A string obtida a partir do #Value
  */
 char* toString(Value v) {
@@ -315,6 +335,8 @@ void disposeValue(Value v) {
     switch (v.type) {
         case String:
         case Array:     free(v.array);      break;
+        case Block:     free(v.block);      break;
         default:                            break;
+
     }
 }

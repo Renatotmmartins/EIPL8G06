@@ -158,16 +158,6 @@ void resolveWord(char* str, int length, State* st)
         push(st->stack, readValue(str, length, st));
 }
 
-//TEMPORÁRIO!!! só para efeitos de teste. TODO: substituir pela funcao a sério
-Value fromBlock(char* inicio, int length) {
-    char aux = inicio[length + 1];
-    inicio[length + 1] = '"';
-    char* copy = inicio - 1;
-    Value a = readString(&copy);
-    inicio[length + 1] = aux;
-    return a;
-}
-
 /**
  * \brief Processa a string fornecida, e preenche a stack dada, efetuando todas as operações descritas na string.
  * 
@@ -218,6 +208,7 @@ void printVal(Value top) {
         case Char:      printf("%c", top.character);    break;
         case String:
         case Array:     printStack(top.array);          break;
+        case Block:     printf("{%s}", top.block);       break;
     }
 }
 

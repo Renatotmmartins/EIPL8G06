@@ -13,7 +13,12 @@
 
 Value execute (Stack st, Value block);
 
-Void execute_while_true (Stack st, Value block);
+void execute_while_true (Stack st, Value block);
 
+void map (Stack st, Value block);
+
+void filter (Stack st, Value block);
+
+void fold (Stack st, Value block);
 
 #endif

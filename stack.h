@@ -117,6 +117,8 @@ Stack stringToStack(char* str);
 
 Value fromStack(Stack);
 
+Value fromBlock(char* block, int length);
+
 Value deepCopy(Value);
 
 void disposeValue(Value);

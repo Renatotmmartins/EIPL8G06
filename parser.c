@@ -185,7 +185,7 @@ void processInput(char** str, State* st) {
             aux = *str;     //guarda o início do bloco
             readBlock(str); //avança até ao fim do bloco
             //calcula o tamanho (dado como a diferença entre as posições das chavetas)
-            push(st->stack, fromBlock(aux, *str - aux));
+            push(st->stack, fromBlock(aux + 1, *str - aux));
             break;
 
             default:    (*str)++;   continue;

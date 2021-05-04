@@ -282,8 +282,8 @@ Value fromBlock(char* block, int length) {
 
     val.type = Block;
     val.block = malloc( length * sizeof (char));
-    memcpy(val.block,block,(length-1) * sizeof (char);
-    val.block [(length-1)] = "\0";
+    memcpy(val.block,block,(length-1) * sizeof (char));
+    val.block [(length-1)] = '\0';
     return val;
 }
 

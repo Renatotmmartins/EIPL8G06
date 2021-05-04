@@ -34,6 +34,6 @@ Stack range(int);
 
 Stack repeat(Stack, int);
 
-Value comma(Value);
+Value comma(State* s, Value a);
 
 #endif

@@ -5,6 +5,8 @@
 
 #include "operations.h"
 #include "stackOperations.h"
+#include "arrayOperations.h"
+#include "blockOperations.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -20,7 +22,10 @@
  * @return Uma cópia do n-ésimo elemento da stack
  */
 Value copyElement(State* s, Value n) {
-    return deepCopy(getElement(s->stack, n.integer));
+    if (n.type == Block)
+        return sort(pop(s->stack), n);
+    else
+        return deepCopy(getElement(s->stack, n.integer));
 }
 
 /**
@@ -103,16 +108,20 @@ Stack range(int n) {
  * @param a o elemento do tipo Value
  * @return Devolve o range, se for inteiro, ou o tamanho, se for array.
  */
-Value comma(Value a){
-    Value tamanho;
+Value comma(State* s, Value a){
+    Value aux;
     switch(a.type){
         case Int: //Retorna o range [0...n-1]
         return fromStack(range(a.integer));
         case String:
         case Array: //Retorna o tamanho da array
-        tamanho = fromInteger(length(a.array));
+        aux = fromInteger(length(a.array));
         disposeStack(a.array);
-        return tamanho;
+        return aux;
+        case Block:
+        aux = pop(s->stack);
+        filter(aux.array, a);
+        return aux;
         //Operação não definida
         default: return fromInteger(UNDEFINED);
     }

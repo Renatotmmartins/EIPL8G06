@@ -17,20 +17,18 @@
 char* getInput ();
 
 //! Usada para simplificar as funções só com um argumento.
-#define UNARYOPERATION(caseDouble, caseInt, caseChar, caseArray)\
+#define UNARYOPERATION(caseDouble, caseInt, caseChar)\
     switch (a.type) {\
         case Double:    a.decimal = caseDouble; break;\
         case Int: a.integer = caseInt;          break;\
         case Char: a.character = caseChar;      break;\
-        case Array: a.array = caseArray;        break;\
         default:                                break;\
-    }\
-    return a\
+    }
 
 
 Value decrement(State* s, Value a);
 Value increment(State* s, Value a);
-Value negate(State* s, Value a);
+void negate(State* s, Value a);
 
 void NumericOperationAux(Value *a, Value *b);
 

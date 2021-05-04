@@ -15,6 +15,7 @@
 #include "stackOperations.h"
 #include "typeOperations.h"
 #include "logicOperations.h"
+#include "blockOperations.h"
 
 //! Seleciona os argumentos das funções sobre a stack
 #define POP_0S st->stack
@@ -51,7 +52,6 @@
         ENTRY('c', 1, convertAndDisposeToChar, 1, 1) \
         ENTRY('s', 1, convertAndDisposeToString, 1, 1) \
         ENTRY('!', 1, logicNot,1, 1) \
-        ENTRY(',', 1, comma, 1, 1) \
         ENTRY('S', 2, splitByWhitespace, 1, 1) \
         ENTRY('N', 2, splitByLinebreak, 1, 1) \
         \
@@ -59,6 +59,8 @@
         ENTRY('$', 1, copyElement, 1S, 1) \
         ENTRY('(', 1, decrement, 1S, 1) \
         ENTRY(')', 1, increment, 1S, 1) \
+        ENTRY(',', 1, comma, 1S, 1) \
+        ENTRY('w', 1, execute_while_true, 1S, 0) \
         \
         ENTRY(':', 2, setVariable, 1SO, 1) \
         \

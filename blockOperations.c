@@ -26,9 +26,9 @@ Value execute (Stack st, Value block) {
  * @param block bloco fornecido
  */
 
-void execute_while_true (Stack st, Value block) {
-    while (!isEmpty(st) && isTrue(st -> value))
-        execute (st, block);
+void execute_while_true (State* s, Value block) {
+    while (!isEmpty(s->stack) && isTrue(s->stack->value))
+        execute (s->stack, block);
 }
 
 /**
@@ -54,7 +54,7 @@ void filter (Stack st, Value block){
     if(isEmpty(st)==0){
         filter(st->previous, block);
         Stack a=convertToStack(deepCopy(st->value)).array;
-        if(isTrue(a->value)==0)
+        if(isTrue(execute(a, block))==0)
             eraseTop(st);
         
         disposeStack(a);

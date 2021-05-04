@@ -13,7 +13,7 @@
 
 Value execute (Stack st, Value block);
 
-void execute_while_true (Stack st, Value block);
+void execute_while_true (State* s, Value block);
 
 void map (Stack st, Value block);
 

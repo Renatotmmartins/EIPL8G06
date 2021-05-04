@@ -12,6 +12,7 @@
 #include "operations.h"
 #include "typeOperations.h"
 #include "arrayOperations.h"
+#include "blockOperations.h"
 
 //! O comprimento máximo de uma string de input
 #define MAXINPUTLENGTH 1000000
@@ -51,7 +52,7 @@ Value decrement(State* s,Value a) {
         push(s->stack,a);
         return aux;
     }
-    UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1, a.array);
+    UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
 }
 
 
@@ -68,7 +69,8 @@ Value increment(State* s,Value a) {
         push(s->stack,a);
         return aux;
     }
-    UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1, a.array);
+    UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1);
+    return a;
 }
 
 /**
@@ -78,8 +80,15 @@ Value increment(State* s,Value a) {
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
-Value negate(State* s, Value a) {
-    UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character, merge(s->stack,a.array);s->stack=a.array;);
+void negate(State* s, Value a) {
+    if (a.type == Block)
+        execute(s->stack, a);
+    else if (a.type >= String)
+        s->stack = merge(s->stack,a.array);
+    else {
+        UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character);
+        push(s->stack, a);
+    }
 }
 
 
@@ -156,8 +165,10 @@ Value divide(Value a, Value b) {
  * @return     resultado da multiplicação de a com b.
  */
 Value multiply(Value a, Value b) {
-
-    if (a.type >= String) {
+    if (b.type == Block) {
+        fold(a.array, b);
+        return a;
+    } else if (a.type >= String) {
         int i;
         Stack result = empty();
         for (i = 0; i < b.integer ; ++i) {
@@ -206,6 +217,10 @@ Value xor(Value a, Value b) {
  * @return   o resto da divisao inteira.
  */
 Value module(Value a, Value b) {
+    if (b.type == Block) {
+        map(a.array, b);
+        return a;
+    }
     NUMERICOPERATION(fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character);
 }
 

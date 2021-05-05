@@ -11,14 +11,14 @@
 #include "stack.h"
 #include "logicOperations.h"
 
-Value execute (Stack st, Value block);
+Value execute (State* s, Value block);
 
-void execute_while_true (State* s, Value block);
+void executeWhileTrue (State* s, Value block);
 
-void map (Stack st, Value block);
+void map (State* s, Value block);
 
-void filter (Stack st, Value block);
+void filter (State* s, Value block);
 
-void fold (Stack st, Value block);
+void fold (State* s, Value block);
 
 #endif

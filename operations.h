@@ -50,11 +50,11 @@ void NumericOperationAux(Value *a, Value *b);
 Value sum(Value a, Value b);
 Value subtract(Value a, Value b);
 Value divide(Value a, Value b);
-Value multiply(Value a, Value b);
+Value multiply(State* s, Value a, Value b);
 Value and(Value a, Value b);
 Value or(Value a, Value b);
 Value xor(Value a, Value b);
-Value module(Value a, Value b);
+Value module(State* s, Value a, Value b);
 Value exponentiate(Value a, Value b);
 
 void readAllLines(Stack st);

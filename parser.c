@@ -166,7 +166,6 @@ void resolveWord(char* str, int length, State* st)
  */
 void processInput(char** str, State* st) {
     char *aux, *accum = *str;
-    Stack current;
     while(**str && **str != '\n' && **str != ']') {
         switch (**str) {
             case ' ': //Value simples ou operador

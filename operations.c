@@ -15,7 +15,7 @@
 #include "blockOperations.h"
 
 //! O comprimento máximo de uma string de input
-#define MAXINPUTLENGTH 1000000
+#define MAXINPUTLENGTH 10000
 
 /**
  * \brief Lê uma linha de input
@@ -53,6 +53,7 @@ Value decrement(State* s,Value a) {
         return aux;
     }
     UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
+    return a;
 }
 
 
@@ -82,7 +83,7 @@ Value increment(State* s,Value a) {
  */
 void negate(State* s, Value a) {
     if (a.type == Block)
-        execute(s->stack, a);
+        execute(s, a);
     else if (a.type >= String)
         s->stack = merge(s->stack,a.array);
     else {
@@ -164,9 +165,12 @@ Value divide(Value a, Value b) {
  * @param b  o elemento do tipo #Value.
  * @return     resultado da multiplicação de a com b.
  */
-Value multiply(Value a, Value b) {
+Value multiply(State* s, Value a, Value b) {
     if (b.type == Block) {
-        fold(a.array, b);
+        Stack st = s->stack;
+        s->stack = a.array;
+        fold(s, b);
+        s->stack = st;
         return a;
     } else if (a.type >= String) {
         int i;
@@ -212,13 +216,17 @@ Value xor(Value a, Value b) {
 /**
  * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value.
  *
+ * @param s  o estado do programa
  * @param a  o elemento do tipo #Value que atua como dividendo.
  * @param b  o elemento do tipo #Value que atua como divisor.
  * @return   o resto da divisao inteira.
  */
-Value module(Value a, Value b) {
+Value module(State* s, Value a, Value b) {
     if (b.type == Block) {
-        map(a.array, b);
+        Stack st = s->stack;
+        s->stack = a.array;
+        map(s, b);
+        s->stack = st;
         return a;
     }
     NUMERICOPERATION(fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character);

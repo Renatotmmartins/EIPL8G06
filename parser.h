@@ -27,6 +27,8 @@
 #define POP_1SO *(str + 1), st, pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos
 #define POP_2 pop(st->stack), pop(st->stack)
+//! Seleciona o argumento das funções com dois argumentos sobre a stack
+#define POP_2S st, pop(st->stack), pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos e sub operações
 #define POP_2O str + 1, pop(st->stack), pop(st->stack)
 //! Seleciona o argumento das funções com três argumentos
@@ -60,16 +62,16 @@
         ENTRY('(', 1, decrement, 1S, 1) \
         ENTRY(')', 1, increment, 1S, 1) \
         ENTRY(',', 1, comma, 1S, 1) \
-        ENTRY('w', 1, execute_while_true, 1S, 0) \
+        ENTRY('w', 1, executeWhileTrue, 1S, 0) \
         \
         ENTRY(':', 2, setVariable, 1SO, 1) \
         \
         \
         ENTRY('+', 1, sum, 2, 1) \
         ENTRY('-', 1, subtract, 2, 1) \
-        ENTRY('*', 1, multiply, 2, 1) \
+        ENTRY('*', 1, multiply, 2S, 1) \
         ENTRY('/', 1, divide, 2, 1) \
-        ENTRY('%', 1, module, 2, 1) \
+        ENTRY('%', 1, module, 2S, 1) \
         ENTRY('#', 1, exponentiate, 2, 1) \
         ENTRY('&', 1, and, 2, 1) \
         ENTRY('|', 1, or, 2, 1) \

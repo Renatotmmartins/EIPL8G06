@@ -185,40 +185,73 @@ Stack split(Stack st, int x){
  * @param x       O bloco que é usado para comparar elementos
  * @return        O array ordenado
  */
-Value sort(Value array, Value block) {
+Value sort(State* s, Value array, Value block) {
     int size = length(array.array);
     //Chama o merge sort
     //Esta função auxiliar é necessária pois é preciso saber de antemão
     //o tamanho da stack.
-    return fromStack(mergeSort(array.array, block, size));
+    return fromStack(mergeSort(s, array.array, block, size));
 }
 
 
+Stack reverseStack(Stack s) {
+    Stack st = empty();
+    while(!isEmpty(s)) {
+        push(st, pop(s));
+    }
+    disposeStack(s);
+    return st;
+}
+
 /**
  * \brief Ordena o array dado de acordo com o bloco fornecido
+ * @param s       O estado do programa
  * @param l       O primeiro array a juntar
  * @param r       O segundo array a juntar
  * @param block   O bloco que é usado para comparar elementos
  * @return        O array ordenado
  */
-Stack mergeStacks(Stack l, Stack r, Value block) {
+Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
+    l = reverseStack(l);
+    r = reverseStack(r);
     Stack res = empty();
     //Enquanto nenhuma stack é vazia
     while(!isEmpty(l) && !isEmpty(r)) {
-        Stack st;
-        push(st, deepCopy(l->value));
-        push(st, deepCopy(r->value));
+        Stack s1 = empty();
+        Stack s2 = empty();
+        //Value v1 = l->value, v2 = r->value;
+        push(s1, deepCopy(l->value));
+        push(s2, deepCopy(r->value));
 
+        Stack st = s->stack;
+        s->stack = s1;
+        Value v1 = execute(s, block);
+        s->stack = s2;
+        Value v2 = execute(s, block);
+
+        s->stack = st;
         //Se a condição executada retorna verdadeiro, então l < r
-        if(isTrue((execute(st, block)))) {
+        if(isTrue(isLess(v1,v2))) {
+            /*printVal(v1);
+            printf("<");
+            printVal(v2);*/
             push(res, pop(l));
         } else {
+            /*printVal(v1);
+            printf(">");
+            printVal(v2);*/
             push(res, pop(r));
         }
+        //printf("\n");
+        disposeStack(s1);
+        disposeStack(s2);
     }
+    
 
     //Insere na stack res todos os elementos das duas stacks que ainda não foram
     //inseridos (apenas tem efeito para uma das stacks)
+    l = reverseStack(l);
+    r = reverseStack(r);
     res = merge(res, l);
     res = merge(res, r);
 
@@ -227,21 +260,30 @@ Stack mergeStacks(Stack l, Stack r, Value block) {
 
 /**
  * \brief Ordena o array dado de acordo com o bloco fornecido
+ * @param s       O estado do programa
  * @param array   O array a ordenar
  * @param x       O bloco que é usado para comparar elementos
  * @return        O array ordenado
  */
-Stack mergeSort(Stack st, Value block, int n) {
+Stack mergeSort(State* s, Stack st, Value block, int n) {
     //Caso base: a stack já está ordenada
+    /*printf("NOVA ITEREACAO\n");
+    printStack(deepCopy(fromStack(st)).array);
+    printf("%d\n", n);
+    printf("------------------------\n");*/
     if(n <= 1)
         return st;
     //Parte a stack em duas
-    Stack firstHalf = split(st, n / 2);
+    Stack firstHalf = split(st, (n + 1) / 2);
 
     //Ordena as duas metades
-    firstHalf = mergeSort(firstHalf, block, n / 2);
-    st = mergeSort(st, block, n - (n / 2));
+    firstHalf = mergeSort(s, firstHalf, block, n - ((n + 1) / 2));
+    st = mergeSort(s, st, block, (n + 1) / 2);
 
+    /*printStack(deepCopy(fromStack(st)).array);
+    printf(" ");
+    printStack(deepCopy(fromStack(firstHalf)).array);
+    printf("\n");*/
     //Junta as metades ordenadas para uma nova stack ordenada
-    return mergeStacks(st, firstHalf, block);
+    return mergeStacks(s, st, firstHalf, block);
 }

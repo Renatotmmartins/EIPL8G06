@@ -6,6 +6,7 @@
 #include "stack.h"
 #include "logicOperations.h"
 #include "stackOperations.h"
+#include "arrayOperations.h"
 
 /**
  * \brief Executa um bloco dentro de uma stack
@@ -14,13 +15,13 @@
  * @return Value que é resultado da operação do bloco dentro da stack
  */
 
-Value execute (State* s, Stack st, Value block) {
+Value execute (State* s, Stack* st, Value block) {
     Stack temp = s->stack;
-    s->stack = st;
+    s->stack = *st;
     processInput (&block.block, s);
-    Value res = s->stack->value;
-    s->stack = temp;  
-    return res;
+    *st = s->stack;
+    s->stack = temp;
+    return (*st)->value;
 }
 
 
@@ -32,7 +33,7 @@ Value execute (State* s, Stack st, Value block) {
 
 void executeWhileTrue (State* s, Value block) {
     while (!isEmpty(s->stack) && isTrue(s->stack->value))
-        execute (s, s->stack, block);
+        execute (s, &s->stack, block);
 }
 
 /**
@@ -47,7 +48,7 @@ void map (State* s, Value block){
         s->stack = s->stack->previous;
         map(s, block);
         s->stack = st;
-        execute(s, s->stack, block);
+        execute(s, &s->stack, block);
     }
 }
 
@@ -64,7 +65,7 @@ void filter (State* s, Value block){
         filter(s, block);
         Stack a=convertToStack(deepCopy(st->value)).array;
         s->stack = a;
-        if(isTrue(execute(s, s->stack, block))==0)
+        if(isTrue(execute(s, &s->stack, block))==0)
             eraseTop(st);
         
         s->stack = st;
@@ -79,14 +80,15 @@ void filter (State* s, Value block){
  * @param block bloco fornecido
  */
 Value fold (State* s, Stack st, Value block){
-    //printf("%d\n", length(st));
-    if(isEmpty(st->previous)) {
-        return st->value;
-    } else {
-        Stack aux = empty();
-        push(aux,fold(s, st->previous, block));
-        aux->previous = st;
-        Value ans = execute(s, aux, block);
-        return ans;
-    }    
+    reverseStack(st);
+
+
+    while (!isEmpty(st->previous)) {
+        rotateTop(st, 2);
+        execute(s, &st, block);
+    }
+
+    Value ans = pop(st);
+    disposeStack(st);
+    return ans;
 }

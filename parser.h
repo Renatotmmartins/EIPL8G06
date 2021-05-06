@@ -16,6 +16,7 @@
 #include "typeOperations.h"
 #include "logicOperations.h"
 #include "blockOperations.h"
+#include "arrayOperations.h"
 
 //! Seleciona os argumentos das funções sobre a stack
 #define POP_0S st->stack

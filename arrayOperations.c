@@ -194,13 +194,14 @@ Value sort(State* s, Value array, Value block) {
 }
 
 
-Stack reverseStack(Stack s) {
+void reverseStack(Stack s) {
     Stack st = empty();
     while(!isEmpty(s)) {
         push(st, pop(s));
     }
-    disposeStack(s);
-    return st;
+
+    *s = *st;
+    free(st);
 }
 
 /**
@@ -212,8 +213,8 @@ Stack reverseStack(Stack s) {
  * @return        O array ordenado
  */
 Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
-    l = reverseStack(l);
-    r = reverseStack(r);
+    reverseStack(l);
+    reverseStack(r);
     Stack res = empty();
     //Enquanto nenhuma stack é vazia
     while(!isEmpty(l) && !isEmpty(r)) {
@@ -225,9 +226,9 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
 
         Stack st = s->stack;
         s->stack = s1;
-        Value v1 = execute(s, s->stack, block);
+        Value v1 = execute(s, &s->stack, block);
         s->stack = s2;
-        Value v2 = execute(s, s->stack, block);
+        Value v2 = execute(s, &s->stack, block);
 
         s->stack = st;
         //Se a condição executada retorna verdadeiro, então l < r
@@ -250,8 +251,8 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
 
     //Insere na stack res todos os elementos das duas stacks que ainda não foram
     //inseridos (apenas tem efeito para uma das stacks)
-    l = reverseStack(l);
-    r = reverseStack(r);
+    reverseStack(l);
+    reverseStack(r);
     res = merge(res, l);
     res = merge(res, r);
 

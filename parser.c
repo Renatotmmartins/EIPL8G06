@@ -221,13 +221,21 @@ void printVal(Value top) {
  * @param st   A stack a imprimir
  */
 void printStack(Stack st) {
-    if(!isEmpty(st)) {
+    
+    if (!isEmpty(st)) {
         Value top = pop(st);
-
         printStack(st);
         printVal(top);
         disposeValue(top);
     }
+
+    /*reverseStack(st);
+
+    while (!isEmpty(st)) {
+        Value a = pop(st);
+        printVal(a);
+        disposeValue(a);
+    }*/
 }
 
 /**

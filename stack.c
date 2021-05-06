@@ -66,12 +66,14 @@ void push(Stack s, Value value) {
  * @return 	O elemento removido do topo da stack
  */
 Value pop(Stack s) {
+
+    if (isEmpty(s))
+        printf("pop de vazia...\n");
+
 	Stack previous = s->previous;
 	Value top = s->value;
 	*s = *previous;
-
-    if(previous != NULL)
-	    free(previous);
+    free(previous);
 
 	return top;
 }

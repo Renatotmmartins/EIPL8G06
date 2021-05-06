@@ -23,6 +23,8 @@ Stack split(Stack, int);
 
 Value sort(State* s, Value array, Value block);
 
+void reverseStack(Stack s);
+
 Stack mergeStacks(State* s, Stack l, Stack r, Value block);
 
 Stack mergeSort(State* s, Stack st, Value block, int n);

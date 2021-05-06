@@ -83,7 +83,7 @@ Value increment(State* s,Value a) {
  */
 void negate(State* s, Value a) {
     if (a.type == Block)
-        execute(s, s->stack, a);
+        execute(s, &s->stack, a);
     else if (a.type >= String)
         s->stack = merge(s->stack,a.array);
     else {

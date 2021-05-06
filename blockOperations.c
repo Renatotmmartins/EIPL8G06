@@ -41,24 +41,18 @@ void executeWhileTrue (State* s, Value block) {
  * @param s     o estado do programa
  * @param block bloco fornecido
  */
-void map (State* s, char* block){
-    /*Stack st = empty();
-    while(!isEmpty(s->stack)) {
-        Value v = execute(s, s->stack, block);
-        push(st, v);
-        disposeValue(pop(s->stack));
+void map (State* s, Value block){
+    Stack aux = empty();
+
+    while (!isEmpty(s->stack))
+        push(aux, pop(s->stack));
+
+    while (!isEmpty(aux)) {
+        push(s->stack, pop(aux));
+        execute(s, s->stack, block);
     }
-    //printStackLine(st);
-    *s->stack = *st;*/
-    //disposeStack(st);
-    int len = strlen(block);
-    if(isEmpty(s->stack)==0){
-        Stack st = s->stack;
-        s->stack = s->stack->previous;
-        map(s, block);
-        s->stack = st;
-        execute(s, s->stack, fromBlock(block, len));
-    }
+
+    disposeStack(aux);
 }
 
 /**
@@ -67,19 +61,23 @@ void map (State* s, char* block){
  * @param block bloco fornecido
  */
 void filter (State* s, Value block){
+    Stack aux = empty(); //stack para conter os elementos pea ordem certa
 
-    if(isEmpty(s->stack)==0){
-        Stack st = s->stack;
-        s->stack = s->stack->previous;
-        filter(s, block);
-        Stack a=convertToStack(deepCopy(st->value)).array;
-        s->stack = a;
-        if(isTrue(execute(s, s->stack, block))==0)
-            eraseTop(st);
-        
-        s->stack = st;
-        disposeStack(a);
+    while (!isEmpty(s->stack)) //colocar os elementos
+        push(aux, pop(s->stack));
+
+    while (!isEmpty(aux)) {
+        Stack temp = empty(); //stack para realizar a comparação
+        push(temp, deepCopy(aux->value));
+        execute(s, temp, block); //executa a operação
+        if (isTrue(pop(temp)))
+            push(s->stack, pop(aux));
+        else
+            eraseTop(aux);
+        disposeStack(temp);
     }
+
+    disposeStack(aux);
 }
 
 /**
@@ -89,25 +87,16 @@ void filter (State* s, Value block){
  * @param block bloco fornecido
  */
 Value fold (State* s, Stack st, Value block){
-    if (isEmpty(st) || isEmpty(st->previous))
-        return st->value;
+    Stack aux = empty();
 
-    Value top = pop(st);
-    fold(s, st, block);
-    push(st, top);
-    execute(s, st, block);
-    return st-> value;
+    while (!isEmpty(st->previous))
+        push(aux, pop(st));
 
-
-    /*reverseStack(st);
-
-
-    while (!isEmpty(st->previous)) {
-        rotateTop(st, 2);
-        execute(s, &st, block);
+    while (!isEmpty(aux)) {
+        push(st, pop(aux));
+        execute(s, st, block);
     }
 
-    Value ans = pop(st);
-    disposeStack(st);
-    return ans;*/
+    disposeStack(aux);
+    return st->value;
 }

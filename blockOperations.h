@@ -15,7 +15,7 @@ Value execute (State* s, Stack st, Value block);
 
 void executeWhileTrue (State* s, Value block);
 
-void map (State* s, char* block);
+void map (State* s, Value block);
 
 void filter (State* s, Value block);
 

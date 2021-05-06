@@ -235,7 +235,7 @@ Value fromString(char* str){
 
     //free(str);
     val.array = stringToStack(str);
-
+    free(str);
     return val;
 }
 
@@ -247,9 +247,11 @@ Value fromString(char* str){
  */
 Stack stringToStack(char* str) {
     Stack st = empty();
-
+    char* og = str;
     while (*str)
         push(st, fromCharacter(*(str++)));
+
+    free(og);
 
     return st;
 }
@@ -283,6 +285,7 @@ Value fromBlock(char* block, int length) {
     val.block = malloc( length * sizeof (char));
     memcpy(val.block,block,(length-1) * sizeof (char));
     val.block [(length-1)] = '\0';
+    free(block);
     return val;
 }
 
@@ -340,7 +343,7 @@ char* toString(Value v) {
 void disposeValue(Value v) {
     switch (v.type) {
         case String:
-        case Array:     free(v.array);      break;
+        case Array:     disposeStack(v.array);      break;
         case Block:     free(v.block);      break;
         default:                            break;
 

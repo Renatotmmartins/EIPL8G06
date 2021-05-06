@@ -25,7 +25,7 @@
 //! Seleciona o argumento das funções com um argumento sobre a stack
 #define POP_1S st, pop(st->stack)
 //! Seleciona o argumento das funções com um argumento e sub operações
-#define POP_1SO *(str + 1), st, pop(st->stack)
+#define POP_0SO *(str + 1), st
 //! Seleciona o argumento das funções com dois argumentos
 #define POP_2 pop(st->stack), pop(st->stack)
 //! Seleciona o argumento das funções com dois argumentos sobre a stack
@@ -65,7 +65,7 @@
         ENTRY(',', 1, comma, 1S, 1) \
         ENTRY('w', 1, executeWhileTrue, 1S, 0) \
         \
-        ENTRY(':', 2, setVariable, 1SO, 1) \
+        ENTRY(':', 2, setVariable, 0SO, 0) \
         \
         \
         ENTRY('+', 1, sum, 2, 1) \

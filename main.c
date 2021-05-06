@@ -28,6 +28,7 @@ int main() {
     printStackLine(st.stack);
     //O line é alocado dinamicamente e, por isso, deve ser desalocado quando deixar de ser usado.
     free(line);
+    disposeVariables(&st);
     disposeStack(st.stack);
     return 0;
 }

@@ -198,9 +198,10 @@ Value logicNot (Value x){
  * @param x   o elemento do tipo #Value
  * @param s   o state do programa
  */
-Value setVariable(char var, State* s, Value x){
-	s->variables[var-'A'] = deepCopy(x);
-	return x;
+void setVariable(char var, State* s){
+	disposeValue(s->variables[var - 'A']);
+	s->variables[var-'A'] = deepCopy(s->stack->value);
+	disposeValue(s->variables[var-'A']);
 }
 
 /**
@@ -211,11 +212,21 @@ void initializeVariables(State *s){
 	int i;
 
 	for(i=0;i<=5;i++){
-		setVariable('A'+i,s,fromInteger(10+i));
+		s->variables[i+'A'] = fromInteger(10+i);
 	}
 	for(i=0;i<=2;i++){
-		setVariable('X'+i,s,fromInteger(i));
+		s->variables[i + 'X'] = fromInteger(i);
 	}
-	setVariable('N',s,fromCharacter('\n'));
-	setVariable('S',s,fromCharacter(' '));
+	s->variables['N'] = fromCharacter('\n');
+	s->variables['S'] = fromCharacter(' ');
+}
+
+/**
+ * \brief Liberta o espaço alocado para as variáveis
+ * @param s   o state do programa
+ */
+void disposeVariables(State *s) {
+	for(int i = 0; i < 26; i++) {
+		disposeValue(s->variables[i]);
+	}
 }

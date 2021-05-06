@@ -82,8 +82,10 @@ Value increment(State* s,Value a) {
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
 void negate(State* s, Value a) {
-    if (a.type == Block)
+    if (a.type == Block) {
         execute(s, s->stack, a);
+        disposeValue(a);
+    }    
     else if (a.type >= String) {
         Stack aux = empty();
         *aux = *(s->stack);
@@ -172,6 +174,7 @@ Value divide(Value a, Value b) {
 Value multiply(State* s, Value a, Value b) {
     if (b.type == Block) {
         fold(s, a.array, b);
+        disposeValue(b);
         return a;
     } else if (a.type >= String) {
         int i;
@@ -230,6 +233,7 @@ Value module(State* s, Value a, Value b) {
         s->stack = a.array;
         map(s, b);
         s->stack = st;
+        disposeValue(b);
         return a;
     }
     NUMERICOPERATION(fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character);

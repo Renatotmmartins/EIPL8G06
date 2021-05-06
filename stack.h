@@ -47,7 +47,7 @@ typedef struct value {
  	 * \brief Guarda os diferentes tipos possíveis de armazenar
  	 */
 	union {
-		int integer; //!< Valor Inteiro
+		long long integer; //!< Valor Inteiro
 		double decimal; //!< Valor Fracionário
 		char character; //!< Caracter
 		char* block; //!< Bloco
@@ -105,7 +105,7 @@ void disposeStack(Stack);
 
 Value convertToStack(Value v);
 
-Value fromInteger(int);
+Value fromInteger(long long);
 
 Value fromDecimal(double);
 

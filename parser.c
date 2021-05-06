@@ -203,7 +203,7 @@ void processInput(char** str, State* st) {
 void printVal(Value top) {
     switch (top.type) {
         case Double:    printf("%g", top.decimal);      break;
-        case Int:       printf("%d", top.integer);      break;
+        case Int:       printf("%lld", top.integer);      break;
         case Char:      printf("%c", top.character);    break;
         case String:
         case Array:     printStack(top.array);          break;

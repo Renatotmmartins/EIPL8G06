@@ -23,7 +23,7 @@
  */
 Value copyElement(State* s, Value n) {
     if (n.type == Block)
-        return sort(pop(s->stack), n);
+        return sort(s, pop(s->stack), n);
     else
         return deepCopy(getElement(s->stack, n.integer));
 }
@@ -95,9 +95,9 @@ Stack repeat(Stack st, int n) {
  * @return Stack preenchida com o conteúdo pedido
  */
 
-Stack range(int n) {    
+Stack range(long long n) {    
     Stack a = empty();
-    for (int i = 0; i < n; ++i)
+    for (long long i = 0; i < n; ++i)
         push (a,fromInteger(i));
 
     return a;
@@ -110,6 +110,7 @@ Stack range(int n) {
  */
 Value comma(State* s, Value a){
     Value aux;
+    Stack st;
     switch(a.type){
         case Int: //Retorna o range [0...n-1]
         return fromStack(range(a.integer));
@@ -119,8 +120,11 @@ Value comma(State* s, Value a){
         disposeStack(a.array);
         return aux;
         case Block:
-        aux = pop(s->stack);
-        filter(aux.array, a);
+        st = s->stack;
+        s->stack = pop(st).array; 
+        filter(s, a);
+        aux = fromStack(s->stack);
+        s->stack = st;
         return aux;
         //Operação não definida
         default: return fromInteger(UNDEFINED);

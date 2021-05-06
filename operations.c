@@ -83,7 +83,7 @@ Value increment(State* s,Value a) {
  */
 void negate(State* s, Value a) {
     if (a.type == Block)
-        execute(s, a);
+        execute(s, s->stack, a);
     else if (a.type >= String)
         s->stack = merge(s->stack,a.array);
     else {
@@ -167,11 +167,7 @@ Value divide(Value a, Value b) {
  */
 Value multiply(State* s, Value a, Value b) {
     if (b.type == Block) {
-        Stack st = s->stack;
-        s->stack = a.array;
-        fold(s, b);
-        s->stack = st;
-        return a;
+        return fold(s, a.array, b);
     } else if (a.type >= String) {
         int i;
         Stack result = empty();
@@ -179,7 +175,9 @@ Value multiply(State* s, Value a, Value b) {
            Stack s = clone(a.array);
            result = merge(result,s);
         }
-        return fromStack(result);
+        Value v = fromStack(result);
+        v.type = a.type;
+        return v;
     }
     NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
 }
@@ -244,7 +242,7 @@ Value exponentiate(Value a, Value b) {
     if(a.type >= String)
         return substrAndDispose(a,b); //TODO:: VERIFICAR ORDEM
 
-    NUMERICOPERATION(pow(a.decimal, b.decimal), (int)pow(a.integer, b.integer), (char)pow(a.character, b.character));
+    NUMERICOPERATION(pow(a.decimal, b.decimal), (long long)pow(a.integer, b.integer), (char)pow(a.character, b.character));
 }
 
 /**

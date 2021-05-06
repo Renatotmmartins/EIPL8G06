@@ -183,7 +183,7 @@ void disposeStack(Stack st) {
  * @param i  o inteiro
  * @return   o inteiro convertido para #Value.
  */
-Value fromInteger(int i){
+Value fromInteger(long long i){
     Value val;
 
     val.type=Int;

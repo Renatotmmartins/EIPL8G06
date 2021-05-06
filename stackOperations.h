@@ -30,7 +30,7 @@ void readLine(Stack);
 
 void duplicate(Stack);
 
-Stack range(int);
+Stack range(long long);
 
 Stack repeat(Stack, int);
 

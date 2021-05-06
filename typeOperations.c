@@ -19,7 +19,7 @@
  */
 Value convertToInt(Value a) {
     char* str;
-    Convert(Int, integer, (int)a.decimal, a.integer, (int)a.character, str = toString(a); result.integer = atoi(str); free(str);)  
+    Convert(Int, integer, (long long)a.decimal, a.integer, (long long)a.character, str = toString(a);result.integer = atoi(str); free(str);)  
 }
 
 /**
@@ -40,7 +40,7 @@ Value convertToDouble(Value a) {
  * @return   O #Value com a informação armazenada num caracter
  */
 Value convertToChar(Value a) {
-    Convert(Char, character, (char)(int)a.decimal, (char)a.integer, a.character, result.character = '\0';);
+    Convert(Char, character, (char)(long long)a.decimal, (char)a.integer, a.character, result.character = '\0';);
 }
 
 /**
@@ -78,13 +78,10 @@ char* convertFloatToString(Value v) {
  * @return  Um apontador com a informação armazenada sob a forma de texto
  */
 char* convertIntToString(Value v) {
-
     int size = (int)((ceil(log10(v.integer))+1));
     char* ans = malloc(size * sizeof(char)); //Aloca memória suficiente
-
     //Converte para inteiro
-    snprintf(ans, size, "%d", v.integer);
-
+    snprintf(ans, size, "%lld", v.integer);
     return ans;
 }
 
@@ -167,5 +164,5 @@ Value convertAndDisposeToChar(Value a) {
  * @return Valor convertido para o tipo pedido
  */
 Value convertAndDisposeToString(Value a) {
-    return a;
+    convertAndDisposeTo(String)
 }

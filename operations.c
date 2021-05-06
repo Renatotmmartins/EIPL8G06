@@ -228,7 +228,7 @@ Value module(State* s, Value a, Value b) {
     if (b.type == Block) {
         Stack st = s->stack;
         s->stack = a.array;
-        map(s, b);
+        map(s, b.block);
         s->stack = st;
         return a;
     }

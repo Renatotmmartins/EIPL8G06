@@ -48,8 +48,8 @@ Value substrAndDispose(Value st, Value pat) {
  */
 Value substr(Value st, Value pat) {
     //Obtém as strings através dos Values
-    char *str = toString(st), *pattern = toString(pat);
-
+    char *str = toString(st);
+    char *pattern = toString(pat);
     int res = -1;
     int i;
     for(i = 0; str[i]; i++) {

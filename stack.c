@@ -310,7 +310,14 @@ Value deepCopy(Value v) {
  * @return A string obtida a partir do #Value
  */
 char* toString(Value v) {
+    if(v.type == Char) {
+        char* str = (char*) malloc(sizeof(char) * 2);
+        str[0] = v.character;
+        str[1] = '\0';
+        return str;
+    }
     int size = length(v.array);
+
     char* str = (char*) malloc(sizeof(char) * (size + 1));
 
 

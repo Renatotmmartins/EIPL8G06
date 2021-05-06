@@ -3,6 +3,7 @@
 * às operações relacionadas com blocos
 */
 #include <stdio.h>
+#include <string.h>
 #include "stack.h"
 #include "logicOperations.h"
 #include "stackOperations.h"
@@ -40,14 +41,23 @@ void executeWhileTrue (State* s, Value block) {
  * @param s     o estado do programa
  * @param block bloco fornecido
  */
-void map (State* s, Value block){
-
+void map (State* s, char* block){
+    /*Stack st = empty();
+    while(!isEmpty(s->stack)) {
+        Value v = execute(s, s->stack, block);
+        push(st, v);
+        disposeValue(pop(s->stack));
+    }
+    //printStackLine(st);
+    *s->stack = *st;*/
+    //disposeStack(st);
+    int len = strlen(block);
     if(isEmpty(s->stack)==0){
         Stack st = s->stack;
         s->stack = s->stack->previous;
         map(s, block);
         s->stack = st;
-        execute(s, s->stack, block);
+        execute(s, s->stack, fromBlock(block, len));
     }
 }
 

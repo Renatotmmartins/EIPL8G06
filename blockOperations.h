@@ -11,7 +11,7 @@
 #include "stack.h"
 #include "logicOperations.h"
 
-Value execute (State* s, Stack* st, Value block);
+Value execute (State* s, Stack st, Value block);
 
 void executeWhileTrue (State* s, Value block);
 

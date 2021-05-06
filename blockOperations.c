@@ -15,13 +15,12 @@
  * @return Value que é resultado da operação do bloco dentro da stack
  */
 
-Value execute (State* s, Stack* st, Value block) {
+Value execute (State* s, Stack st, Value block) {
     Stack temp = s->stack;
-    s->stack = *st;
+    s->stack = st;
     processInput (&block.block, s);
-    *st = s->stack;
     s->stack = temp;
-    return (*st)->value;
+    return st->value;
 }
 
 
@@ -33,7 +32,7 @@ Value execute (State* s, Stack* st, Value block) {
 
 void executeWhileTrue (State* s, Value block) {
     while (!isEmpty(s->stack) && isTrue(s->stack->value))
-        execute (s, &s->stack, block);
+        execute (s, s->stack, block);
 }
 
 /**
@@ -48,7 +47,7 @@ void map (State* s, Value block){
         s->stack = s->stack->previous;
         map(s, block);
         s->stack = st;
-        execute(s, &s->stack, block);
+        execute(s, s->stack, block);
     }
 }
 
@@ -65,7 +64,7 @@ void filter (State* s, Value block){
         filter(s, block);
         Stack a=convertToStack(deepCopy(st->value)).array;
         s->stack = a;
-        if(isTrue(execute(s, &s->stack, block))==0)
+        if(isTrue(execute(s, s->stack, block))==0)
             eraseTop(st);
         
         s->stack = st;
@@ -80,7 +79,17 @@ void filter (State* s, Value block){
  * @param block bloco fornecido
  */
 Value fold (State* s, Stack st, Value block){
-    reverseStack(st);
+    if (isEmpty(st) || isEmpty(st->previous))
+        return st->value;
+
+    Value top = pop(st);
+    fold(s, st, block);
+    push(st, top);
+    execute(s, st, block);
+    return st-> value;
+
+
+    /*reverseStack(st);
 
 
     while (!isEmpty(st->previous)) {
@@ -90,5 +99,5 @@ Value fold (State* s, Stack st, Value block){
 
     Value ans = pop(st);
     disposeStack(st);
-    return ans;
+    return ans;*/
 }

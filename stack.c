@@ -67,9 +67,6 @@ void push(Stack s, Value value) {
  */
 Value pop(Stack s) {
 
-    if (isEmpty(s))
-        printf("pop de vazia...\n");
-
 	Stack previous = s->previous;
 	Value top = s->value;
 	*s = *previous;

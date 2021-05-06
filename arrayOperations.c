@@ -226,9 +226,9 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
 
         Stack st = s->stack;
         s->stack = s1;
-        Value v1 = execute(s, &s->stack, block);
+        Value v1 = execute(s, s->stack, block);
         s->stack = s2;
-        Value v2 = execute(s, &s->stack, block);
+        Value v2 = execute(s, s->stack, block);
 
         s->stack = st;
         //Se a condição executada retorna verdadeiro, então l < r

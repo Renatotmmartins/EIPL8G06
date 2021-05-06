@@ -83,9 +83,13 @@ Value increment(State* s,Value a) {
  */
 void negate(State* s, Value a) {
     if (a.type == Block)
-        execute(s, &s->stack, a);
-    else if (a.type >= String)
-        s->stack = merge(s->stack,a.array);
+        execute(s, s->stack, a);
+    else if (a.type >= String) {
+        Stack aux = empty();
+        *aux = *(s->stack);
+        *(s->stack) = *merge(aux,a.array);
+        free(a.array);
+    }
     else {
         UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character);
         push(s->stack, a);
@@ -167,7 +171,8 @@ Value divide(Value a, Value b) {
  */
 Value multiply(State* s, Value a, Value b) {
     if (b.type == Block) {
-        return fold(s, a.array, b);
+        fold(s, a.array, b);
+        return a;
     } else if (a.type >= String) {
         int i;
         Stack result = empty();

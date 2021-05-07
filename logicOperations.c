@@ -201,7 +201,6 @@ Value logicNot (Value x){
 void setVariable(char var, State* s){
 	disposeValue(s->variables[var - 'A']);
 	s->variables[var-'A'] = deepCopy(s->stack->value);
-	disposeValue(s->variables[var-'A']);
 }
 
 /**
@@ -212,13 +211,13 @@ void initializeVariables(State *s){
 	int i;
 
 	for(i=0;i<=5;i++){
-		s->variables[i+'A'] = fromInteger(10+i);
+		s->variables[i] = fromInteger(10+i);
 	}
 	for(i=0;i<=2;i++){
-		s->variables[i + 'X'] = fromInteger(i);
+		s->variables[i + 'X' - 'A'] = fromInteger(i);
 	}
-	s->variables['N'] = fromCharacter('\n');
-	s->variables['S'] = fromCharacter(' ');
+	s->variables['N' - 'A'] = fromCharacter('\n');
+	s->variables['S' - 'A'] = fromCharacter(' ');
 }
 
 /**

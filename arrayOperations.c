@@ -148,7 +148,7 @@ Value separateBySubstr(Value s, Value pat) {
     char *str = toString(s);
     char* pattern = toString(pat);
 
-    Stack r = separateBySubstrAux(str, pattern);
+    Stack r = separateBySubstrAux(str, pattern);1
 
     //Libertar valores, pq não vão ser reutilizados
     disposeValue(s);

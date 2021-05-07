@@ -235,7 +235,7 @@ Value fromString(char* str){
 
     //free(str);
     val.array = stringToStack(str);
-    free(str);
+    //free(str);
     return val;
 }
 
@@ -247,11 +247,11 @@ Value fromString(char* str){
  */
 Stack stringToStack(char* str) {
     Stack st = empty();
-    char* og = str;
+    //char* og = str;
     while (*str)
         push(st, fromCharacter(*(str++)));
 
-    free(og);
+    //free(og);
 
     return st;
 }
@@ -285,7 +285,7 @@ Value fromBlock(char* block, int length) {
     val.block = malloc( length * sizeof (char));
     memcpy(val.block,block,(length-1) * sizeof (char));
     val.block [(length-1)] = '\0';
-    free(block);
+    //free(block);
     return val;
 }
 

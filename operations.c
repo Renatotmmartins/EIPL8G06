@@ -15,7 +15,7 @@
 #include "blockOperations.h"
 
 //! O comprimento máximo de uma string de input
-#define MAXINPUTLENGTH 10000
+#define MAXINPUTLENGTH 1000000
 
 /**
  * \brief Lê uma linha de input
@@ -28,7 +28,6 @@
 char* getInput ()
 {
     char *line = malloc(MAXINPUTLENGTH);
-
     assert(fgets(line, MAXINPUTLENGTH,stdin) != NULL);
     int l = strlen(line);
 
@@ -87,10 +86,7 @@ void negate(State* s, Value a) {
         disposeValue(a);
     }    
     else if (a.type >= String) {
-        Stack aux = empty();
-        *aux = *(s->stack);
-        *(s->stack) = *merge(aux,a.array);
-        free(a.array);
+        s->stack = merge(s->stack, a.array);
     }
     else {
         UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character);
@@ -290,11 +286,10 @@ void readAllLines(Stack st) {
  */
 Value splitByWhitespace(Value v) {
     Value copy = v;
-    while(!isEmpty(v.array)) {
-        if(v.array->value.character == '\n') 
-            v.array->value.character = ' ';
-
-        v.array = v.array->previous;
+    int i;
+    for(i = 0; i < v.array->size; i++) {
+        if(v.array->values[i].character == '\n')
+            copy.array->values[i].character = ' ';
     }
     return separateBySubstr(copy, convertToString(fromCharacter(' ')));
 }

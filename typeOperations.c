@@ -19,7 +19,7 @@
  */
 Value convertToInt(Value a) {
     char* str;
-    Convert(Int, integer, (long long)a.decimal, a.integer, (long long)a.character, str = toString(a);result.integer = atoi(str); free(str);)  
+    Convert(Int, integer, (long long)a.decimal, a.integer, (long long)a.character, str = toString(a); result.integer = atoi(str); free(str);)  
 }
 
 /**

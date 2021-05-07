@@ -148,7 +148,7 @@ Value separateBySubstr(Value s, Value pat) {
     char *str = toString(s);
     char* pattern = toString(pat);
 
-    Stack r = separateBySubstrAux(str, pattern);1
+    Stack r = separateBySubstrAux(str, pattern);
 
     //Libertar valores, pq não vão ser reutilizados
     disposeValue(s);
@@ -168,15 +168,26 @@ Value separateBySubstr(Value s, Value pat) {
  * @return       Retorna a stack de baixo
  */
 Stack split(Stack st, int x){
-   
-    while(x>0){
+    Stack res = empty();
+    int i;
+    for(i = x - 1; i >= 0; i--) {
+        push(res, st->values[st->size - 1 - i]);
+    }
+    st->size -= x;
+    /*while(x>0){
        st=st->previous;
        x--;
     }
     Stack a=empty();
     *a=*st;
-    st->previous=NULL;
-    return a;
+    st->previous=NULL;*/
+
+    Stack temp = empty();
+    *temp = *st;
+    *st = *res;
+    *res = *temp;
+    free(temp);
+    return res;
 }
 
 /**
@@ -222,8 +233,8 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
     while(!isEmpty(l) && !isEmpty(r)) {
         Stack s1 = empty(), s2 = empty();
 
-        push(s1, deepCopy(l->value));
-        push(s2, deepCopy(r->value));
+        push(s1, deepCopy(l->values[l->size - 1]));
+        push(s2, deepCopy(r->values[r->size - 1]));
 
         Value v1 = execute(s, s1, block);
         Value v2 = execute(s, s2, block);

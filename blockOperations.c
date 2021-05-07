@@ -21,7 +21,7 @@ Value execute (State* s, Stack st, Value block) {
     s->stack = st;
     processInput (&block.block, s);
     s->stack = temp;
-    return st->value;
+    return st->values[st->size - 1];
 }
 
 
@@ -32,7 +32,7 @@ Value execute (State* s, Stack st, Value block) {
  */
 
 void executeWhileTrue (State* s, Value block) {
-    while (!isEmpty(s->stack) && isTrue(s->stack->value))
+    while (!isEmpty(s->stack) && isTrue(s->stack->values[s->stack->size - 1]))
         execute (s, s->stack, block);
 }
 
@@ -68,7 +68,7 @@ void filter (State* s, Value block){
 
     while (!isEmpty(aux)) {
         Stack temp = empty(); //stack para realizar a comparação
-        push(temp, deepCopy(aux->value));
+        push(temp, deepCopy(aux->values[aux->size - 1]));
         execute(s, temp, block); //executa a operação
         if (isTrue(pop(temp)))
             push(s->stack, pop(aux));
@@ -89,7 +89,7 @@ void filter (State* s, Value block){
 Value fold (State* s, Stack st, Value block){
     Stack aux = empty();
 
-    while (!isEmpty(st->previous))
+    while (length(st) > 1)
         push(aux, pop(st));
 
     while (!isEmpty(aux)) {
@@ -98,5 +98,5 @@ Value fold (State* s, Stack st, Value block){
     }
 
     disposeStack(aux);
-    return st->value;
+    return st->values[st->size - 1];
 }

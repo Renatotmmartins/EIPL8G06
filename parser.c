@@ -225,7 +225,6 @@ void printVal(Value top) {
  * @param st   A stack a imprimir
  */
 void printStack(Stack st) {
-    
     if (!isEmpty(st)) {
         Value top = pop(st);
         printStack(st);

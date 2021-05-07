@@ -70,7 +70,7 @@ void readLine(Stack st)
  * @param st  A stack
  */
 void duplicate(Stack st) {
-    push(st, deepCopy(st->value));
+    push(st, deepCopy(st->values[st->size - 1]));
 }
 
 /**
@@ -99,7 +99,6 @@ Stack range(long long n) {
     Stack a = empty();
     for (long long i = 0; i < n; ++i)
         push (a,fromInteger(i));
-
     return a;
 }
 
@@ -112,6 +111,8 @@ Value comma(State* s, Value a){
     Value aux;
     Stack st;
     switch(a.type){
+        case Char:
+        return fromStack(range(a.character));
         case Int: //Retorna o range [0...n-1]
         return fromStack(range(a.integer));
         case String:

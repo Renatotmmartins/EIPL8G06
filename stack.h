@@ -64,10 +64,13 @@ typedef struct value {
 typedef struct stack {
 	/*! Apontador para o valor seguinte na pilha (esta é
 	    representada como uma lista ligada).*/
-	struct stack* previous;
+	//struct stack* previous;
 
 	/*! O valor armazenado na lista ligada.*/
-	Value value;
+	//Value value;
+	Value* values;
+	int size;
+	int capacity;
 } * Stack;
 
 /**

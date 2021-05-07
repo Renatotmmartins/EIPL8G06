@@ -108,16 +108,16 @@ Value isEqual (Value x, Value y){
 
 Value isLess (Value x, Value y){
 	int tamanho;
-
+	printf("%d %d\n", x.type, y.type);
     if(x.type >= String && y.type==Int){ //manter os primeiros y elementos
 		for(tamanho=length(x.array);tamanho>y.integer;tamanho--)
 			pop(x.array);
 		return x;
 	}
-	if(x.type==String){ //comparação usando strcmp
+	if(x.type>=String){ //comparação usando strcmp
 		char *xstr = toString(x), *ystr = toString(y);
 		Value res = fromInteger (strcmp (xstr,ystr) < 0);
-
+		printf("%s : %s | %d\n", xstr, ystr, strcmp(xstr, ystr));
 		//libertar strings auxiliares
 		free(xstr);
 		free(ystr);
@@ -200,7 +200,7 @@ Value logicNot (Value x){
  */
 void setVariable(char var, State* s){
 	disposeValue(s->variables[var - 'A']);
-	s->variables[var-'A'] = deepCopy(s->stack->value);
+	s->variables[var-'A'] = deepCopy(s->stack->values[s->stack->size - 1]);
 }
 
 /**

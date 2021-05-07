@@ -14,7 +14,9 @@
  */
 Stack empty() {
 	Stack st = malloc(sizeof(struct stack));
-	st->previous = NULL;
+    st->size = 0;
+    st->capacity = 100;
+    st->values = (Value*) malloc(sizeof(Value) * st->capacity);
 	return st;
 }
 
@@ -25,7 +27,7 @@ Stack empty() {
  * @return   1 (true) se a stack for vazia, 0 (false) se for
  */
 bool isEmpty(Stack s) {
-	return s->previous == NULL;
+	return s->size == 0;
 }
 
 /**
@@ -35,13 +37,7 @@ bool isEmpty(Stack s) {
  * @return   O valor do tamanho da stack
  */
 int length(Stack s){
-    int r=0;
-
-    while(isEmpty(s)==0){
-        r++;
-        s=s->previous;
-    }
-    return r;
+    return s->size;
 }
 
 /**
@@ -51,11 +47,15 @@ int length(Stack s){
  *  @param value O valor a inserir na stack
  */
 void push(Stack s, Value value) {
-	Stack a = malloc(sizeof(struct stack));
-
+	/*Stack a = malloc(sizeof(struct stack));
     *a = *s;
     s->value = value;
-    s->previous = a;
+    s->previous = a;*/
+    if(s->size == s->capacity) {
+        s->capacity *= 2;
+        s->values = realloc(s->values, sizeof(Value) * s->capacity);
+    }
+    s->values[s->size++] = value;
 }
 
 /**
@@ -66,11 +66,11 @@ void push(Stack s, Value value) {
  * @return 	O elemento removido do topo da stack
  */
 Value pop(Stack s) {
-
-	Stack previous = s->previous;
+    Value top = s->values[--(s->size)];
+	/*Stack previous = s->previous;
 	Value top = s->value;
 	*s = *previous;
-    free(previous);
+    free(previous);*/
 
 	return top;
 }
@@ -82,11 +82,13 @@ Value pop(Stack s) {
  * @return Valor no fundo da stack
  */
 Value popBottom(Stack st) {
-    while (!isEmpty(st->previous))
-        st = st->previous;
-
-    st->previous = NULL;
-    return st->value;
+    Value res = st->values[0];
+    int i;
+    for(i = 1; i < st->size; i++) {
+        st->values[i - 1] = st->values[i];
+    }
+    st->size--;
+    return res;
 }
 /**
  * \brief Apaga o valor que está no topo da stack
@@ -115,11 +117,7 @@ Value convertToStack(Value v) {
  *  @param value O valor do n-ésimo elemento
  */
 Value getElement(Stack st, int n){
-
-    while (n--)
-        st=st->previous;
-
-    return st->value;
+    return st->values[st->size - 1 - n];
 }
 
 /**
@@ -130,12 +128,12 @@ Value getElement(Stack st, int n){
  */
 Stack clone(Stack st)
 {
-    if (isEmpty(st))
-        return empty();
-
-    Stack copy = clone(st->previous);
-    push(copy, deepCopy(st->value));
-    return copy;
+    Stack res = malloc(sizeof(struct stack));
+    res->size = st->size;
+    res->capacity = st->capacity;
+    res->values = malloc(sizeof(Value) * st->capacity);
+    memcpy(res->values, st->values, sizeof(Value) * st->size);
+    return res;
 }
 
 /**
@@ -146,22 +144,13 @@ Stack clone(Stack st)
  * @return Stack que resulta da junção das duas stacks dadas inicialmente
  */
 Stack merge(Stack a, Stack b) {
-    //Se uma stack for representada Tail---Head:
-    //{ 1, 2, 3 } + {4, 5, 6} = { 1, 2, 3, 4, 5, 6 }
-    //Ou seja, a cabeça do resultado é a cabeça da segunda stack passada
-    if (isEmpty(b)) {
-        free(b);
-        return a;
-    }
+    int i;
+    for(i = 0; i < b->size; i++)
+        push(a, b->values[i]);
 
-    Stack last = b;
-
-    while (!isEmpty(last->previous))
-        last = last->previous;
-
-    free(last->previous);
-    last->previous = a;
-    return b;
+    free(b->values);
+    free(b);
+    return a;
 }
 
 /**
@@ -172,7 +161,7 @@ Stack merge(Stack a, Stack b) {
 void disposeStack(Stack st) {
     while (!isEmpty(st))
         eraseTop(st);
-
+    free(st->values);
     free(st);
 }
 
@@ -323,16 +312,12 @@ char* toString(Value v) {
 
     char* str = (char*) malloc(sizeof(char) * (size + 1));
 
-
     int i;
     for(i = 0; i < size; i++) {
-        Value temp = v.array->value;
-        v.array = v.array->previous;
-        str[size - i - 1] = temp.character;
+        str[i] = v.array->values[i].character;
     }
     
     str[size] = '\0';
-
     return str;
 }
 

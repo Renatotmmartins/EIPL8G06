@@ -193,6 +193,10 @@ Value sort(State* s, Value array, Value block) {
     return fromStack(mergeSort(s, array.array, block, size));
 }
 
+/**
+ * \brief Função que inverte a stack
+ * @param s Stack fornecida e que irá ser invertida
+ */
 
 void reverseStack(Stack s) {
     Stack st = empty();

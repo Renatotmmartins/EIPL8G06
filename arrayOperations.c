@@ -217,46 +217,33 @@ void reverseStack(Stack s) {
  * @return        O array ordenado
  */
 Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
-    reverseStack(l);
-    reverseStack(r);
     Stack res = empty();
     //Enquanto nenhuma stack é vazia
     while(!isEmpty(l) && !isEmpty(r)) {
-        Stack s1 = empty();
-        Stack s2 = empty();
-        //Value v1 = l->value, v2 = r->value;
+        Stack s1 = empty(), s2 = empty();
+
         push(s1, deepCopy(l->value));
         push(s2, deepCopy(r->value));
 
-        Stack st = s->stack;
-        s->stack = s1;
-        Value v1 = execute(s, s->stack, block);
-        s->stack = s2;
-        Value v2 = execute(s, s->stack, block);
+        Value v1 = execute(s, s1, block);
+        Value v2 = execute(s, s2, block);
 
-        s->stack = st;
         //Se a condição executada retorna verdadeiro, então l < r
         if(isTrue(isLess(v1,v2))) {
-            /*printVal(v1);
-            printf("<");
-            printVal(v2);*/
             push(res, pop(l));
         } else {
-            /*printVal(v1);
-            printf(">");
-            printVal(v2);*/
             push(res, pop(r));
         }
-        //printf("\n");
         disposeStack(s1);
         disposeStack(s2);
     }
     
-
-    //Insere na stack res todos os elementos das duas stacks que ainda não foram
-    //inseridos (apenas tem efeito para uma das stacks)
+    //Reverte as stacks para poder fazer merge sem trocar a ordem
+    //dado os elementos estão invertidos nas stacks originais
     reverseStack(l);
     reverseStack(r);
+    //Insere na stack res todos os elementos das duas stacks que ainda não foram
+    //inseridos (apenas tem efeito para uma das stacks)
     res = merge(res, l);
     res = merge(res, r);
 
@@ -272,10 +259,6 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
  */
 Stack mergeSort(State* s, Stack st, Value block, int n) {
     //Caso base: a stack já está ordenada
-    /*printf("NOVA ITEREACAO\n");
-    printStack(deepCopy(fromStack(st)).array);
-    printf("%d\n", n);
-    printf("------------------------\n");*/
     if(n <= 1)
         return st;
     //Parte a stack em duas
@@ -285,10 +268,9 @@ Stack mergeSort(State* s, Stack st, Value block, int n) {
     firstHalf = mergeSort(s, firstHalf, block, n - ((n + 1) / 2));
     st = mergeSort(s, st, block, (n + 1) / 2);
 
-    /*printStack(deepCopy(fromStack(st)).array);
-    printf(" ");
-    printStack(deepCopy(fromStack(firstHalf)).array);
-    printf("\n");*/
+    //Inverter as stacks, de forma a que os elementos maiores estejam no início
+    reverseStack(st);
+    reverseStack(firstHalf);
     //Junta as metades ordenadas para uma nova stack ordenada
     return mergeStacks(s, st, firstHalf, block);
 }

@@ -32,8 +32,12 @@ Value execute (State* s, Stack st, Value block) {
  */
 
 void executeWhileTrue (State* s, Value block) {
-    while (!isEmpty(s->stack) && isTrue(s->stack->values[s->stack->size - 1]))
+    push(s->stack, fromInteger(UNDEFINED)); //Adiciona um valor aleatório no topo da stack para este não se perder no pop do while
+    while (!isEmpty(s->stack) && isTrue(s->stack->values[s->stack->size - 1])) {
+        eraseTop(s->stack);
         execute (s, s->stack, block);
+    }
+    eraseTop(s->stack); //Apaga o zero que está no topo da stack
 }
 
 /**

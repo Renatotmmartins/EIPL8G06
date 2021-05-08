@@ -104,10 +104,4 @@ void resolveWord(char* str, int length, State* st);
 
 void processInput(char** str, State* st);
 
-void printVal(Value val);
-
-void printStack(Stack st);
-
-void printStackLine(Stack st);
-
 #endif

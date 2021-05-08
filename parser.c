@@ -50,7 +50,6 @@ Value readValue(char* str, int length, State* st) {
  */
 bool operation(char* str, int length, State* st) {
     switch (*str) { JUMP_TABLE }
-
     return false;
 }
 
@@ -154,7 +153,7 @@ void resolveWord(char* str, int length, State* st)
     if (length <= 0)
         return;
     
-    if(!operation(str, length, st))
+    if(atof(str) != 0 || !operation(str, length, st))
         push(st->stack, readValue(str, length, st));
 }
 
@@ -197,59 +196,4 @@ void processInput(char** str, State* st) {
         (*str)++;
     }
     resolveWord(accum, *str - accum, st); // Resolve o que faltar
-}
-
-/**
- * \brief Efetua print do valor dado
- * @param top Valor a ser dado print
- */
-
-void printVal(Value top) {
-    switch (top.type) {
-        case Double:    printf("%g", top.decimal);      break;
-        case Int:       printf("%lld", top.integer);      break;
-        case Char:      printf("%c", top.character);    break;
-        case String:
-        case Array:     printStack(top.array);          break;
-        case Block:     printf("{%s}", top.block);       break;
-    }
-}
-
-
-/**
- * \brief Imprime a stack fornecida para o ecrã. 
- * 
- * De notar que esta função retira todos os elementos da mesma, resultando
- * uma stack vazia.
- * 
- * @param st   A stack a imprimir
- */
-void printStack(Stack st) {
-    if (!isEmpty(st)) {
-        Value top = pop(st);
-        printStack(st);
-        printVal(top);
-        disposeValue(top);
-    }
-
-    /*reverseStack(st);
-
-    while (!isEmpty(st)) {
-        Value a = pop(st);
-        printVal(a);
-        disposeValue(a);
-    }*/
-}
-
-/**
- * \brief Imprime a stack fornecida para o ecrã e muda de linha. 
- * 
- * De notar que esta função retira todos os elementos da mesma, resultando
- * uma stack vazia.
- * 
- * @param st   A stack a imprimir
- */
-void printStackLine(Stack st) {
-    printStack(st);
-    printf("\n");
 }

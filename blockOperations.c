@@ -24,6 +24,14 @@ Value execute (State* s, Stack st, Value block) {
     return st->values[st->size - 1];
 }
 
+Value executeValue(State* s, Value a, Value block) {
+    Stack temp = empty();
+    push(temp, a);
+    execute(s, temp, block);
+    Value ans = pop(temp);
+    disposeStack(temp);
+    return ans;
+}
 
 /**
  * \brief Executa um bloco dentro de uma stack enquanto houver um valor verdadeiro no topo da stack

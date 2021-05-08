@@ -12,6 +12,10 @@ Value shortcutSelect(char*, Value, Value);
 
 Value conditional(Value x, Value y, Value z);
 
+bool compareArrays(Stack a, Stack b);
+
+int compareStrings(Value a, Value b);
+
 Value isEqual (Value x, Value y);
 
 Value isLess (Value x, Value y);

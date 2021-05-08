@@ -226,22 +226,12 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
     Stack res = empty();
     //Enquanto nenhuma stack é vazia
     while(!isEmpty(l) && !isEmpty(r)) {
-        Stack s1 = empty(), s2 = empty();
-
-        push(s1, deepCopy(l->values[l->size - 1]));
-        push(s2, deepCopy(r->values[r->size - 1]));
-
-        Value v1 = execute(s, s1, block);
-        Value v2 = execute(s, s2, block);
+        Value v1 = executeValue(s, deepCopy(l->values[l->size - 1]), block);
+        Value v2 = executeValue(s, deepCopy(r->values[r->size - 1]), block);
 
         //Se a condição executada retorna verdadeiro, então l < r
-        if(isTrue(isLess(v1,v2))) {
-            push(res, pop(l));
-        } else {
-            push(res, pop(r));
-        }
-        disposeStack(s1);
-        disposeStack(s2);
+        //Inserimos só o menor elemento
+        push(res, pop(isTrue(isLess(v1, v2)) ? l : r));
     }
     
     //Reverte as stacks para poder fazer merge sem trocar a ordem

@@ -99,9 +99,13 @@ void eraseTop(Stack st) {
  *  @return      O #Value que guarda a stack
  */
 Value convertToStack(Value v) {
-    Stack st = empty();
-    push(st, v);
-    return fromStack(st);
+    if (v.type < String) {
+        Stack st = empty();
+        push(st, v);
+        return fromStack(st);
+    }
+    //v.type = Array ???
+    return v;
 }
 
 /**

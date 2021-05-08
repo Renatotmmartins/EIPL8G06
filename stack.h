@@ -62,14 +62,11 @@ typedef struct value {
  * acedida pelas funções definidas abaixo.
  */
 typedef struct stack {
-	/*! Apontador para o valor seguinte na pilha (esta é
-	    representada como uma lista ligada).*/
-	//struct stack* previous;
-
-	/*! O valor armazenado na lista ligada.*/
-	//Value value;
+	//! A array de valores armazenados
 	Value* values;
+	//! O número de valores guardados
 	int size;
+	//! O tamanho da array
 	int capacity;
 } * Stack;
 

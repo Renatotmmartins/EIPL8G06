@@ -13,6 +13,8 @@
 
 Value execute (State* s, Stack st, Value block);
 
+Value executeValue(State* s, Value a, Value block);
+
 void executeWhileTrue (State* s, Value block);
 
 void map (State* s, Stack st, Value block);

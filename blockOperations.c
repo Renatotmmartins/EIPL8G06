@@ -45,15 +45,15 @@ void executeWhileTrue (State* s, Value block) {
  * @param s     o estado do programa
  * @param block bloco fornecido
  */
-void map (State* s, Value block){
+void map (State* s, Stack st, Value block){
     Stack aux = empty();
 
-    while (!isEmpty(s->stack))
-        push(aux, pop(s->stack));
+    while (!isEmpty(st))
+        push(aux, pop(st));
 
     while (!isEmpty(aux)) {
-        push(s->stack, pop(aux));
-        execute(s, s->stack, block);
+        push(st, pop(aux));
+        execute(s, st, block);
     }
 
     disposeStack(aux);
@@ -64,18 +64,18 @@ void map (State* s, Value block){
  * @param s     o estado do programa
  * @param block bloco fornecido
  */
-void filter (State* s, Value block){
+void filter (State* s, Stack st, Value block){
     Stack aux = empty(); //stack para conter os elementos pea ordem certa
 
-    while (!isEmpty(s->stack)) //colocar os elementos
-        push(aux, pop(s->stack));
+    while (!isEmpty(st)) //colocar os elementos
+        push(aux, pop(st));
 
     while (!isEmpty(aux)) {
         Stack temp = empty(); //stack para realizar a comparação
         push(temp, deepCopy(aux->values[aux->size - 1]));
         execute(s, temp, block); //executa a operação
         if (isTrue(pop(temp)))
-            push(s->stack, pop(aux));
+            push(st, pop(aux));
         else
             eraseTop(aux);
         disposeStack(temp);

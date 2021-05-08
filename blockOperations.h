@@ -15,9 +15,9 @@ Value execute (State* s, Stack st, Value block);
 
 void executeWhileTrue (State* s, Value block);
 
-void map (State* s, Value block);
+void map (State* s, Stack st, Value block);
 
-void filter (State* s, Value block);
+void filter (State* s, Stack st, Value block);
 
 Value fold (State* s, Stack st, Value block);
 

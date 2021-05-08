@@ -51,6 +51,16 @@ void rotateTop(Stack st, int n) {
     push(st, elements[0]);
 }
 
+/**
+ * \brief Escreve na consola o elemento no topo da stack, seguido de uma quebra de linha
+ *
+ * @param st A stack dada
+ */
+void printTop(Stack st) {
+    printVal(st->values[st->size - 1]);
+    printf("\n");
+}
+
 
 /**
  * \brief Lê uma linha do input e insere-a como uma string na stack.
@@ -61,6 +71,7 @@ void readLine(Stack st)
 {
     char* line = getInput();
     push (st, fromString (line));
+    free(line);
 }
 
 
@@ -109,7 +120,6 @@ Stack range(long long n) {
  */
 Value comma(State* s, Value a){
     Value aux;
-    Stack st;
     switch(a.type){
         case Char:
         return fromStack(range(a.character));
@@ -121,11 +131,8 @@ Value comma(State* s, Value a){
         disposeStack(a.array);
         return aux;
         case Block:
-        st = s->stack;
-        s->stack = pop(st).array; 
-        filter(s, a);
-        aux = fromStack(s->stack);
-        s->stack = st;
+        aux = pop(s->stack);
+        filter(s, aux.array, a);
         return aux;
         //Operação não definida
         default: return fromInteger(UNDEFINED);

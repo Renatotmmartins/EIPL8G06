@@ -24,6 +24,8 @@
 
 void rotateTop(Stack, int);
 
+void printTop(Stack st);
+
 Value copyElement(State*, Value);
 
 void readLine(Stack);

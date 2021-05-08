@@ -113,7 +113,7 @@ char* copyString(Value v) {
     char* ans = malloc((strlen(str) + 1) * sizeof(char));//Aloca memória suficiente
     strcpy(ans, str);
 
-    //free(str);
+    free(str);
 
     return ans;
 }

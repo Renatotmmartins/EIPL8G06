@@ -107,11 +107,8 @@ Stack separateBySubstrAux(char* str, char* pattern) {
     char* accum = str; //último split (no início nao houve splits)
 
     //Enquanto não acabar o string
-    while (*str) {
-        if (*str == *current)
-            current++;
-        else
-            current = pattern;
+    for (; *str; str++) {
+        current = (*str == *current) ? current + 1 : pattern;
 
         //Se tivermos encontrado uma ocorrência do padrão
         if (*current == '\0') {
@@ -124,8 +121,6 @@ Stack separateBySubstrAux(char* str, char* pattern) {
             current = pattern;
             accum = str + 1;
         }
-
-        str++;
     }
 
     if (*accum) //ultimo push se for preciso

@@ -48,6 +48,7 @@
         ENTRY('\\', 1, swap, 0S, 0) \
         ENTRY('@', 1, rotate, 0S, 0) \
         ENTRY('t', 1, readAllLines, 0S, 0) \
+        ENTRY('p', 1, printTop, 0S, 0) \
         \
         \
         ENTRY('f', 1, convertAndDisposeToDouble, 1, 1) \

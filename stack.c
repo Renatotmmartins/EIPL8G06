@@ -66,13 +66,7 @@ void push(Stack s, Value value) {
  * @return 	O elemento removido do topo da stack
  */
 Value pop(Stack s) {
-    Value top = s->values[--(s->size)];
-	/*Stack previous = s->previous;
-	Value top = s->value;
-	*s = *previous;
-    free(previous);*/
-
-	return top;
+	return s->values[--(s->size)];
 }
 
 /**
@@ -144,18 +138,11 @@ Stack clone(Stack st)
  * @return Stack que resulta da junção das duas stacks dadas inicialmente
  */
 Stack merge(Stack a, Stack b) {
-    int i;
-    for(i = 0; i < b->size; i++)
+    for (int i = 0; i < b->size; i++)
         push(a, b->values[i]);
 
     free(b->values);
     free(b);
-
-    /*or(int i = 0; i < length(a); i++) {
-        printf("%d ", a->values[i].type);
-    }
-    printf("\n");*/
-
     return a;
 }
 
@@ -220,9 +207,9 @@ Value fromCharacter(char ch){
 }
 
 /**
- * \brief Converte uma string para tipo #Value.
+ * \brief Converte uma string para tipo #Value. Não liberta a str.
  *
- * @param str  a string
+ * @param str  a string. Não é libertada.
  * @return     a string convertida para #Value.
  */
 Value fromString(char* str){
@@ -230,9 +217,7 @@ Value fromString(char* str){
 
     val.type = String;
 
-    ////free(str);
     val.array = stringToStack(str);
-    ////free(str);
     return val;
 }
 
@@ -247,8 +232,6 @@ Stack stringToStack(char* str) {
     //char* og = str;
     while (*str)
         push(st, fromCharacter(*(str++)));
-
-    ////free(og);
 
     return st;
 }
@@ -269,8 +252,8 @@ Value fromStack(Stack st) {
 }
 
 /**
- * \brief Cria um value a partir de um bloco com a forma de string
- * @param block bloco dado
+ * \brief Cria um value a partir de um bloco com a forma de string. A string não é libertada.
+ * @param block bloco dado. Não é libertado.
  * @param length Tamanho da string + 1
  * @return Value criado a partir de um bloco com a forma da string
  */
@@ -282,7 +265,6 @@ Value fromBlock(char* block, int length) {
     val.block = malloc( length * sizeof (char));
     memcpy(val.block,block,(length-1) * sizeof (char));
     val.block [(length-1)] = '\0';
-    ////free(block);
     return val;
 }
 
@@ -373,15 +355,17 @@ void printVal(Value top) {
  * @param st   A stack a imprimir
  */
 void printStack(Stack st) {
-    if (!isEmpty(st)) {
+    for (int i = 0; i < st->size; i++)
+        printVal(st->values[i]);
+
+    /*if (!isEmpty(st)) {
         Value top = pop(st);
         printStack(st);
         printVal(top);
         disposeValue(top);
-    }
+    }*/
 
     /*reverseStack(st);
-
     while (!isEmpty(st)) {
         Value a = pop(st);
         printVal(a);

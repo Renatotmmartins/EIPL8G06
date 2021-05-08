@@ -139,6 +139,7 @@ Value sum(Value a, Value b) {
         free(xstr);
         free(ystr);
         return fromString(newString);
+        free(newString);
     }
     NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
 }
@@ -235,10 +236,7 @@ Value xor(Value a, Value b) {
  */
 Value module(State* s, Value a, Value b) {
     if (b.type == Block) {
-        Stack st = s->stack;
-        s->stack = a.array;
-        map(s, b);
-        s->stack = st;
+        map(s, a.array, b);
         disposeValue(b);
         return a;
     }
@@ -285,6 +283,7 @@ void readAllLines(Stack st) {
     //Liberta a string que guarda a linha atual, por não ser mais precisa
     free(curLine);
     push(st, fromString(str));
+    free(str);
 }
 
 /**

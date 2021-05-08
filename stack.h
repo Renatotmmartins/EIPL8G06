@@ -128,4 +128,10 @@ void disposeValue(Value);
 
 char* toString(Value v);
 
+void printVal(Value val);
+
+void printStack(Stack st);
+
+void printStackLine(Stack st);
+
 #endif

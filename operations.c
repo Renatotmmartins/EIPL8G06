@@ -122,13 +122,23 @@ void NumericOperationAux(Value *a, Value *b) {
  * @return     resultado da soma de a com b.
  */
 Value sum(Value a, Value b) {
-    if (a.type >= String || b.type >= String) {
+    if (a.type == Array) {
         if(a.type < Array)
             a = convertToStack(a);
 
         if(b.type < Array)
             b = convertToStack(b);
         return fromStack(merge(a.array,b.array));
+    } else if(a.type == String) {
+        char *xstr = toString(a), *ystr = toString(b);
+        //printf("Strings: %s %s \n", xstr, ystr);
+        char* newString = malloc(sizeof(char) * (length(a.array) + length(b.array) + 1));
+        newString[0] = '\0';
+        strcat(newString, xstr);
+        strcat(newString, ystr);
+        free(xstr);
+        free(ystr);
+        return fromString(newString);
     }
     NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
 }
@@ -262,7 +272,7 @@ void readAllLines(Stack st) {
     //string que guarda o valor de cada linha individualmente
     char* str = malloc(sizeof(char) * MAXINPUTLENGTH);
     char* curLine = malloc(sizeof(char) * MAXINPUTLENGTH);
-
+    str[0] = '\0';
     //Enquanto houver input para ler
     while(fgets(curLine, MAXINPUTLENGTH,stdin) != NULL) {
         //Para ser possível parar a leitura na consola
@@ -285,7 +295,7 @@ void readAllLines(Stack st) {
  * @return   O #Value que contém a stack resultante
  */
 Value splitByWhitespace(Value v) {
-    Value copy = v;
+    Value copy = deepCopy(v);
     int i;
     for(i = 0; i < v.array->size; i++) {
         if(v.array->values[i].character == '\n')

@@ -15,8 +15,8 @@
 Stack empty() {
 	Stack st = malloc(sizeof(struct stack));
     st->size = 0;
-    st->capacity = 100;
-    st->values = (Value*) malloc(sizeof(Value) * st->capacity);
+    st->capacity = 128;
+    st->values = malloc(sizeof(Value) * st->capacity);
 	return st;
 }
 
@@ -150,6 +150,12 @@ Stack merge(Stack a, Stack b) {
 
     free(b->values);
     free(b);
+
+    /*or(int i = 0; i < length(a); i++) {
+        printf("%d ", a->values[i].type);
+    }
+    printf("\n");*/
+
     return a;
 }
 
@@ -159,9 +165,11 @@ Stack merge(Stack a, Stack b) {
  * @param st Stack dada
  */
 void disposeStack(Stack st) {
+    //int l = length(st);
     while (!isEmpty(st))
         eraseTop(st);
-    free(st->values);
+    //if(l > 1000)
+        free(st->values);
     free(st);
 }
 
@@ -222,9 +230,9 @@ Value fromString(char* str){
 
     val.type = String;
 
-    //free(str);
+    ////free(str);
     val.array = stringToStack(str);
-    //free(str);
+    ////free(str);
     return val;
 }
 
@@ -240,7 +248,7 @@ Stack stringToStack(char* str) {
     while (*str)
         push(st, fromCharacter(*(str++)));
 
-    //free(og);
+    ////free(og);
 
     return st;
 }
@@ -274,7 +282,7 @@ Value fromBlock(char* block, int length) {
     val.block = malloc( length * sizeof (char));
     memcpy(val.block,block,(length-1) * sizeof (char));
     val.block [(length-1)] = '\0';
-    //free(block);
+    ////free(block);
     return val;
 }
 
@@ -309,12 +317,15 @@ char* toString(Value v) {
         return str;
     }
     int size = length(v.array);
-
+   // printf("%d\n", size);
     char* str = (char*) malloc(sizeof(char) * (size + 1));
-
+    str[0] = '\0';
     int i;
+    //printStackLine(v.array);
     for(i = 0; i < size; i++) {
+        //printf("VALOR %d ", v.array->values[i].type);
         str[i] = v.array->values[i].character;
+        //printf("\n");
     }
     
     str[size] = '\0';
@@ -333,4 +344,60 @@ void disposeValue(Value v) {
         default:                            break;
 
     }
+}
+
+
+/**
+ * \brief Efetua print do valor dado
+ * @param top Valor a ser dado print
+ */
+
+void printVal(Value top) {
+    switch (top.type) {
+        case Double:    printf("%g", top.decimal);      break;
+        case Int:       printf("%lld", top.integer);      break;
+        case Char:      printf("%c", top.character);    break;
+        case String:
+        case Array:     printStack(top.array);          break;
+        case Block:     printf("{%s}", top.block);       break;
+    }
+}
+
+
+/**
+ * \brief Imprime a stack fornecida para o ecrã. 
+ * 
+ * De notar que esta função retira todos os elementos da mesma, resultando
+ * uma stack vazia.
+ * 
+ * @param st   A stack a imprimir
+ */
+void printStack(Stack st) {
+    if (!isEmpty(st)) {
+        Value top = pop(st);
+        printStack(st);
+        printVal(top);
+        disposeValue(top);
+    }
+
+    /*reverseStack(st);
+
+    while (!isEmpty(st)) {
+        Value a = pop(st);
+        printVal(a);
+        disposeValue(a);
+    }*/
+}
+
+/**
+ * \brief Imprime a stack fornecida para o ecrã e muda de linha. 
+ * 
+ * De notar que esta função retira todos os elementos da mesma, resultando
+ * uma stack vazia.
+ * 
+ * @param st   A stack a imprimir
+ */
+void printStackLine(Stack st) {
+    printStack(st);
+    printf("\n");
 }

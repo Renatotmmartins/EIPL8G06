@@ -102,9 +102,11 @@ Value convertToStack(Value v) {
     if (v.type < String) {
         Stack st = empty();
         push(st, v);
-        return fromStack(st);
+        Value ans = fromStack(st);
+        ans.type = v.type == Char ? String : Array;
+        return ans;
     }
-    //v.type = Array ???
+
     return v;
 }
 

@@ -12,10 +12,10 @@
 /**
  * \brief Executa um bloco dentro de uma stack
  * @param s O estado do programa
+ * @param st A stack
  * @param block bloco fornecido
  * @return Value que é resultado da operação do bloco dentro da stack
  */
-
 Value execute (State* s, Stack st, Value block) {
     Stack temp = s->stack;
     s->stack = st;
@@ -24,6 +24,13 @@ Value execute (State* s, Stack st, Value block) {
     return st->values[st->size - 1];
 }
 
+/**
+ * \brief Executa um bloco dentro de uma stack que comtém o Value indicado
+ * @param s O estado do programa
+ * @param a O Value indicado
+ * @param block bloco fornecido
+ * @return Value que é resultado da operação do bloco dentro da stack
+ */
 Value executeValue(State* s, Value a, Value block) {
     Stack temp = empty();
     push(temp, a);

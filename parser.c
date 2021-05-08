@@ -81,19 +81,15 @@ Value readString(char** str) {
     //mete *str a apontar para a aspa que fecha
     Stack read = empty();
     bool escape = false;
-    (*str)++;
 
-    while (escape || **str != '"') {
+    for ((*str)++; escape || **str != '"'; (*str)++) {
         if (escape) {
             push(read, fromCharacter(getControlChar(**str)));
             escape = false;
-        }
-        else if (**str == '\\')
+        } else if (**str == '\\')
             escape = true;
         else
             push(read, fromCharacter(**str));
-            
-        (*str)++;
     }
     
     Value r = fromStack(read);
@@ -123,11 +119,10 @@ Value readArray(State* s, char** str) {
  * @param str Pointer dado
  */
 void readBlock(char** str) {
-    (*str)++;
-    while (**str != '}' && **str != ']') {
+    for ((*str)++; **str != '}' && **str != ']'; (*str)++) {
         switch (**str) {
             case '"':
-            //dispose do valor lido (só queremos mudar a posição de *str)
+            //dispose do valor lido (só queremos mudar a posição de *str) TODO: otimizar
             disposeValue(readString(str));
             break;
 
@@ -137,7 +132,6 @@ void readBlock(char** str) {
             readBlock(str);
             break;
         }
-        (*str)++;
     }
 }
 
@@ -167,7 +161,7 @@ void processInput(char** str, State* st) {
     char *aux, *accum = *str;
     while(**str && **str != '\n' && **str != ']') {
 
-        //printStack(clone(st->stack));
+        //printStack(st->stack);
         //printf(" | %s\n", *str);
 
         switch (**str) {
@@ -190,7 +184,7 @@ void processInput(char** str, State* st) {
             push(st->stack, fromBlock(aux + 1, *str - aux));
             break;
 
-            default:    (*str)++;   continue;
+            default:    (*str)++;   continue; //nao foi lido um símbolo
         }
         accum = *str + 1; //foi lido um símbolo
         (*str)++;

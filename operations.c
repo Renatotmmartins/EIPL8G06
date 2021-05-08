@@ -122,24 +122,12 @@ void NumericOperationAux(Value *a, Value *b) {
  * @return     resultado da soma de a com b.
  */
 Value sum(Value a, Value b) {
-    if (a.type == Array) {
-        if(a.type < Array)
-            a = convertToStack(a);
-
-        if(b.type < Array)
-            b = convertToStack(b);
-        return fromStack(merge(a.array,b.array));
-    } else if(a.type == String) {
-        char *xstr = toString(a), *ystr = toString(b);
-        //printf("Strings: %s %s \n", xstr, ystr);
-        char* newString = malloc(sizeof(char) * (length(a.array) + length(b.array) + 1));
-        newString[0] = '\0';
-        strcat(newString, xstr);
-        strcat(newString, ystr);
-        free(xstr);
-        free(ystr);
-        return fromString(newString);
-        free(newString);
+    if (a.type >= String || b.type >= String) {
+        a = convertToStack(a);
+        b = convertToStack(b);
+        Value ans = fromStack(merge(a.array,b.array));
+        ans.type = a.type > b.type ? a.type : b.type; //o maior dos dois tipos
+        return ans;
     }
     NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
 }

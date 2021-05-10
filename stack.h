@@ -5,6 +5,7 @@
 /*! Include guard */
 #define STACK_H
 
+#include "value.h"
 
 //! Usada para distinguir semanticamente entre valor lógico 
 //! verdadeiro  e valor numérico 1.
@@ -18,9 +19,28 @@
 //! e valor numérico.
 #define bool int
 
+/**
+ * \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser
+ * acedida pelas funções definidas abaixo.
+ */
+typedef struct stack {
+    //! A array de valores armazenados
+    Value* values;
+    //! O número de valores guardados
+    int size;
+    //! O tamanho da array
+    int capacity;
+} * Stack;
 
-//! O tipo de dados usado para representar s stack
-struct stack;
+/**
+ * \brief Representa o estado atual do programa, ou seja, as variáveis e a stack
+ */
+typedef struct state{
+    //! A stack
+    Stack stack;
+    //! O array das variáveis
+    Value variables[26];
+} State;
 
 
 Stack empty();
@@ -36,6 +56,8 @@ Value pop(Stack);
 Value popBottom(Stack);
 
 void eraseTop(Stack);
+
+Value convertToStack(Value v);
 
 Value getElement(Stack, int);
 

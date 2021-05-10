@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "value.h"
 #include "stack.h"
 #include "operations.h"
 #include "typeOperations.h"

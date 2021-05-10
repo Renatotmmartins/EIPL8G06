@@ -53,6 +53,7 @@ void executeWhileTrue (State* s, Value block) {
         execute (s, s->stack, block);
     }
     eraseTop(s->stack); //Apaga o zero que está no topo da stack
+    disposeValue(block);
 }
 
 /**

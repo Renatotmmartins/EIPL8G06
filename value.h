@@ -44,30 +44,6 @@ typedef struct value {
 
 } Value;
 
-
-/**
- * \brief Representa uma stack (pilha), estrutura de dados LIFO, que pode ser
- * acedida pelas funções definidas abaixo.
- */
-typedef struct stack {
-    //! A array de valores armazenados
-    Value* values;
-    //! O número de valores guardados
-    int size;
-    //! O tamanho da array
-    int capacity;
-} * Stack;
-
-/**
- * \brief Representa o estado atual do programa, ou seja, as variáveis e a stack
- */
-typedef struct state{
-    //! A stack
-    Stack stack;
-    //! O array das variáveis
-    Value variables[26];
-} State;
-
 Value fromInteger(long long);
 
 Value fromDecimal(double);
@@ -81,3 +57,4 @@ Value fromBlock(char* block, int length);
 Value deepCopy(Value);
 
 void printVal(Value val);
+#endif

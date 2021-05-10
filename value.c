@@ -2,6 +2,11 @@
  * @file que contém as funções relacionadas com o Value
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "value.h"
+#include "stack.h"
 
 /**
  * \brief Converte um inteiro para tipo #Value.
@@ -112,4 +117,3 @@ void printVal(Value top) {
         case Block:     printf("{%s}", top.block);       break;
     }
 }
-

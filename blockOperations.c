@@ -45,14 +45,17 @@ Value executeValue(State* s, Value a, Value block) {
  * @param st a stack fornecida
  * @param block bloco fornecido
  */
-
 void executeWhileTrue (State* s, Value block) {
-    push(s->stack, fromInteger(UNDEFINED)); //Adiciona um valor aleatório no topo da stack para este não se perder no pop do while
-    while (!isEmpty(s->stack) && isTrue(s->stack->values[s->stack->size - 1])) {
+    push(s->stack, fromInteger(1)); //Adiciona um valor verdadeiro no topo da stack para este não se perder no pop do while
+    bool dispose = false;
+    while (!isEmpty(s->stack) && (dispose = true) && isTrue(s->stack->values[s->stack->size - 1])) {
         eraseTop(s->stack);
+        dispose = false;
         execute (s, s->stack, block);
     }
-    eraseTop(s->stack); //Apaga o zero que está no topo da stack
+    
+    if (dispose)
+        eraseTop(s->stack); //Apaga o zero que está no topo da stack
     disposeValue(block);
 }
 
@@ -87,14 +90,14 @@ void filter (State* s, Stack st, Value block){
         push(aux, pop(st));
 
     while (!isEmpty(aux)) {
-        Stack temp = empty(); //stack para realizar a comparação
-        push(temp, deepCopy(aux->values[aux->size - 1]));
-        execute(s, temp, block); //executa a operação
-        if (isTrue(pop(temp)))
+        push(st, deepCopy(aux->values[aux->size - 1]));
+        execute(s, st, block); //executa a comparação
+        Value a = pop(st);
+        if (isTrue(a))
             push(st, pop(aux));
         else
             eraseTop(aux);
-        disposeStack(temp);
+        disposeValue(a);
     }
 
     disposeStack(aux);

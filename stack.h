@@ -53,6 +53,8 @@ void push(Stack, Value);
 
 Value pop(Stack);
 
+Value top(Stack);
+
 Value popBottom(Stack);
 
 void eraseTop(Stack);

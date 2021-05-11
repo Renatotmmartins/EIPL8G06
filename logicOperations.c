@@ -34,11 +34,11 @@ Value shortcutSelect(char* str, Value x, Value y) {
 	Value* r;
 
 	switch (*str) {
-		case '&':	r = isTrue(x) ? &y : &x;				break;
-		case '|':	r = isTrue(x) ? &x : &y;				break;
-		case '<':	r = isTrue(isLess(x, y)) ? &x : &y;		break;
-		case '>':	r = isTrue(isGreater(x, y)) ? &x : &y;	break;
-		default: 	r = isTrue(x) ? &x : &y;				break;
+		case '&':	r = isTrue(x) ? &y : &x;									break;
+		case '|':	r = isTrue(x) ? &x : &y;									break;
+		case '<':	r = isTrue(isLess(deepCopy(x), deepCopy(y))) ? &x : &y;		break;
+		case '>':	r = isTrue(isGreater(deepCopy(x), deepCopy(y))) ? &x : &y;	break;
+		default: 	r = isTrue(x) ? &x : &y;									break;
 	}
 
 	if (r == &x)
@@ -59,8 +59,15 @@ Value shortcutSelect(char* str, Value x, Value y) {
  */
 
 Value conditional(Value x, Value y, Value z){
-
-	return isTrue(x) ? y : z;
+	if (isTrue(x)) {
+		disposeValue(x);
+		disposeValue(z);
+		return y;
+	} else {
+		disposeValue(x);
+		disposeValue(y);
+		return z;
+	}
 }
 
 /**
@@ -78,7 +85,10 @@ bool compareArrays(Stack a, Stack b) {
 		}
 	}
 
-	return isEmpty(a) && isEmpty(b);
+	bool r = isEmpty(a) && isEmpty(b);
+	disposeStack(a);
+	disposeStack(b);
+	return r;
 }
 
 /**
@@ -134,8 +144,7 @@ Value isEqual (Value x, Value y){
 
 Value isLess (Value x, Value y){
     if(x.type >= String && y.type==Int){ //manter os primeiros y elementos
-		for(int tamanho=length(x.array);tamanho>y.integer;tamanho--)
-			pop(x.array);
+		disposeStack(split(x.array, length(x.array) - y.integer));
 		return x;
 	}
 	if(x.type == String)
@@ -161,8 +170,9 @@ Value isLess (Value x, Value y){
 Value isGreater (Value x, Value y){
 
     if(x.type >= String && y.type==Int){ //manter os últimos y elementos da array
-		disposeStack(split(x.array,y.integer));
-		return fromStack(x.array);
+		Stack ans = split(x.array,y.integer);
+		disposeValue(x);
+		return fromStack(ans);
 	}
 	if(x.type==String)
 		return fromInteger(compareStrings(x, y) > 0);
@@ -184,7 +194,9 @@ Value isGreater (Value x, Value y){
  */
 
 Value logicNot (Value x){
-	return fromInteger(!isTrue(x));
+	Value r = fromInteger(!isTrue(x));
+	disposeValue(x);
+	return r;
 }
 
 /**
@@ -195,7 +207,7 @@ Value logicNot (Value x){
  */
 void setVariable(char var, State* s){
 	disposeValue(s->variables[var - 'A']);
-	s->variables[var-'A'] = deepCopy(s->stack->values[s->stack->size - 1]);
+	s->variables[var-'A'] = deepCopy(top(s->stack));
 }
 
 /**

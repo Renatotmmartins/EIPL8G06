@@ -57,7 +57,7 @@ void rotateTop(Stack st, int n) {
  * @param st A stack dada
  */
 void printTop(Stack st) {
-    printVal(st->values[st->size - 1]);
+    printVal(top(st));
     printf("\n");
 }
 
@@ -81,7 +81,7 @@ void readLine(Stack st)
  * @param st  A stack
  */
 void duplicate(Stack st) {
-    push(st, deepCopy(st->values[st->size - 1]));
+    push(st, deepCopy(top(st)));
 }
 
 /**

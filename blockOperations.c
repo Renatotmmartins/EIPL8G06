@@ -16,12 +16,11 @@
  * @param block bloco fornecido
  * @return Value que é resultado da operação do bloco dentro da stack
  */
-Value execute (State* s, Stack st, Value block) {
+void execute (State* s, Stack st, Value block) {
     Stack temp = s->stack;
     s->stack = st;
     processInput (&block.block, s);
     s->stack = temp;
-    return st->values[st->size - 1];
 }
 
 /**
@@ -48,7 +47,7 @@ Value executeValue(State* s, Value a, Value block) {
 void executeWhileTrue (State* s, Value block) {
     push(s->stack, fromInteger(1)); //Adiciona um valor verdadeiro no topo da stack para este não se perder no pop do while
     bool dispose = false;
-    while (!isEmpty(s->stack) && (dispose = true) && isTrue(s->stack->values[s->stack->size - 1])) {
+    while (!isEmpty(s->stack) && (dispose = true) && isTrue(top(s->stack))) {
         eraseTop(s->stack);
         dispose = false;
         execute (s, s->stack, block);
@@ -90,7 +89,7 @@ void filter (State* s, Stack st, Value block){
         push(aux, pop(st));
 
     while (!isEmpty(aux)) {
-        push(st, deepCopy(aux->values[aux->size - 1]));
+        push(st, deepCopy(top(aux)));
         execute(s, st, block); //executa a comparação
         Value a = pop(st);
         if (isTrue(a))
@@ -109,7 +108,7 @@ void filter (State* s, Stack st, Value block){
  * @param st    o array sobre o qual fazer fold
  * @param block bloco fornecido
  */
-Value fold (State* s, Stack st, Value block){
+void fold (State* s, Stack st, Value block){
     Stack aux = empty();
 
     while (length(st) > 1)
@@ -121,5 +120,4 @@ Value fold (State* s, Stack st, Value block){
     }
 
     disposeStack(aux);
-    return st->values[st->size - 1];
 }

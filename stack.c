@@ -70,6 +70,16 @@ Value pop(Stack s) {
 }
 
 /**
+ * \brief Retorna o topo da stack
+ * 
+ * @param s     A stack
+ * @return      O topo da stack
+ */
+Value top(Stack s) {
+    return s->values[s->size - 1];
+}
+
+/**
  * \brief Retorna o valor que está no fundo da stack
  * 
  * @param st A stack dada
@@ -132,7 +142,10 @@ Stack clone(Stack st)
     res->size = st->size;
     res->capacity = st->capacity;
     res->values = malloc(sizeof(Value) * st->capacity);
-    memcpy(res->values, st->values, sizeof(Value) * st->size);
+    
+    for (int i = 0; i < st->size; i++)
+        res->values[i] = deepCopy(st->values[i]);
+
     return res;
 }
 

@@ -158,30 +158,17 @@ Value separateBySubstr(Value s, Value pat) {
 
 /**
  * \brief Separa a stack st pelo índice x a contar de cima
- * @param st      A stack a separar; é alterada para ter tamanho x
+ * @param st      A stack a separar; são-lhe subtraídos x elementos
  * @param x       O índice pelo o qual se vai separar
- * @return       Retorna a stack de baixo
+ * @return        Retorna a stack de cima (com x elementos)
  */
 Stack split(Stack st, int x){
     Stack res = empty();
-    int i;
-    for(i = x - 1; i >= 0; i--) {
-        push(res, st->values[st->size - 1 - i]);
-    }
-    st->size -= x;
-    /*while(x>0){
-       st=st->previous;
-       x--;
-    }
-    Stack a=empty();
-    *a=*st;
-    st->previous=NULL;*/
 
-    Stack temp = empty();
-    *temp = *st;
-    *st = *res;
-    *res = *temp;
-    free(temp);
+    for (int i = length(st) - x; i < length(st); i++)
+        push(res, st->values[i]);
+
+    st->size -= x;
     return res;
 }
 
@@ -226,8 +213,8 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
     Stack res = empty();
     //Enquanto nenhuma stack é vazia
     while(!isEmpty(l) && !isEmpty(r)) {
-        Value v1 = executeValue(s, deepCopy(l->values[l->size - 1]), block);
-        Value v2 = executeValue(s, deepCopy(r->values[r->size - 1]), block);
+        Value v1 = executeValue(s, deepCopy(top(l)), block);
+        Value v2 = executeValue(s, deepCopy(top(r)), block);
 
         //Se a condição executada retorna verdadeiro, então l < r
         //Inserimos só o menor elemento
@@ -258,15 +245,15 @@ Stack mergeSort(State* s, Stack st, Value block, int n) {
     if(n <= 1)
         return st;
     //Parte a stack em duas
-    Stack firstHalf = split(st, (n + 1) / 2);
+    Stack secondHalf = split(st, n / 2);
 
     //Ordena as duas metades
-    firstHalf = mergeSort(s, firstHalf, block, n - ((n + 1) / 2));
-    st = mergeSort(s, st, block, (n + 1) / 2);
+    st = mergeSort(s, st, block, n / 2);
+    secondHalf = mergeSort(s, secondHalf, block, (n + 1) / 2);
 
     //Inverter as stacks, de forma a que os elementos maiores estejam no início
     reverseStack(st);
-    reverseStack(firstHalf);
+    reverseStack(secondHalf);
     //Junta as metades ordenadas para uma nova stack ordenada
-    return mergeStacks(s, st, firstHalf, block);
+    return mergeStacks(s, st, secondHalf, block);
 }

@@ -285,7 +285,7 @@ void readAllLines(Stack st) {
 Value splitByWhitespace(Value v) {
     Value copy = deepCopy(v);
     int i;
-    for(i = 0; i < v.array->size; i++) {
+    for(i = 0; i < length(v.array); i++) {
         if(v.array->values[i].character == '\n')
             copy.array->values[i].character = ' ';
     }

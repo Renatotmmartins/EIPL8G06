@@ -11,7 +11,7 @@
 #include "stack.h"
 #include "logicOperations.h"
 
-Value execute (State* s, Stack st, Value block);
+void execute (State* s, Stack st, Value block);
 
 Value executeValue(State* s, Value a, Value block);
 
@@ -21,6 +21,6 @@ void map (State* s, Stack st, Value block);
 
 void filter (State* s, Stack st, Value block);
 
-Value fold (State* s, Stack st, Value block);
+void fold (State* s, Stack st, Value block);
 
 #endif

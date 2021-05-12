@@ -173,15 +173,8 @@ Value multiply(State* s, Value a, Value b) {
         disposeValue(b);
         return a;
     } else if (a.type >= String) {
-        int i;
-        Stack result = empty();
-        for (i = 0; i < b.integer ; ++i) {
-           Stack s = clone(a.array);
-           result = merge(result,s);
-        }
-        Value v = fromStack(result);
-        v.type = a.type;
-        return v;
+        a.array = repeat(a.array, b.integer);
+        return a;
     }
     NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
 }

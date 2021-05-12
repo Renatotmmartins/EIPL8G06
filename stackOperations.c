@@ -22,9 +22,11 @@
  * @return Uma cópia do n-ésimo elemento da stack
  */
 Value copyElement(State* s, Value n) {
-    if (n.type == Block)
-        return sort(s, pop(s->stack), n);
-    else
+    if (n.type == Block) {
+        Value a = sort(s, pop(s->stack), n);
+        disposeValue(n);
+        return a;
+    } else
         return deepCopy(getElement(s->stack, n.integer));
 }
 
@@ -94,11 +96,18 @@ void duplicate(Stack st) {
  * @return stack n vezes repetida
  */
 Stack repeat(Stack st, int n) {
-    Stack b = st;
-    while (--n)
-        b = merge (b,clone(st));
+    if (n <= 0) {
+        disposeStack(st);
+        return empty();
+    } else if (n == 1)
+        return st;
 
-    return b;
+    Stack b = clone(st);
+
+    while (--n)
+        st = merge (st, n == 1 ? b : clone(b));
+
+    return st;
 }
 /**
  * \brief Função que cria uma stack com os números de 0 a n-1

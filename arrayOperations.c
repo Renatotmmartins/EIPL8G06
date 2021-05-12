@@ -193,12 +193,13 @@ Value sort(State* s, Value array, Value block) {
 
 void reverseStack(Stack s) {
     Stack st = empty();
-    while(!isEmpty(s)) {
+    while(!isEmpty(s))
         push(st, pop(s));
-    }
 
-    *s = *st;
-    free(st);
+    struct stack aux = *st;
+    *st = *s;
+    *s = aux;
+    disposeStack(st);
 }
 
 /**
@@ -248,8 +249,8 @@ Stack mergeSort(State* s, Stack st, Value block, int n) {
     Stack secondHalf = split(st, n / 2);
 
     //Ordena as duas metades
-    st = mergeSort(s, st, block, n / 2);
-    secondHalf = mergeSort(s, secondHalf, block, (n + 1) / 2);
+    st = mergeSort(s, st, block, (n + 1) / 2);
+    secondHalf = mergeSort(s, secondHalf, block, n / 2);
 
     //Inverter as stacks, de forma a que os elementos maiores estejam no início
     reverseStack(st);

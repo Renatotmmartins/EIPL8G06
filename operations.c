@@ -40,14 +40,14 @@ char* getInput ()
 
 
 /**
- * \brief Decrementa o valor do tipo #Value.
+ * \brief Decrementa o valor do tipo #Value se for um inteiro, um double ou um caracter. Se for uma string ou array retira o elemento que está no fundo da stack.
  *
  * @param s  o pointer para o estado do programa.
  * @param a  o elemento do tipo #Value.
  * @return   o elemento do tipo #Value decrementado.
  */
 Value decrement(State* s,Value a) {
-    if (a.type >= String) {
+    if (a.type >= String) { //Se o tipo do Value for string ou array 
         Value aux = popBottom(a.array);
         push(s->stack,a);
         return aux;
@@ -58,7 +58,7 @@ Value decrement(State* s,Value a) {
 
 
 /**
- * \brief Incrementa o valor do tipo #Value.
+ * \brief Incrementa o valor do tipo #Value, se for um inteiro, um double ou um caracter. Se for uma string ou array retira o elemento que está no topo da stack. .
  *
  * @param s  o pointer para o estado do programa.
  * @param a  o elemento do tipo #Value.
@@ -118,14 +118,14 @@ void NumericOperationAux(Value *a, Value *b) {
 
 
 /**
- * \brief Soma dois elementos do tipo #Value.
+ * \brief Soma dois elementos do tipo #Value, se forem do tipo inteiro, caracter ou double. Caso contrário, junta as duas stacks resultantes dos tipos fornecidos.
  *
  * @param a  o elemento do tipo #Value.
  * @param b  o elemento do tipo #Value.
  * @return     resultado da soma de a com b.
  */
 Value sum(Value a, Value b) {
-    if (a.type >= String || b.type >= String) {
+    if (a.type >= String || b.type >= String) {//Se um dos dois elementos for uma string ou array 
         a = convertToStack(a);
         b = convertToStack(b);
         Value ans = fromStack(merge(a.array,b.array));
@@ -147,7 +147,7 @@ Value subtract(Value a, Value b) {
     NUMERICOPERATION(a.decimal - b.decimal, a.integer - b.integer, a.character - b.character);
 }
 /**
- * \brief Divide dois elementos do tipo #Value.
+ * \brief Divide dois elementos do tipo #Value, se for uma string divide-os pelos seus espaços.
  *
  * @param a  o elemento do tipo #Value.
  * @param b  o elemento do tipo #Value.
@@ -163,7 +163,7 @@ Value divide(Value a, Value b) {
     NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
 }
 /**
- * \brief Multiplica dois elementos do tipo #Value.
+ * \brief Multiplica dois elementos do tipo #Value. Se o tipo do #Value a for uma string ou array repete-o b vezes. Se o tipo do #Value b for um block aplica o fold. 
  *
  * @param a  o elemento do tipo #Value.
  * @param b  o elemento do tipo #Value.
@@ -211,7 +211,7 @@ Value xor(Value a, Value b) {
     NUMERICOPERATION(UNDEFINED, a.integer ^ b.integer, a.character ^ b.character);
 }
 /**
- * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value.
+ * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value. Se o tipo do #Value b for um block aplica a função map.
  *
  * @param s  o estado do programa
  * @param a  o elemento do tipo #Value que atua como dividendo.
@@ -228,7 +228,7 @@ Value module(State* s, Value a, Value b) {
 }
 
 /**
- * \brief Calcula a potencia entre dois elementos do tipo #Value.
+ * \brief Calcula a potencia entre dois elementos do tipo #Value. Se for um array ou string devolve o índice onde se encontra a sub-string. 
  *
  * @param a  o elemento do tipo #Value que atua como base.
  * @param b  o elemento do tipo #Value que atua como expoente.

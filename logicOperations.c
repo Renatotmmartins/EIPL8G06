@@ -110,7 +110,7 @@ int compareStrings(Value x, Value y) {
 }
 
 /**
- * \brief Operação de comparação de valores
+ * \brief Operação de comparação de valores. Se o tipo do #Value de x for uma string ou array e do #Value y for um inteiro devolve o #Value que está nesse índice.
  * @param x   o elemento do tipo #Value 
  * @param y   o elemento do tipo #Value 
  * @return    1 se for verdade, 0 se for falso
@@ -138,7 +138,7 @@ Value isEqual (Value x, Value y){
 }
 
 /**
- * \brief Verifica se o primeiro argumento é menor que o segundo
+ * \brief Verifica se o primeiro argumento é menor que o segundo. Se o tipo do #Value x for array ou string e do #Value y for um inteiro fica com os primeiros y elementos.
  * @param x   o elemento do tipo #Value 
  * @param y   o elemento do tipo #Value 
  * @return    1 se for verdade, 0 se for falso
@@ -165,7 +165,7 @@ Value isLess (Value x, Value y){
 }
 
 /**
- * \brief Verifica se o primeiro argumento é maior que o segundo
+ * \brief Verifica se o primeiro argumento é maior que o segundo. Se o tipo do #Value x for uma string ou array do #Value y for um inteiro fica com os y últimos elementos.
  * @param x   o elemento do tipo #Value 
  * @param y   o elemento do tipo #Value 
  * @return    1 se for verdade, 0 se for falso

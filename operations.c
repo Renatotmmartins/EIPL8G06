@@ -131,6 +131,7 @@ Value sum(Value a, Value b) {
         return ans;
     }
     //NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
+    NumericOperationAux(&a,&b);
     switch (a.type) {
         case Double:
             a.decimal += b.decimal; break;
@@ -138,7 +139,8 @@ Value sum(Value a, Value b) {
             a.integer += b.integer; break;
         case Char:
             a.character += b.character; break;
-
+        default:
+            break;
     }
     return a;
 }
@@ -152,7 +154,19 @@ Value sum(Value a, Value b) {
  * @return     resultado da subtração de a com b.
  */
 Value subtract(Value a, Value b) {
-    NUMERICOPERATION(a.decimal - b.decimal, a.integer - b.integer, a.character - b.character);
+    //NUMERICOPERATION(a.decimal - b.decimal, a.integer - b.integer, a.character - b.character);
+    NumericOperationAux(&a,&b);
+    switch (a.type) {
+        case Double:
+            a.decimal -= b.decimal; break;
+        case Int:
+            a.integer -= b.integer; break;
+        case Char:
+            a.character -= b.character; break;
+        default:
+            break;
+    }
+    return a;
 }
 /**
  * \brief Divide dois elementos do tipo #Value, se for uma string divide-os pelos seus espaços.
@@ -168,7 +182,22 @@ Value divide(Value a, Value b) {
         return separateBySubstr(a,b); //TODO:: VERIFICAR ORDEM
     }
 
-    NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
+    // NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
+    NumericOperationAux(&a,&b);
+    switch (a.type) {
+        case Double:
+            a.decimal /= b.decimal;
+            break;
+        case Int:
+            a.integer /= b.integer;
+            break;
+        case Char:
+            a.character /= b.character;
+            break;
+        default:
+            break;
+    }
+    return a;
 }
 /**
  * \brief Multiplica dois elementos do tipo #Value. Se o tipo do #Value a for uma string ou array repete-o b vezes. Se o tipo do #Value b for um block aplica o fold. 
@@ -186,7 +215,22 @@ Value multiply(State* s, Value a, Value b) {
         a.array = repeat(a.array, b.integer);
         return a;
     }
-    NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
+    // NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
+    NumericOperationAux(&a,&b);
+    switch (a.type) {
+        case Double:
+            a.decimal *= b.decimal;
+            break;
+        case Int:
+            a.integer *= b.integer;
+            break;
+        case Char:
+            a.character *= b.character;
+            break;
+        default:
+            break;
+    }
+    return a;
 }
 /**
  * \brief Aplica a conjunção a dois elementos do tipo #Value.

@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 /**
  * \brief Retorna uma cópia do n-ésimo elemento da stack dada (o topo da stack é 0)
@@ -26,8 +27,10 @@ Value copyElement(State* s, Value n) {
         Value a = sort(s, pop(s->stack), n);
         disposeValue(n);
         return a;
-    } else
-        return deepCopy(getElement(s->stack, n.integer));
+    }
+
+    assert(n.type == Int); //n é um inteiro
+    return deepCopy(getElement(s->stack, n.integer));
 }
 
 /**
@@ -36,17 +39,17 @@ Value copyElement(State* s, Value n) {
  * @param st A stack dada
  * @param n  O número de elementos a rodar
  */
-void rotateTop(Stack st, int n) {
+void rotateTop(Stack st, long long n) {
     /* Para rodar os primeiros n elementos da stack basta removê-los
        e inseri-los novamente pela ordem que foram removidos. */
 
     Value elements[n];
 
-    for(int i = n - 1; i >= 0; i--) {
+    for(long long i = n - 1; i >= 0; i--) {
         elements[i] = pop(st);
     }
 
-    for(int i = 1; i < n; i++) {
+    for(long long i = 1; i < n; i++) {
         push(st, elements[i]);
     }
 
@@ -95,7 +98,7 @@ void duplicate(Stack st) {
  *
  * @return stack n vezes repetida
  */
-Stack repeat(Stack st, int n) {
+Stack repeat(Stack st, long long n) {
     if (n <= 0) {
         disposeStack(st);
         return empty();
@@ -130,6 +133,8 @@ Stack range(long long n) {
 Value comma(State* s, Value a){
     Value aux;
     switch(a.type){
+        case Double:
+        return fromStack(range((long long)a.decimal));
         case Char:
         return fromStack(range(a.character));
         case Int: //Retorna o range [0...n-1]
@@ -141,9 +146,10 @@ Value comma(State* s, Value a){
         return aux;
         case Block:
         aux = pop(s->stack);
+        assert(aux.type == Array || aux.type == String);
         filter(s, aux.array, a);
         return aux;
-        //Operação não definida
-        default: return fromInteger(UNDEFINED);
+        default:    //caso de erro
+        return fromInteger(UNDEFINED);
     }
 }

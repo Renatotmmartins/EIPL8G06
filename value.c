@@ -75,7 +75,7 @@ Value fromString(char* str){
  * @return Value criado a partir de um bloco com a forma da string
  */
 
-Value fromBlock(char* block, int length) {
+Value fromBlock(char* block, long long length) {
     Value val;
 
     val.type = Block;

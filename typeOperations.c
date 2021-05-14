@@ -54,9 +54,9 @@ Value convertToString(Value a) {
     char* string = NULL;
 
     switch (a.type) {
-        case Double:    string = convertFloatToString(a);   break;
-        case Int:       string = convertIntToString(a);     break;
-        case Char:      string = convertCharToString(a);    break;
+        case Double:    string = convertFloatToString(a.decimal);   break;
+        case Int:       string = convertIntToString(a.integer);     break;
+        case Char:      string = convertCharToString(a.character);    break;
         case String:
         case Array:
         a = deepCopy(a);
@@ -76,13 +76,13 @@ Value convertToString(Value a) {
  * @param v  O #Value fornecido
  * @return   Um apontador com a informação armazenada sob a forma de texto
  */
-char* convertFloatToString(Value v) {
+char* convertFloatToString(double v) {
     char useless[100];
-    int size = snprintf(useless, 100, "%g", v.decimal) + 1;
+    long long size = snprintf(useless, 100, "%g", v) + 1;
     char* ans = malloc(size * sizeof(char));
 
     //Converter para string
-    snprintf(ans, size, "%g", v.decimal);
+    snprintf(ans, size, "%g", v);
 
     return ans;
 }
@@ -94,11 +94,11 @@ char* convertFloatToString(Value v) {
  * @param v  O #Value fornecido
  * @return  Um apontador com a informação armazenada sob a forma de texto
  */
-char* convertIntToString(Value v) {
-    int size = (int)((ceil(log10(v.integer) + 1)+1));
+char* convertIntToString(long long v) {
+    long long size = (long long)((ceil(log10(v + 1)) + 1));
     char* ans = malloc(size * sizeof(char)); //Aloca memória suficiente
     //Converte para inteiro
-    snprintf(ans, size, "%lld", v.integer);
+    snprintf(ans, size, "%lld", v);
     return ans;
 }
 
@@ -109,10 +109,10 @@ char* convertIntToString(Value v) {
  * @param v  O #Value fornecido
  * @return   Um apontador com a informação armazenada sob a forma de texto
  */
-char* convertCharToString(Value v) {
+char* convertCharToString(char v) {
 
     char* ans = malloc(2 * sizeof(char)); //Aloca memória suficiente
-    ans[0] = v.character;
+    ans[0] = v;
     ans[1] = '\0';
 
     return ans;

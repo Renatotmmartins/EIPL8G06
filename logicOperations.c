@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "stackOperations.h"
 #include "arrayOperations.h"
 #include "blockOperations.h"
@@ -116,17 +117,23 @@ int compareStrings(Value x, Value y) {
  * @return    1 se for verdade, 0 se for falso
  */
 Value isEqual (Value x, Value y){
-    if (x.type >= String && y.type == Int){
-		Value resultado = x.array->values[y.integer];
-		//para evitar usar deepCopy (pode ser dispendioso), tiramos o Value da array
-		//diretamente e depois substituímo-lo por UNDEFINED para nao o apagar no dispose da array
-		x.array->values[y.integer] = fromInteger(UNDEFINED);
-		disposeValue(x);
-		return resultado;
-	}
-	if(x.type >= String && y.type >= String)
-		return fromInteger(compareArrays(x.array, y.array));
+	//comparações entre blocos não suportadas
+	assert(x.type != Block && y.type != Block);
 
+	if (x.type >= String) {
+		if (y.type == Int) { //aceder ao elemento especificado
+			Value resultado = x.array->values[y.integer];
+			//para evitar usar deepCopy (pode ser dispendioso), tiramos o Value da array
+			//diretamente e depois substituímo-lo por UNDEFINED para nao o apagar no dispose da array
+			x.array->values[y.integer] = fromInteger(UNDEFINED);
+			disposeValue(x);
+			return resultado;
+		}
+		assert(y.type >= String);
+		return fromInteger(compareArrays(x.array, y.array));
+	}
+
+	assert(y.type < String); //x e y são numéricos
 	//convertemos para o mesmo tipo antes de comparar
 	NumericOperationAux(&x,&y);
 	switch(x.type){
@@ -149,10 +156,13 @@ Value isLess (Value x, Value y){
 		disposeStack(split(x.array, length(x.array) - y.integer));
 		return x;
 	}
-	if(x.type == String)
+	if (x.type == String) { //comparação entre strings
+		assert(y.type == String);
 		return fromInteger(compareStrings(x, y) < 0);
-	if (x.type == Array)
-		return fromInteger(0);
+	}
+	
+	//x e y são valores numéricos
+	assert(x.type < String && y.type < String);
 
 	//convertemos para o mesmo tipo antes de comparar
     NumericOperationAux(&x,&y);
@@ -178,10 +188,14 @@ Value isGreater (Value x, Value y){
 		disposeValue(x);
 		return fromStack(ans);
 	}
-	if(x.type==String)
+
+	if (x.type == String) { //comparação entre strings
+		assert(y.type == String);
 		return fromInteger(compareStrings(x, y) > 0);
-	if (x.type == Array)
-		return fromInteger(0);
+	}
+	
+	//x e y são valores numéricos
+	assert(x.type < String && y.type < String);
 
 	//convertemos para o mesmo tipo antes de comparar
     NumericOperationAux(&x,&y);

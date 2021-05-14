@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include "stack.h"
 
 /**
@@ -36,7 +37,7 @@ bool isEmpty(Stack s) {
  * @param s  O pointer da stack
  * @return   O valor do tamanho da stack
  */
-int length(Stack s){
+long long length(Stack s){
     return s->size;
 }
 
@@ -66,6 +67,7 @@ void push(Stack s, Value value) {
  * @return 	O elemento removido do topo da stack
  */
 Value pop(Stack s) {
+    assert(s->size > 0);
 	return s->values[--(s->size)];
 }
 
@@ -76,6 +78,7 @@ Value pop(Stack s) {
  * @return      O topo da stack
  */
 Value top(Stack s) {
+    assert(s->size > 0);
     return s->values[s->size - 1];
 }
 
@@ -86,11 +89,12 @@ Value top(Stack s) {
  * @return Valor no fundo da stack
  */
 Value popBottom(Stack st) {
+    assert(st->size > 0);
     Value res = st->values[0];
-    int i;
-    for(i = 1; i < st->size; i++) {
+
+    for (long long i = 1; i < st->size; i++)
         st->values[i - 1] = st->values[i];
-    }
+
     st->size--;
     return res;
 }
@@ -99,6 +103,7 @@ Value popBottom(Stack st) {
  * @param st A stack dada
  */
 void eraseTop(Stack st) {
+    assert(st->size > 0);
     disposeValue(pop(st));
 }
 
@@ -126,7 +131,8 @@ Value convertToStack(Value v) {
  *  @param s     O pointer para a stack
  *  @param value O valor do n-ésimo elemento
  */
-Value getElement(Stack st, int n){
+Value getElement(Stack st, long long n){
+    assert(st->size > n);
     return st->values[st->size - 1 - n];
 }
 
@@ -143,7 +149,7 @@ Stack clone(Stack st)
     res->capacity = st->capacity;
     res->values = malloc(sizeof(Value) * st->capacity);
     
-    for (int i = 0; i < st->size; i++)
+    for (long long i = 0; i < st->size; i++)
         res->values[i] = deepCopy(st->values[i]);
 
     return res;
@@ -157,7 +163,7 @@ Stack clone(Stack st)
  * @return Stack que resulta da junção das duas stacks dadas inicialmente
  */
 Stack merge(Stack a, Stack b) {
-    for (int i = 0; i < b->size; i++)
+    for (long long i = 0; i < b->size; i++)
         push(a, b->values[i]);
 
     free(b->values);
@@ -171,11 +177,11 @@ Stack merge(Stack a, Stack b) {
  * @param st Stack dada
  */
 void disposeStack(Stack st) {
-    //int l = length(st);
+
     while (!isEmpty(st))
         eraseTop(st);
-    //if(l > 1000)
-        free(st->values);
+
+    free(st->values);
     free(st);
 }
 
@@ -224,17 +230,12 @@ char* toString(Value v) {
         str[1] = '\0';
         return str;
     }
-    int size = length(v.array);
-   // printf("%d\n", size);
+    long long size = length(v.array);
     char* str = (char*) malloc(sizeof(char) * (size + 1));
     str[0] = '\0';
-    int i;
-    //printStackLine(v.array);
-    for(i = 0; i < size; i++) {
-        //printf("VALOR %d ", v.array->values[i].type);
+
+    for(long long i = 0; i < size; i++)
         str[i] = v.array->values[i].character;
-        //printf("\n");
-    }
     
     str[size] = '\0';
     return str;
@@ -250,7 +251,6 @@ void disposeValue(Value v) {
         case Array:     disposeStack(v.array);      break;
         case Block:     free(v.block);      break;
         default:                            break;
-
     }
 }
 
@@ -264,7 +264,7 @@ void disposeValue(Value v) {
  * @param st   A stack a imprimir
  */
 void printStack(Stack st) {
-    for (int i = 0; i < st->size; i++)
+    for (long long i = 0; i < st->size; i++)
         printVal(st->values[i]);
 
     /*if (!isEmpty(st)) {

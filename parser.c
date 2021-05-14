@@ -18,7 +18,7 @@
  * @param c       O caracter
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
-bool contains(char* str, int length, char c) {
+bool contains(char* str, long long length, char c) {
     while (length--) {
         if (*str == c)
             return true;
@@ -33,7 +33,7 @@ bool contains(char* str, int length, char c) {
  * @param st o state do programa
  * @return value que foi dado no input
  */
-Value readValue(char* str, int length, State* st) {
+Value readValue(char* str, long long length, State* st) {
     if ('A' <= *str && *str <= 'Z') //variável
         return deepCopy(st->variables[*str-'A']);
     if (contains(str, length, '.')) //double (contém um separador decimal)
@@ -48,7 +48,7 @@ Value readValue(char* str, int length, State* st) {
  * @param st O state a preencher
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro ou 0 caso seja falso)
  */
-bool operation(char* str, int length, State* st) {
+bool operation(char* str, long long length, State* st) {
     switch (*str) { JUMP_TABLE }
     return false;
 }
@@ -142,7 +142,7 @@ void readBlock(char** str) {
  * @param length    O tamanho da palavra
  * @param st        O state a preencherstr
  */
-void resolveWord(char* str, int length, State* st)
+void resolveWord(char* str, long long length, State* st)
 {
     if (length <= 0)
         return;

@@ -49,9 +49,9 @@ Value convertToDouble(Value v);
 Value convertToChar(Value v);
 Value convertToString(Value v);
 
-char* convertFloatToString(Value v);
-char* convertIntToString(Value v);
-char* convertCharToString(Value v);
+char* convertFloatToString(double v);
+char* convertIntToString(long long v);
+char* convertCharToString(char v);
 
 Value convertToType(DataType, Value);
 

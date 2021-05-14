@@ -91,9 +91,9 @@
 //! Expansão da JumpTable para Switch
 #define ENTRY(a, b, c, d, e) case a: if (length >= b) { PUSH_##e(st->stack, c(POP_##d)); return true; } break;
 
-bool operation(char* str, int length, State* st);
+bool operation(char* str, long long length, State* st);
 
-Value readValue(char* str, int length, State* st);
+Value readValue(char* str, long long length, State* st);
 
 char getControlChar(char c);
 
@@ -101,7 +101,7 @@ Value readString(char** str);
 
 void readBlock(char** str);
 
-void resolveWord(char* str, int length, State* st);
+void resolveWord(char* str, long long length, State* st);
 
 void processInput(char** str, State* st);
 

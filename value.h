@@ -52,7 +52,7 @@ Value fromCharacter(char);
 
 Value fromString(char*);
 
-Value fromBlock(char* block, int length);
+Value fromBlock(char* block, long long length);
 
 Value deepCopy(Value);
 

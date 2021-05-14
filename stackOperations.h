@@ -22,7 +22,7 @@
  */
 #define rotate(st) rotateTop(st, 3)
 
-void rotateTop(Stack, int);
+void rotateTop(Stack st, long long n);
 
 void printTop(Stack st);
 
@@ -34,7 +34,7 @@ void duplicate(Stack);
 
 Stack range(long long);
 
-Stack repeat(Stack, int);
+Stack repeat(Stack st, long long n);
 
 Value comma(State* s, Value a);
 

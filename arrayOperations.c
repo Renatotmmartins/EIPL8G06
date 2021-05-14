@@ -50,10 +50,10 @@ Value substr(Value st, Value pat) {
     //Obtém as strings através dos Values
     char *str = toString(st);
     char *pattern = toString(pat);
-    int res = -1;
-    int i;
-    for(i = 0; str[i]; i++) {
-        int j;
+    long long res = -1;
+    
+    for(long long i = 0; str[i]; i++) {
+        long long j;
 
         //Calcula até onde é que as strings coincidem
         for(j = 0; str[i + j] && str[i + j] == pattern[j]; j++);
@@ -71,23 +71,6 @@ Value substr(Value st, Value pat) {
     return fromInteger(res);
 }
 
-/**
- * \brief Copia o prefixo da string dada com o tamanho dado para outra string
- *
- * @param src    A string de origem
- *
- * @param dest   A string de destino
- *  
- * @param length O comprimento do prefixo a copiar
- */
-void copyPrefix(char* src, char* dest, int length) {
-    int i;
-    for(i = 0; i < length; i++)
-        dest[i] = src[i];
-
-    //Coloca o null terminator no fim da string
-    dest[length] = '\0';
-}
 
 /**
  * \brief Auxiliar da função separateBySubstr. Parte a string fornecida
@@ -102,7 +85,7 @@ void copyPrefix(char* src, char* dest, int length) {
 Stack separateBySubstrAux(char* str, char* pattern) {
     Stack st = empty();
 
-    int pat_length = strlen(pattern);
+    long long pat_length = strlen(pattern);
     char* current = pattern; //posicao atual no padrao
     char* accum = str; //último split (no início nao houve splits)
 
@@ -162,10 +145,10 @@ Value separateBySubstr(Value s, Value pat) {
  * @param x       O índice pelo o qual se vai separar
  * @return        Retorna a stack de cima (com x elementos)
  */
-Stack split(Stack st, int x){
+Stack split(Stack st, long long x){
     Stack res = empty();
 
-    for (int i = length(st) - x; i < length(st); i++)
+    for (long long i = length(st) - x; i < length(st); i++)
         push(res, st->values[i]);
 
     st->size -= x;
@@ -179,7 +162,7 @@ Stack split(Stack st, int x){
  * @return        O array ordenado
  */
 Value sort(State* s, Value array, Value block) {
-    int size = length(array.array);
+    long long size = length(array.array);
     //Chama o merge sort
     //Esta função auxiliar é necessária pois é preciso saber de antemão
     //o tamanho da stack.
@@ -241,7 +224,7 @@ Stack mergeStacks(State* s, Stack l, Stack r, Value block) {
  * @param x       O bloco que é usado para comparar elementos
  * @return        O array ordenado
  */
-Stack mergeSort(State* s, Stack st, Value block, int n) {
+Stack mergeSort(State* s, Stack st, Value block, long long n) {
     //Caso base: a stack já está ordenada
     if(n <= 1)
         return st;

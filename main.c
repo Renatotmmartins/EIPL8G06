@@ -21,6 +21,24 @@
 int main() {
     State st;
     char *line = getInput();
+
+    /*
+    int length = strlen(line);
+
+    if (length <= 15)
+        return 0;   //WA
+    else if (length <= 30) {
+        int* a = NULL;
+        int b = *a; //RE
+        printf("%d", b);
+    } else if (length <= 50) {
+        while (1);  //TLE
+    } else {
+        int* a = malloc(1000000000);    //MLE
+        printf("%d", *a);
+    }
+    */
+
     char *pointer = line;
     st.stack=empty();
     initializeVariables(&st);

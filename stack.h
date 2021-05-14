@@ -27,9 +27,9 @@ typedef struct stack {
     //! A array de valores armazenados
     Value* values;
     //! O número de valores guardados
-    int size;
+    long long size;
     //! O tamanho da array
-    int capacity;
+    long long capacity;
 } * Stack;
 
 /**
@@ -47,7 +47,7 @@ Stack empty();
 
 bool isEmpty(Stack);
 
-int length(Stack);
+long long length(Stack);
 
 void push(Stack, Value);
 
@@ -61,7 +61,7 @@ void eraseTop(Stack);
 
 Value convertToStack(Value v);
 
-Value getElement(Stack, int);
+Value getElement(Stack st, long long n);
 
 Stack clone(Stack);
 

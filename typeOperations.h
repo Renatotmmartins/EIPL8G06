@@ -52,7 +52,6 @@ Value convertToString(Value v);
 char* convertFloatToString(Value v);
 char* convertIntToString(Value v);
 char* convertCharToString(Value v);
-char* copyString(Value v);
 
 Value convertToType(DataType, Value);
 

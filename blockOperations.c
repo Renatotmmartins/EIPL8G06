@@ -10,6 +10,18 @@
 #include "arrayOperations.h"
 
 /**
+ * \brief Avalia se um bloco representa a instrução vazia
+ * @param a   o bloco, em forma de string
+ * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro e 0 caso seja falso)
+ */
+bool isEmptyBlock(char* a) {
+    for (; *a; a++)
+        if (*a != ' ')
+            return false;
+    return true;
+}
+
+/**
  * \brief Executa um bloco dentro de uma stack
  * @param s O estado do programa
  * @param st A stack

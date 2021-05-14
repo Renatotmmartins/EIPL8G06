@@ -4,13 +4,14 @@
 #include <stdlib.h>
 #include "stackOperations.h"
 #include "arrayOperations.h"
+#include "blockOperations.h"
 #include "stack.h"
+
 /**
  * \brief Avalia o valor lógico do value
  * @param a   o elemento do tipo #Value
  * @return Um inteiro que simboliza o valor lógico (1 caso seja verdadeiro e 0 caso seja falso)
  */
-
 bool isTrue(Value a) {
 	switch (a.type) {
 		case Double:	return a.decimal != 0;
@@ -18,6 +19,7 @@ bool isTrue(Value a) {
 		case Char: 		return a.character != '\0';
 		case String:	
 		case Array:		return !isEmpty(a.array);
+		case Block: 	return !isEmptyBlock(a.block);
 		default:		return false;
 	}
 }
@@ -149,6 +151,8 @@ Value isLess (Value x, Value y){
 	}
 	if(x.type == String)
 		return fromInteger(compareStrings(x, y) < 0);
+	if (x.type == Array)
+		return fromInteger(0);
 
 	//convertemos para o mesmo tipo antes de comparar
     NumericOperationAux(&x,&y);
@@ -176,6 +180,8 @@ Value isGreater (Value x, Value y){
 	}
 	if(x.type==String)
 		return fromInteger(compareStrings(x, y) > 0);
+	if (x.type == Array)
+		return fromInteger(0);
 
 	//convertemos para o mesmo tipo antes de comparar
     NumericOperationAux(&x,&y);

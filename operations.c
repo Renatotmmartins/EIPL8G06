@@ -111,7 +111,9 @@ void NumericOperationAux(Value *a, Value *b) {
     if(a->type < b->type)
         NumericOperationAux(b,a);
     
-    *a = convertToType(b->type, *a);
+    Value ans = convertToType(b->type, *a);
+    disposeValue(*a); //esta função só opera sobre Values numéricos, mas... nunca se sabe
+    *a = ans;
 }
 
 

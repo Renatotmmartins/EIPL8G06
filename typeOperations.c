@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <unistd.h>
 
 
 /**
@@ -50,7 +51,23 @@ Value convertToChar(Value a) {
  * @return   O #Value com a informação armazenada sob a forma de texto
  */
 Value convertToString(Value a) {
-    Convert(String, array, stringToStack(convertFloatToString(a)), stringToStack(convertIntToString(a)), stringToStack(convertCharToString(a)), a.array = stringToStack(copyString(a));)
+    char* string = NULL;
+
+    switch (a.type) {
+        case Double:    string = convertFloatToString(a);   break;
+        case Int:       string = convertIntToString(a);     break;
+        case Char:      string = convertCharToString(a);    break;
+        case String:
+        case Array:
+        a = deepCopy(a);
+        a.type = String;
+        return a;
+        case Block:     string = strdup(a.block);           break;
+    }
+
+    Value ans = fromString(string);
+    free(string);
+    return ans;
 }
 
 /**
@@ -61,11 +78,11 @@ Value convertToString(Value a) {
  */
 char* convertFloatToString(Value v) {
     char useless[100];
-    int size = snprintf(useless, 100, "%f", v.decimal) + 1;
+    int size = snprintf(useless, 100, "%g", v.decimal) + 1;
     char* ans = malloc(size * sizeof(char));
 
     //Converter para string
-    snprintf(ans, size, "%f", v.decimal);
+    snprintf(ans, size, "%g", v.decimal);
 
     return ans;
 }
@@ -78,7 +95,7 @@ char* convertFloatToString(Value v) {
  * @return  Um apontador com a informação armazenada sob a forma de texto
  */
 char* convertIntToString(Value v) {
-    int size = (int)((ceil(log10(v.integer))+1));
+    int size = (int)((ceil(log10(v.integer) + 1)+1));
     char* ans = malloc(size * sizeof(char)); //Aloca memória suficiente
     //Converte para inteiro
     snprintf(ans, size, "%lld", v.integer);
@@ -101,22 +118,6 @@ char* convertCharToString(Value v) {
     return ans;
 }
 
-
-/**
- * \brief Copia a string do #Value dado para outra string
- *
- * @param v  O #Value fornecidos
- * @return   Um apontador para a cópia
- */
-char* copyString(Value v) {
-    char *str = toString(v);
-    char* ans = malloc((strlen(str) + 1) * sizeof(char));//Aloca memória suficiente
-    strcpy(ans, str);
-
-    free(str);
-
-    return ans;
-}
 
 /**
  * \brief Converte os valores dados para o tipo pedido

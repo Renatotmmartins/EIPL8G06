@@ -11,6 +11,8 @@
 #include "stack.h"
 #include "logicOperations.h"
 
+bool isEmptyBlock(char* a);
+
 void execute (State* s, Stack st, Value block);
 
 Value executeValue(State* s, Value a, Value block);

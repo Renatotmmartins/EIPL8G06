@@ -111,9 +111,7 @@ void NumericOperationAux(Value *a, Value *b) {
     if(a->type < b->type)
         NumericOperationAux(b,a);
     
-    Value ans = convertToType(b->type, *a);
-    disposeValue(*a); //esta função só opera sobre Values numéricos, mas... nunca se sabe
-    *a = ans;
+    *a = convertToType(b->type, *a);
 }
 
 
@@ -132,7 +130,17 @@ Value sum(Value a, Value b) {
         ans.type = a.type > b.type ? a.type : b.type; //o maior dos dois tipos
         return ans;
     }
-    NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
+    //NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
+    switch (a.type) {
+        case Double:
+            a.decimal += b.decimal; break;
+        case Int:
+            a.integer += b.integer; break;
+        case Char:
+            a.character += b.character; break;
+
+    }
+    return a;
 }
 
 

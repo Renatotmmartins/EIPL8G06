@@ -116,7 +116,7 @@ void NumericOperationAux(Value *a, Value *b) {
 
 
 /**
- * \brief Soma dois elementos do tipo #Value, se forem do tipo inteiro, caracter ou double. Caso contrário, junta as duas stacks resultantes dos tipos fornecidos.
+ * \brief Soma dois elementos do tipo #Value, se forem do tipo inteiro, caracter ou double. Caso contrário, junta as duas stacks resultantes dos elementos fornecidos.
  *
  * @param a  o elemento do tipo #Value.
  * @param b  o elemento do tipo #Value.
@@ -236,7 +236,7 @@ Value module(State* s, Value a, Value b) {
 }
 
 /**
- * \brief Calcula a potencia entre dois elementos do tipo #Value. Se for um array ou string devolve o índice onde se encontra a sub-string. 
+ * \brief Calcula a potencia entre dois elementos do tipo #Value. Se o tipo do #Value a for um array ou string devolve o índice onde se encontra a sub-string. 
  *
  * @param a  o elemento do tipo #Value que atua como base.
  * @param b  o elemento do tipo #Value que atua como expoente.

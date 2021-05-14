@@ -52,7 +52,17 @@ Value decrement(State* s,Value a) {
         push(s->stack,a);
         return aux;
     }
-    UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
+    //UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
+    switch (a.type) {
+        case Double:
+            a.decimal = a.decimal - 1; break;
+        case Int:
+            a.integer = a.integer - 1; break;
+        case Char:
+            a.character = a.character - 1; break;
+        default:
+            break;
+    }
     return a;
 }
 
@@ -70,7 +80,17 @@ Value increment(State* s,Value a) {
         push(s->stack,a);
         return aux;
     }
-    UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1);
+    //UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1);
+    switch (a.type) {
+        case Double:
+            a.decimal = a.decimal + 1; break;
+        case Int:
+            a.integer = a.integer + 1; break;
+        case Char:
+            a.character = a.character + 1; break;
+        default:
+            break;
+    }
     return a;
 }
 

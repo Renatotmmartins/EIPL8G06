@@ -1,5 +1,6 @@
 /**
- * @file contém a implementação das funções correspondentes às operações
+ * @file
+ * @brief contém a implementação das funções correspondentes às operações
  * sobre a stack
  */
 
@@ -11,6 +12,7 @@
 #include "value.h"
 #include "stack.h"
 #include "operations.h"
+#include "stackOperations.h"
 #include "typeOperations.h"
 #include "arrayOperations.h"
 #include "blockOperations.h"

@@ -1,10 +1,13 @@
 /**
-* @file contém a implementação das funções correspondentes
-* às operações relacionadas com blocos
-*/
+ * @file
+ * @brief contém a implementação das funções correspondentes
+ * às operações relacionadas com blocos
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include "stack.h"
+#include "parser.h"
 #include "logicOperations.h"
 #include "stackOperations.h"
 #include "arrayOperations.h"
@@ -36,7 +39,7 @@ void execute (State* s, Stack st, Value block) {
 }
 
 /**
- * \brief Executa um bloco dentro de uma stack que comtém o Value indicado
+ * \brief Executa um bloco dentro de uma stack que contém o Value indicado
  * @param s O estado do programa
  * @param a O Value indicado
  * @param block bloco fornecido
@@ -95,7 +98,7 @@ void map (State* s, Stack st, Value block){
  * @param block bloco fornecido
  */
 void filter (State* s, Stack st, Value block){
-    Stack aux = empty(); //stack para conter os elementos pea ordem certa
+    Stack aux = empty(); //stack para conter os elementos pela ordem certa
 
     while (!isEmpty(st)) //colocar os elementos
         push(aux, pop(st));

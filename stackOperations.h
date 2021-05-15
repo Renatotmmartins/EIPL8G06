@@ -1,5 +1,6 @@
 /**
- * @file contém a declaração das funções correspondentes
+ * @file
+ * @brief contém a declaração das funções correspondentes
  * às operações de manipulação da stack
  */
 
@@ -32,9 +33,9 @@ void readLine(Stack);
 
 void duplicate(Stack);
 
-Stack range(long long);
-
 Stack repeat(Stack st, long long n);
+
+Stack range(long long);
 
 Value comma(State* s, Value a);
 

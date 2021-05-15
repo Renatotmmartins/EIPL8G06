@@ -1,5 +1,6 @@
 /**
- * @file contém a implementação de uma stack (pilha)
+ * @file
+ * @brief contém a implementação de uma stack (pilha)
  */
 
 #include <stdlib.h>

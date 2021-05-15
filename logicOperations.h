@@ -1,10 +1,16 @@
+/**
+ * @file
+ * @brief  contém a declaração das funções correspondentes às
+ * operações lógicas
+ */
+
 //!Include guard
 #ifndef LOGIC_OPERATIONS_H
 //!Include guard
 #define LOGIC_OPERATIONS_H
 
 #include "stack.h"
-#include "parser.h"
+#include "value.h"
 
 bool isTrue(Value a);
 

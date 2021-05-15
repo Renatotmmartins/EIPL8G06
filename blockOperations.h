@@ -1,5 +1,6 @@
 /**
- * @file contém a declaração das funções correspondentes
+ * @file
+ * @brief  contém a declaração das funções correspondentes
  * às operações relacionadas com os blocos
  */
 

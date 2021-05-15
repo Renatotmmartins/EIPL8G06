@@ -1,6 +1,7 @@
 /**
  * 
- * @file contém as definições das funções usadas para processar o input e 
+ * @file
+ * @brief contém as definições das funções usadas para processar o input e 
  * preencher a stack fornecida.
  * 
  */
@@ -40,7 +41,12 @@
 //! Efetua push do resultado da operação.
 #define PUSH_1(x,y) push(x,y)
 
-//! Contém o registo de todos os operadores e respetivos argumentos
+//! Contém o registo de todos os operadores e respetivos argumentos, de forma a facilitar a adição de novos operadores.
+/*!  
+ *  Cada entrada da tabela é uma ENTRY, que compreende toda a informação
+ *  necessária para a chamada da função respetiva.
+ *
+ */
 #define JUMP_TABLE \
         ENTRY('l', 1, readLine, 0S, 0) \
         ENTRY('_', 1, duplicate, 0S, 0) \
@@ -88,7 +94,18 @@
         ENTRY('?', 1, conditional, 3, 1)
 
 
-//! Expansão da JumpTable para Switch
+//! Expansão da JumpTable para Switch.
+/*!
+ *  a é o primeiro caracter do operador
+
+ *  b é o tamanho mínimo do operador
+
+ *  c é a função chamada para executar a operação
+
+ *  d é um código que representa o número e tipo de argumentos que a função c recebe
+
+ *  e é 1 se o valor de retorno deve ser empurrado para a stack e 0 se não
+ */
 #define ENTRY(a, b, c, d, e) case a: if (length >= b) { PUSH_##e(st->stack, c(POP_##d)); return true; } break;
 
 bool operation(char* str, long long length, State* st);

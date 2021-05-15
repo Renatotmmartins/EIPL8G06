@@ -1,5 +1,6 @@
 /**
- * @file contém a implementação das funções correspondentes às operações
+ * @file
+ * @brief contém a implementação das funções correspondentes às operações
  * sobre arrays
  */
 

@@ -1,12 +1,19 @@
+/**
+ * @file
+ * @brief contém a implementação das funções correspondentes às
+ * operações lógicas
+ */
+
 #include "logicOperations.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "stack.h"
 #include "stackOperations.h"
 #include "arrayOperations.h"
 #include "blockOperations.h"
-#include "stack.h"
+#include "operations.h"
 
 /**
  * \brief Avalia o valor lógico do value
@@ -123,9 +130,9 @@ Value isEqual (Value x, Value y){
 	if (x.type >= String) {
 		if (y.type == Int) { //aceder ao elemento especificado
 			Value resultado = x.array->values[y.integer];
-			//para evitar usar deepCopy (pode ser dispendioso), tiramos o Value da array
-			//diretamente e depois substituímo-lo por UNDEFINED para nao o apagar no dispose da array
-			x.array->values[y.integer] = fromInteger(UNDEFINED);
+			//para evitar usar deepCopy (pode ser dispendioso), tiramos o Value da array diretamente
+			//e depois substituímo-lo por outro valor para nao o apagar no dispose da array
+			x.array->values[y.integer] = fromInteger(0);
 			disposeValue(x);
 			return resultado;
 		}

@@ -1,5 +1,6 @@
 /**
- * @file contém a definição de uma stack (pilha).
+ * @file
+ * @brief contém a definição de uma stack (pilha).
  */
 #ifndef STACK_H
 /*! Include guard */

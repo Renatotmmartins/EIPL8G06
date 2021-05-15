@@ -1,5 +1,6 @@
 /**
- * @file contém a declaração das funções correspondentes às operações
+ * @file
+ * @brief contém a declaração das funções correspondentes às operações
  * sobre a stack
  */
 
@@ -7,8 +8,6 @@
 #ifndef OPERATIONS_H
 //! Include guard
 #define OPERATIONS_H
-
-#define UNDEFINED 13
 
 
 #include "stack.h"

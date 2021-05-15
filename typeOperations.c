@@ -1,5 +1,6 @@
 /**
- * @file contém a implementação das funções correspondentes
+ * @file
+ * @brief contém a implementação das funções correspondentes
  * às operações relacionadas com o tipo das variáveis
  */
 

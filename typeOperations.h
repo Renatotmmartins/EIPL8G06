@@ -1,5 +1,6 @@
 /**
- * @file contém a declaração das funções correspondentes às operações de conversão de tipo
+ * @file
+ * @brief contém a declaração das funções correspondentes às operações de conversão de tipo
  * sobre a stack
  */
 

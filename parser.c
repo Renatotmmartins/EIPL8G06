@@ -1,6 +1,7 @@
 /**
  * 
- * @file contém a implementação das funções usadas para processar o input e 
+ * @file
+ * @brief contém a implementação das funções usadas para processar o input e 
  * preencher a stack fornecida
  * 
  */

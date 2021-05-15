@@ -1,5 +1,6 @@
 /**
- * @file contém a declaração das funções relacionadas
+ * @file
+ * @brief contém a declaração das funções relacionadas
  * com Values
  */
 
@@ -8,6 +9,8 @@
 //! Include guard
 #define VALUE_H
 
+//! Inteiro utilizado para representar um resultado indefinido de uma operação
+#define UNDEFINED 13
 
 /**
  * \brief Representa os diferentes tipos de dados que é possível armazenar

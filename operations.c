@@ -170,7 +170,9 @@ Value sum(Value a, Value b) {
         return ans;
     }
 
-    NumericOperationAux(&a,&b);
+    //Converte os valores para o mesmo tipo
+    NumericOperationAux(&a, &b);
+    
     switch (a.type) {
         case Double:
             a.decimal += b.decimal; break;
@@ -227,7 +229,8 @@ Value divide(Value a, Value b) {
     }
 
 
-    NumericOperationAux(&a,&b);
+    //Converte os valores para o mesmo tipo
+    NumericOperationAux(&a, &b);
     assert(!isTrue(isEqual(fromInteger(0), b))); //descartar divisão por zero
 
     switch (a.type) {
@@ -266,7 +269,9 @@ Value multiply(State* s, Value a, Value b) {
 
     assert(a.type < String && b.type < String); //a e b são numéricos
 
-    NumericOperationAux(&a,&b);
+    //Converte os valores para o mesmo tipo
+    NumericOperationAux(&a, &b);
+
     switch (a.type) {
         case Double:
             a.decimal *= b.decimal;
@@ -292,6 +297,9 @@ Value multiply(State* s, Value a, Value b) {
 Value and(Value a, Value b) {
     //operação definida apenas para inteiros e caracteres
     assert((a.type == Int && b.type == Int) || (a.type == Char && b.type == Char));
+
+    //Converte os valores para o mesmo tipo
+    NumericOperationAux(&a, &b);
 
     if(a.type == Int) {
         a.integer &= b.integer;
@@ -331,6 +339,9 @@ Value xor(Value a, Value b) {
     //operação definida apenas para inteiros e caracteres
     assert((a.type == Int && b.type == Int) || (a.type == Char && b.type == Char));
     
+    //Converte os valores para o mesmo tipo
+    NumericOperationAux(&a, &b);
+
     if(a.type == Int) {
         a.integer ^= b.integer;
     } else {

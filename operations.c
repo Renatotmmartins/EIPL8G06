@@ -391,6 +391,8 @@ Value exponentiate(Value a, Value b) {
     //a e b são valores numéricos
     assert(a.type < String && b.type < String);
 
+    NumericOperationAux(&a, &b);
+
     switch(a.type) {
         case Double:
             a.decimal = pow(a.decimal, b.decimal); break;

@@ -133,7 +133,7 @@ Value convertToStack(Value v) {
  *  @param value O valor do n-ésimo elemento
  */
 Value getElement(Stack st, long long n){
-    assert(st->size > n);
+    assert(n >= 0 && st->size > n);
     return st->values[st->size - 1 - n];
 }
 

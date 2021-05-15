@@ -111,7 +111,7 @@ Value increment(State* s,Value a) {
  */
 void negate(State* s, Value a) {
     //Negação não definida para números fracionários
-    assert(a.type != Double && b.type != Double);
+    assert(a.type != Double);
 
     if (a.type == Block) {
         execute(s, s->stack, a);
@@ -317,6 +317,8 @@ Value or(Value a, Value b) {
     } else {
         a.character |= b.character;
     }
+
+    return a;
 }
 /**
  * \brief Aplica o ou explosivo a dois elementos do tipo #Value.
@@ -334,6 +336,8 @@ Value xor(Value a, Value b) {
     } else {
         a.character ^= b.character;
     }
+
+    return a;
 }
 /**
  * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value. Se o tipo do #Value b for um block aplica a função map.
@@ -363,8 +367,7 @@ Value module(State* s, Value a, Value b) {
                 a.integer %= b.integer; break;
             case Char:
                 a.character %= b.character; break;
-            default:
-                break;
+            default:    break;
         }
     }
     
@@ -395,9 +398,10 @@ Value exponentiate(Value a, Value b) {
             a.integer = (long long)pow(a.integer, b.integer); break;
         case Char:
             a.character = (char)pow(a.character, b.character); break;
-        default:
-            break;
+        default:    break;
     }
+
+    return a;
 }
 
 /**

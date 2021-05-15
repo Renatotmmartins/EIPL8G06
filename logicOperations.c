@@ -129,7 +129,7 @@ Value isEqual (Value x, Value y){
 
 	if (x.type >= String) {
 		if (y.type == Int) { //aceder ao elemento especificado
-			assert(y.integer >= 0 && y.integer < length(x));
+			assert(y.integer >= 0 && y.integer < length(x.array));
 			Value resultado = x.array->values[y.integer];
 			//para evitar usar deepCopy (pode ser dispendioso), tiramos o Value da array diretamente
 			//e depois substituímo-lo por outro valor para nao o apagar no dispose da array
@@ -160,8 +160,11 @@ Value isEqual (Value x, Value y){
  */
 
 Value isLess (Value x, Value y){
+	//comparações entre blocos não suportadas
+	assert(x.type != Block && y.type != Block);
+
     if(x.type >= String && y.type==Int){ //manter os primeiros y elementos
-    	assert(y.integer >= 0 && y.integer <= length(x));
+    	assert(y.integer >= 0 && y.integer <= length(x.array));
 		disposeStack(split(x.array, length(x.array) - y.integer));
 		return x;
 	}
@@ -191,9 +194,11 @@ Value isLess (Value x, Value y){
  */
 
 Value isGreater (Value x, Value y){
+	//comparações entre blocos não suportadas
+	assert(x.type != Block && y.type != Block);
 
     if(x.type >= String && y.type==Int){ //manter os últimos y elementos da array
-    	assert(y.integer >= 0 && y.integer <= length(x));
+    	assert(y.integer >= 0 && y.integer <= length(x.array));
 		Stack ans = split(x.array,y.integer);
 		disposeValue(x);
 		return fromStack(ans);

@@ -25,9 +25,11 @@
  */
 Value copyElement(State* s, Value n) {
     if (n.type == Block) {
-        Value a = sort(s, pop(s->stack), n);
+        Value a = pop(s->stack); //ordenar uma array
+        assert(a.type == String || a.type = Array);
+        Value res = sort(s, a, n);
         disposeValue(n);
-        return a;
+        return res;
     }
 
     assert(n.type == Int); //n é um inteiro

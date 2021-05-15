@@ -20,8 +20,24 @@
  * @return   O #Value com a informação armazenada num inteiro
  */
 Value convertToInt(Value a) {
-    char* str;
-    Convert(Int, integer, (long long)a.decimal, a.integer, (long long)a.character, str = toString(a); result.integer = atoi(str); free(str);)  
+    char* str; //Variável para armazenar string temporária quando o argumento é do tipo String
+
+    Value result;
+    result.type = Int;
+
+    //Decide o método de conversão de acordo com o tipo original
+    switch(a.type) {
+        case Double:    result.integer = (long long)a.decimal;   break;
+        case Int:       result.integer = a.integer;              break;
+        case Char:      result.integer = a.character;            break;
+        case String:    
+             str = toString(a); //Obtém a string
+             result.integer = atoi(str);
+             free(str);
+             break;
+        default:                                                 break;
+    }
+    return result;
 }
 
 /**
@@ -32,7 +48,23 @@ Value convertToInt(Value a) {
  */
 Value convertToDouble(Value a) {
     char* str;
-    Convert(Double, decimal, a.decimal, (double)a.integer, (double)a.character, str = toString(a); result.decimal = atof(str); free(str);)
+
+    Value result;
+    result.type = Double;
+
+    //Decide o método de conversão de acordo com o tipo original
+    switch(a.type) {
+        case Double:    result.decimal = a.decimal;             break;
+        case Int:       result.decimal = (double)a.integer;     break;
+        case Char:      result.decimal = (double)a.character;   break;
+        case String:    
+            str = toString(a); //Obtém a string
+            result.decimal = atof(str);
+            free(str);
+            break;
+        default:                                                break;
+    }
+    return result;
 }
 
 /**
@@ -42,7 +74,18 @@ Value convertToDouble(Value a) {
  * @return   O #Value com a informação armazenada num caracter
  */
 Value convertToChar(Value a) {
-    Convert(Char, character, (char)(long long)a.decimal, (char)a.integer, a.character, result.character = '\0';);
+    Value result;
+    result.type = Char;
+
+    //Decide o método de conversão de acordo com o tipo original
+    switch(a.type) {
+        case Double:    result.character = (char)(long long)a.decimal;   break;
+        case Int:       result.character = (char)a.integer;              break;
+        case Char:      result.character = a.character;                  break;
+        case String:    result.character = '\0';                         break;
+        default:                                                         break;
+    }
+    return result;
 }
 
 /**
@@ -54,19 +97,22 @@ Value convertToChar(Value a) {
 Value convertToString(Value a) {
     char* string = NULL;
 
+    //Determina a forma de conversão consoante o tipo original
     switch (a.type) {
         case Double:    string = convertFloatToString(a.decimal);   break;
         case Int:       string = convertIntToString(a.integer);     break;
-        case Char:      string = convertCharToString(a.character);    break;
+        case Char:      string = convertCharToString(a.character);  break;
         case String:
         case Array:
-        a = deepCopy(a);
-        a.type = String;
-        return a;
+            //Copia o valor e muda apenas o tipo para Array (Strings são armazenadas como arrays de caracteres)
+            a = deepCopy(a); 
+            a.type = String;
+            return a;
         case Block:     string = strdup(a.block);           break;
     }
 
     Value ans = fromString(string);
+    //Liberta a string, pois não é mais necessária
     free(string);
     return ans;
 }
@@ -127,6 +173,7 @@ char* convertCharToString(char v) {
  * @return Valor dado no tipo pedido
  */
 Value convertToType(DataType type, Value val) {
+    //Escolhe o tipo apropriado
     switch(type) {
         case Double:    return convertToDouble(val);
         case Int:       return convertToInt(val);
@@ -142,7 +189,9 @@ Value convertToType(DataType type, Value val) {
  * @return Valor convertido para o tipo pedido
  */
 Value convertAndDisposeToDouble(Value a) {
-    convertAndDisposeTo(Double)
+    Value ans = convertToDouble(a);
+    disposeValue(a);
+    return ans; 
 }
 /**
  * \brief Converte o valor para o tipo pedido e desaloca-o
@@ -150,7 +199,9 @@ Value convertAndDisposeToDouble(Value a) {
  * @return Valor convertido para o tipo pedido
  */
 Value convertAndDisposeToInt(Value a) {
-    convertAndDisposeTo(Int)
+    Value ans = convertToInt(a);
+    disposeValue(a);
+    return ans; 
 }
 /**
  * \brief Converte o valor para o tipo pedido e desaloca-o
@@ -158,7 +209,9 @@ Value convertAndDisposeToInt(Value a) {
  * @return Valor convertido para o tipo pedido
  */
 Value convertAndDisposeToChar(Value a) {
-    convertAndDisposeTo(Char)
+    Value ans = convertToChar(a);
+    disposeValue(a);
+    return ans; 
 }
 /**
  * \brief Converte o valor para o tipo pedido e desaloca-o
@@ -166,5 +219,7 @@ Value convertAndDisposeToChar(Value a) {
  * @return Valor convertido para o tipo pedido
  */
 Value convertAndDisposeToString(Value a) {
-    convertAndDisposeTo(String)
+    Value ans = convertToString(a);
+    disposeValue(a);
+    return ans; 
 }

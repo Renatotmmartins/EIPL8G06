@@ -52,12 +52,12 @@ Value decrement(State* s,Value a) {
     //operação não definida para blocos
     assert(a.type != Block);
 
-    if (a.type >= String) { //Se o tipo do Value for string ou array 
+    if (a.type >= String) { //Se o tipo do Value for string ou array retira o último elemento da array/string
         Value aux = popBottom(a.array);
         push(s->stack,a);
         return aux;
     }
-    //UNARYOPERATION(a.decimal - 1, a.integer - 1, a.character - 1);
+
     switch (a.type) {
         case Double:
             a.decimal = a.decimal - 1; break;
@@ -88,7 +88,7 @@ Value increment(State* s,Value a) {
         push(s->stack,a);
         return aux;
     }
-    //UNARYOPERATION(a.decimal + 1, a.integer + 1, a.character + 1);
+
     switch (a.type) {
         case Double:
             a.decimal = a.decimal + 1; break;
@@ -110,6 +110,9 @@ Value increment(State* s,Value a) {
  * @return   o elemento do tipo #Value resultante de aplicar a negação.
  */
 void negate(State* s, Value a) {
+    //Negação não definida para números fracionários
+    assert(a.type != Double && b.type != Double);
+
     if (a.type == Block) {
         execute(s, s->stack, a);
         disposeValue(a);
@@ -118,7 +121,12 @@ void negate(State* s, Value a) {
         s->stack = merge(s->stack, a.array);
     }
     else {
-        UNARYOPERATION(UNDEFINED, ~a.integer, ~a.character);
+        if(a.type == Int) {
+            a.integer = ~a.integer;
+        } else {
+            a.character = ~a.character;
+        }
+
         push(s->stack, a);
     }
 }
@@ -161,7 +169,7 @@ Value sum(Value a, Value b) {
         ans.type = a.type > b.type ? a.type : b.type; //o maior dos dois tipos
         return ans;
     }
-    //NUMERICOPERATION(a.decimal + b.decimal, a.integer + b.integer, a.character + b.character);
+
     NumericOperationAux(&a,&b);
     switch (a.type) {
         case Double:
@@ -188,7 +196,6 @@ Value subtract(Value a, Value b) {
     //operação só definida para valores numéricos
     assert(a.type < String && b.type < String);
 
-    //NUMERICOPERATION(a.decimal - b.decimal, a.integer - b.integer, a.character - b.character);
     NumericOperationAux(&a,&b);
     switch (a.type) {
         case Double:
@@ -219,7 +226,7 @@ Value divide(Value a, Value b) {
         return separateBySubstr(a,b);
     }
 
-    // NUMERICOPERATION(a.decimal / b.decimal, a.integer / b.integer, a.character / b.character);
+
     NumericOperationAux(&a,&b);
     assert(!isTrue(isEqual(fromInteger(0), b))); //descartar divisão por zero
 
@@ -258,7 +265,7 @@ Value multiply(State* s, Value a, Value b) {
     }
 
     assert(a.type < String && b.type < String); //a e b são numéricos
-    // NUMERICOPERATION(a.decimal * b.decimal, a.integer * b.integer, a.character * b.character);
+
     NumericOperationAux(&a,&b);
     switch (a.type) {
         case Double:
@@ -285,7 +292,14 @@ Value multiply(State* s, Value a, Value b) {
 Value and(Value a, Value b) {
     //operação definida apenas para inteiros e caracteres
     assert((a.type == Int && b.type == Int) || (a.type == Char && b.type == Char));
-    NUMERICOPERATION(UNDEFINED, a.integer & b.integer, a.character & b.character);
+
+    if(a.type == Int) {
+        a.integer &= b.integer;
+    } else {
+        a.character &= b.character;
+    }
+
+    return a;
 }
 /**
  * \brief Aplica a disjunção a dois elementos de tipo #Value.
@@ -297,7 +311,12 @@ Value and(Value a, Value b) {
 Value or(Value a, Value b) {
     //operação definida apenas para inteiros e caracteres
     assert((a.type == Int && b.type == Int) || (a.type == Char && b.type == Char));
-    NUMERICOPERATION(UNDEFINED, a.integer | b.integer, a.character | b.character);
+    
+    if(a.type == Int) {
+        a.integer |= b.integer;
+    } else {
+        a.character |= b.character;
+    }
 }
 /**
  * \brief Aplica o ou explosivo a dois elementos do tipo #Value.
@@ -309,7 +328,12 @@ Value or(Value a, Value b) {
 Value xor(Value a, Value b) {
     //operação definida apenas para inteiros e caracteres
     assert((a.type == Int && b.type == Int) || (a.type == Char && b.type == Char));
-    NUMERICOPERATION(UNDEFINED, a.integer ^ b.integer, a.character ^ b.character);
+    
+    if(a.type == Int) {
+        a.integer ^= b.integer;
+    } else {
+        a.character ^= b.character;
+    }
 }
 /**
  * \brief Calcula o resto da divisão inteira entre dois elementos do tipo #Value. Se o tipo do #Value b for um block aplica a função map.
@@ -320,15 +344,31 @@ Value xor(Value a, Value b) {
  * @return   o resto da divisao inteira.
  */
 Value module(State* s, Value a, Value b) {
+    //Se for um bloco faz um map
     if (b.type == Block) {
         assert(a.type == Array || a.type == String);
         map(s, a.array, b);
         disposeValue(b);
-        return a;
+    } else {
+        //a e b são valores numéricos
+        assert(a.type < String && b.type < String);
+
+        //Converte os valores para o mesmo tipo
+        NumericOperationAux(&a, &b);
+
+        switch(a.type) {
+            case Double:
+                a.decimal = fmod(a.decimal, b.decimal); break;
+            case Int:
+                a.integer %= b.integer; break;
+            case Char:
+                a.character %= b.character; break;
+            default:
+                break;
+        }
     }
-    //a e b são valores numéricos
-    assert(a.type < String && b.type < String);
-    NUMERICOPERATION(fmod(a.decimal, b.decimal), a.integer % b.integer, a.character % b.character);
+    
+    return a;
 }
 
 /**
@@ -343,11 +383,21 @@ Value exponentiate(Value a, Value b) {
 
     //Se estivermos a tratar de strings, faz a operação correspondente
     if (a.type >= Char && b.type >= Char)
-        return substrAndDispose(a,b); //TODO:: VERIFICAR ORDEM
+        return substrAndDispose(a,b);
 
     //a e b são valores numéricos
     assert(a.type < String && b.type < String);
-    NUMERICOPERATION(pow(a.decimal, b.decimal), (long long)pow(a.integer, b.integer), (char)pow(a.character, b.character));
+
+    switch(a.type) {
+        case Double:
+            a.decimal = pow(a.decimal, b.decimal); break;
+        case Int:
+            a.integer = (long long)pow(a.integer, b.integer); break;
+        case Char:
+            a.character = (char)pow(a.character, b.character); break;
+        default:
+            break;
+    }
 }
 
 /**
@@ -365,9 +415,7 @@ void readAllLines(Stack st) {
     str[0] = '\0';
     //Enquanto houver input para ler
     while(fgets(curLine, MAXINPUTLENGTH,stdin) != NULL) {
-        //Para ser possível parar a leitura na consola
-        if(strcmp(curLine, "--ENDOFFILE--\n") == 0)
-            break;
+
         //Concatena as strings
         strcat(str, curLine);        
     }

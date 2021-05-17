@@ -26,7 +26,7 @@
 Value copyElement(State* s, Value n) {
     if (n.type == Block) {
         Value a = pop(s->stack); //ordenar uma array
-        assert(a.type == String || a.type = Array);
+        assert(a.type == String || a.type == Array);
         Value res = sort(s, a, n);
         disposeValue(n);
         return res;

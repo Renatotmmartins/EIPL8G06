@@ -1,3 +1,3 @@
-# EIPL8G06
+# Laboratórios de Informática II
 
-Dizes
+Project developed by Renato Martins, Rui Oliveira, Tiago Bacelar and Gonçalo Santos.
